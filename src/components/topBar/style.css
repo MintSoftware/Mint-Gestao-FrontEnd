@@ -1,0 +1,101 @@
+.topbar {
+    height: 60px;
+    width: 100%;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 10px;
+    min-height: 60px;
+}
+
+.input-outline-topbar:focus  input:focus{
+    outline: none;
+}
+
+.imagem-perfil{
+    border-radius: 100%;
+    opacity: 1 ;
+    background: #88B702;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    width: 40px;
+    height: 40px;
+}
+
+.perfil-img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    opacity: 1;
+    display: flex;
+}
+
+.topbar-middle {
+    height: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.037);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.search-input {
+    border-radius: 40px 0 0 40px;
+    width: 500px;
+    height: 80%;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    display: flex;
+    border: none;
+    padding-left: 20px;
+}
+
+.search-input::placeholder {
+    color: white;
+}
+
+.icon-search {
+    width: 20px;
+    height: 100%;
+    margin-right: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.perfil-info{
+    display: flex;
+    color: white;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    vertical-align: middle;
+    flex-direction: column;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.topbar-rigth{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    width: auto;
+    height: 100%;
+}
+
+.icones-rigth {
+    display: flex;
+    justify-content: center;
+    margin-right: 30px;
+    align-items: center;
+    color: white;
+    gap: 30px;
+    cursor: pointer;
+}

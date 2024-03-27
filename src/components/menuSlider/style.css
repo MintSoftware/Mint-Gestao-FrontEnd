@@ -1,0 +1,82 @@
+/* Sidebar.css */
+
+.menu-slider {
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  color: #03bb85;
+  background: rgba(174, 174, 174, 0.064);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.menu-slider a {
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: flex;
+  border-radius: 20px;
+  vertical-align: middle;
+  height: 3.75rem;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  
+}
+
+.menu-slider a:hover {
+  border-radius: 20px;
+  color: #03bb85;
+  transition: all 0.1s;
+}
+
+.MenuItemContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 25%;
+  text-align: center;
+  transition: opacity 1s;
+  border-radius: 20px;
+  height: 3.75rem;
+}
+
+.MenuItemContainer:hover {
+  color: #03bb85;
+  transition: ease-in-out 0.1s;
+}
+
+.menu-slider-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: white;
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  margin-top: 20px;
+}
+
+.menu-selected {
+  background: #03bb85;
+  height: 100%;
+  width: 10%;
+}
+
+
+.MenuItemContainerButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 25%;
+  text-align: center;
+  transition: opacity 1s;
+  border-radius: 20px;
+  height: 3.75rem;
+}
