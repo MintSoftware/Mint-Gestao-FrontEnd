@@ -2,6 +2,7 @@ import Tabela from "@/components/tabela/tabela";
 import colunas from "./colunas";
 import { Cliente } from "@/types/Cliente";
 import { Label } from "@/components/ui/label";
+import CadastroCliente from "@/components/modal/cliente/cadastro";
 
 export const dados = (): Cliente[] => {
     return [
@@ -118,6 +119,7 @@ export default function cliente() {
             <Tabela
                 colunas={colunas()}
                 dados={dados()}
+                modal={<CadastroCliente/>}
             />
         </div>
     )

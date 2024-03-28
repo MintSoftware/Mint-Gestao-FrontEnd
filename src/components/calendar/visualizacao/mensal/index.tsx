@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { format, eachDayOfInterval, isSameMonth, isSameWeek, isToday } from 'date-fns';
 import { pt } from 'date-fns/locale';
-import Evento from '../../modal/evento';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import Evento from '@/components/modal/evento';
 
 interface MensalProps {
   semanasDoMes: Date[];

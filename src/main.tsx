@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
-        <ThemeProvider defaultTheme="system" storageKey='vite-ui-theme'>
+        <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme'>
           <ToastContainer limit={4} theme='dark' position='top-right' transition={Slide} />
           <MainRoutes />
           <ToastContainer />
