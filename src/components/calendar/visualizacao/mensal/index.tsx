@@ -20,7 +20,7 @@ const Mensal = ({ semanasDoMes, currentDate }: MensalProps) => {
     <Dialog>
       <div className="grid grid-cols-1 items-center h-[80%] gap-4">
         {semanasDoMes.map((semana, indiceSemana) => (
-          <div key={indiceSemana} className="grid grid-cols-7 gap-4">
+          <div key={indiceSemana + semana.getMilliseconds()} className="grid grid-cols-7 gap-4">
             {eachDayOfInterval({
               start: semana,
               end: new Date(semana.getFullYear(), semana.getMonth(), semana.getDate() + 6),
