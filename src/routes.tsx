@@ -6,6 +6,7 @@ import Login from "./view/login";
 import { Layout } from "./view/layout";
 import Calendario from "./components/calendar";
 import Cliente from "./view/cliente";
+import Locais from "./view/local";
 
 function MainRoutes() {
 
@@ -40,8 +41,10 @@ function MainRoutes() {
   return (
     <Layout>
       <Routes>
+        <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/calendario" element={<Calendario />} />
         <Route path="/clientes" element={<Cliente/>} />
+        <Route path="/locais" element={<Locais/>} />
       </Routes>
     </Layout>
   )

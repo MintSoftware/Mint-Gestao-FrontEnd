@@ -5,11 +5,11 @@ import { EsconderColunas } from "./esconderColunas";
 import React from "react";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import { Dialog } from "../ui/dialog";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
-    dados: TData[];
+    dados: any;
     modal: any;
 }
 
