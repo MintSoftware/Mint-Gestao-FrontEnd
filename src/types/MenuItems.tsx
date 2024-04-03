@@ -4,4 +4,5 @@ export type MenuItem = {
     id: number,
     icon: Icon,
     link: string,
+    texto: string
 }

@@ -29,24 +29,42 @@ const MenuSlider = () => {
 
   const width = isOpen ? '200px' : '60px';
 
-  return (<div ref={menuRef} className='h-full items-center flex flex-col justify-between p-5 bg-[rgba(174,174,174,0.064)] backdrop-blur-lg border rounded border-[rgba(255,255,255,0.18)] shadow-2xl transition-all duration-300' style={{ width }}>
-    <div className='w-[100%]'>
-      <List size="20" weight="fill" className={isOpen ? 'fill-[#03bb85] w-[100%] cursor-pointer' : 'w-[100%] cursor-pointer'} onClick={() => setIsOpen(!isOpen)} />
+  const size = 22;
+
+  return (<div ref={menuRef} className='h-full items-center flex flex-col justify-between bg-[rgba(174,174,174,0.064)] backdrop-blur-lg border rounded border-[rgba(255,255,255,0.18)] shadow-2xl transition-all duration-300' style={{ width }}>
+    <div className=' flex flex-col w-[100%] p-2'>
+      <List size={size} weight="fill" className={isOpen ? 'fill-[#03bb85] cursor-pointer w-auto' : ' w-auto cursor-pointer'} onClick={() => setIsOpen(!isOpen)} />
     </div>
-    <div className='w-[100%] flex flex-col gap-5'>
+    <div className='flex items-center flex-col w-[100%] border'>
       {menuItemsData.map((item) => {
         return (
-          <Link to={item.link} key={item.id}>
-            <item.icon size="20" weight="fill" className={pathname === item.link ? 'fill-[#03bb85]  w-[100%] cursor-pointer' : 'w-[100%] cursor-pointer'} />
-          </Link>
+          <div className='w-[100%] flex-row'>
+            <Link to={item.link} key={item.id}>
+              <button className='w-[100%] border'>
+                <div className='flex p-2 items-center'>
+                  <item.icon size={size} weight="fill" style={pathname === item.link ? { fill: '#03bb85' } : {}} className='flex flex-col w-[100%]' />
+                  {isOpen &&
+                    <div style={pathname === item.link ? { color: '#03bb85' } : {}}>
+                      {item.texto}
+                    </div>}
+                </div>
+              </button>
+            </Link>
+          </div>
         )
       })}
     </div>
-    <div className='w-[100%] flex flex-col gap-5'>
-      <Link to="/configuracoes">
-        <Gear size="20" weight="fill" to={"/configuracoes"} className={pathname === '/configuracoes' ? 'fill-[#03bb85] w-[100%] cursor-pointer' : 'w-[100%] cursor-pointer'} />
-      </Link>
-      <SignOut size="20" weight="fill" className='w-[100%] cursor-pointer' onClick={() => handleSaveUserLogged()} />
+    <div className='flex items-center flex-col w-[100%]'>
+      <div className='w-[100%] p-2'>
+        <Link to="/configuracoes">
+          <Gear size={size} weight="fill" style={pathname === '/configuracoes' ? { fill: '#03bb85' } : {}} className='flex flex-col w-[100%]' />
+        </Link>
+      </div>
+      <div className='w-[100%] p-2'>
+        <Link to="/">
+          <SignOut size={size} weight="fill" onClick={() => handleSaveUserLogged()} className='flex flex-col w-[100%]' />
+        </Link>
+      </div>
     </div>
   </div>)
 };
