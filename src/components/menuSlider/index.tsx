@@ -32,7 +32,7 @@ const MenuSlider = () => {
   const size = 22;
 
   return (<div ref={menuRef} className='h-full items-center flex flex-col justify-between bg-[rgba(174,174,174,0.064)] backdrop-blur-lg border rounded border-[rgba(255,255,255,0.18)] shadow-2xl transition-all duration-300' style={{ width }}>
-    <div className=' flex flex-col w-[100%] p-2'>
+    <div className='flex flex-col w-[100%]'>
       <List size={size} weight="fill" className={isOpen ? 'fill-[#03bb85] cursor-pointer w-auto' : ' w-auto cursor-pointer'} onClick={() => setIsOpen(!isOpen)} />
     </div>
     <div className='flex items-center flex-col w-[100%]'>
@@ -41,12 +41,30 @@ const MenuSlider = () => {
           <div className='w-[100%] flex-row'>
             <Link to={item.link} key={item.id}>
               <button className='w-[100%]'>
-                <div className='flex p-2 justify-center items-center transition-all '>
-                  <item.icon size={size} weight="fill" style={pathname === item.link ? { fill: '#03bb85' } : {}} className='w-[30px]' />
-                  {isOpen &&
-                    <div style={pathname === item.link ? { color: '#03bb85' } : {}} className='w-[90px] text-left text-clip'>
-                      {item.texto}
-                    </div>}
+                <div className='flex justify-between items-center transition ease-linear '>
+                  <div />
+                  <div className='flex'>
+                    <item.icon size={size} weight="fill" style={pathname === item.link ? { 
+                      fill: '#03bb85',
+                      filter: "drop-shadow(0 0 10px #03bb85)",
+                      transition: "ease-in-out 0.5s",
+                  } : {}} className='w-[30px]' />
+                    {isOpen &&
+                      <div style={pathname === item.link ? { 
+                        color: '#03bb85',
+                        filter: "drop-shadow(0 0 10px #03bb85)",
+                        opacity: isOpen ? 1 : 0, 
+                        transition: "ease-in-out 0.5s",
+                        overflow: "hidden"
+                      } : {}} className='w-[90px] text-left text-clip'>
+                        {item.texto}
+                      </div>}
+                  </div>
+                  <div className='w-[5px] h-[40px]' style={pathname === item.link ? { 
+                    backgroundColor: '#03bb85',
+                    transition: "ease-in-out 0.5s", 
+                    filter: "drop-shadow(0 0 10px #03bb85)"                 
+                } : {}} />
                 </div>
               </button>
             </Link>
