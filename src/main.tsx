@@ -4,17 +4,16 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import MainRoutes from './routes.tsx'
 import { ThemeProvider } from './components/theme/theme-provider.tsx'
-import { Slide, ToastContainer } from 'react-toastify'
 import './style/global.css'
+import { Toaster } from "@/components/ui/toaster"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
         <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme'>
-          <ToastContainer limit={4} theme='dark' position='top-right' transition={Slide} />
           <MainRoutes />
-          <ToastContainer />
+          <Toaster />
         </ThemeProvider>
       </BrowserRouter>
     </AuthProvider>

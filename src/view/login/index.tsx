@@ -78,7 +78,7 @@ export default function Login() {
               Login
             </Button>
             <div className="flex justify-center">
-              <Link to="/login/recuperar">Esqueci minha senha</Link>
+              <Link to="/recuperar">Esqueci minha senha</Link>
             </div>
           </div>
         </CardContent>

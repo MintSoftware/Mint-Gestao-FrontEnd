@@ -7,6 +7,7 @@ import { Layout } from "./view/layout";
 import Calendario from "./components/calendar";
 import Cliente from "./view/cliente";
 import Locais from "./view/local";
+import RecuperarSenha from "./view/recuperarsenha";
 
 function MainRoutes() {
 
@@ -34,6 +35,7 @@ function MainRoutes() {
     return (
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/recuperar" element={<RecuperarSenha/>} />
       </Routes>
     )
   }
