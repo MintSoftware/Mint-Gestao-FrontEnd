@@ -9,11 +9,13 @@ interface props {
 export function Layout({ children }: props) {
     return (
         <div>
-            <div className="w-screen h-screen flex" >
+            <div className="flex min-h-screen w-full flex-col bg-muted/40">
                 <MenuSlider />
-                <div className="w-screen max-h-screen h-screen flex flex-col items-center" >
+                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
                     <TopBar />
-                    {children}
+                    <main className="flex w-[97vw] p-3">
+                        {children}
+                    </main>
                 </div>
             </div>
         </div >
