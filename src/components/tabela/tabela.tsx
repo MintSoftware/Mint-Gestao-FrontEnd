@@ -1,11 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import { ColumnDef, ColumnFiltersState, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { Paginacao } from "./paginacao";
-import { EsconderColunas } from "./esconderColunas";
+import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import React from "react";
+import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
-import { Dialog } from "../ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { EsconderColunas } from "./esconderColunas";
+import { Paginacao } from "./paginacao";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
@@ -39,12 +39,12 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                         value={tabela.getState().globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder="Pesquisar..."
-                        className="w-[30%]"
+                        className="w-[30%] bg-background"
                     />
                     {modal}
                     <EsconderColunas table={tabela} />
                 </div>
-                <div className="rounded-md border">
+                <div className="rounded-md border overflow-hidden">
                     <ScrollArea className="w-full h-[60vh]">
                         <Table>
                             <TableHeader>
@@ -64,12 +64,12 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                             <TableBody>
                                 {tabela.getRowModel().rows.length ? (
                                     tabela.getRowModel().rows.map((row) => (
-                                        <TableRow key={row.id}>
-                                            {row.getVisibleCells().map((cell) => (
+                                        <TableRow key={row.id} className="bg-background">
+                                            {row.getVisibleCells().map((cell) => (  
                                                 <TableCell key={cell.id}>
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
-                                            ))
+                                            ))  
                                             }
                                         </TableRow>
                                     ))

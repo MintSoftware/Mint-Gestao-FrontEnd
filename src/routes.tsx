@@ -1,12 +1,13 @@
+import { useEffect, useState } from "react";
 import { Route, Routes, } from "react-router-dom";
-import { useState, useEffect } from "react";
+import Agenda from "./components/agenda";
 import { useAuth } from "./hooks/useAuth";
-import LoadingScreen from "./view/loading/Loading";
-import Login from "./view/login";
-import { Layout } from "./view/layout";
-import Calendario from "./components/calendar";
 import Cliente from "./view/cliente";
+import Configuracoes from "./view/configuracoes";
+import { Layout } from "./view/layout";
+import LoadingScreen from "./view/loading/Loading";
 import Locais from "./view/local";
+import Login from "./view/login";
 import RecuperarSenha from "./view/recuperarsenha";
 
 function MainRoutes() {
@@ -44,9 +45,10 @@ function MainRoutes() {
     <Layout>
       <Routes>
         <Route path="*" element={<h1>Not Found</h1>} />
-        <Route path="/calendario" element={<Calendario />} />
+        <Route path="/agenda" element={<Agenda />} />
         <Route path="/clientes" element={<Cliente/>} />
         <Route path="/locais" element={<Locais/>} />
+        <Route path="/configuracoes" element={<Configuracoes />} />
       </Routes>
     </Layout>
   )

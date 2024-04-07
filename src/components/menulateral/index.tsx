@@ -1,5 +1,3 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 import {
   CalendarDaysIcon,
   HomeIcon,
@@ -8,9 +6,11 @@ import {
   Package2Icon,
   SettingsIcon,
   Users2Icon,
-} from "lucide-react"
+} from "lucide-react";
+import { Link, useLocation } from 'react-router-dom';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
 
-const MenuSlider = () => {
+const MenuLateral = () => {
 
   const { pathname } = useLocation();
 
@@ -23,7 +23,7 @@ const MenuSlider = () => {
             to="/empresa"
           >
             <Package2Icon className="h-4 w-4 transition-all group-hover:scale-110" />
-            <span className="sr-only">Acme Inc</span>
+            <span className="sr-only">Mint Software</span>
           </Link>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -45,22 +45,22 @@ const MenuSlider = () => {
                 to="/financeiro"
               >
                 <LineChartIcon className="h-5 w-5" />
-                <span className="sr-only">Orders</span>
+                <span className="sr-only">Financeiro</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Orders</TooltipContent>
+            <TooltipContent side="right">Financeiro</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/calendario' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
-                to="/calendario"
+                className={pathname === '/agenda' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                to="/agenda"
               >
                 <CalendarDaysIcon className="h-5 w-5" />
-                <span className="sr-only">Products</span>
+                <span className="sr-only">Agenda</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Products</TooltipContent>
+            <TooltipContent side="right">Agenda</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -69,10 +69,10 @@ const MenuSlider = () => {
                 to="/clientes"
               >
                 <Users2Icon className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
+                <span className="sr-only">Clientes</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
+            <TooltipContent side="right">Clientes</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -81,10 +81,10 @@ const MenuSlider = () => {
                 to="/locais"
               >
                 <MapPinIcon className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
+                <span className="sr-only">Locais</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
+            <TooltipContent side="right">Locais</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </nav>
@@ -97,10 +97,10 @@ const MenuSlider = () => {
                 to="/configuracoes"
               >
                 <SettingsIcon className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
+                <span className="sr-only">Configurações</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
+            <TooltipContent side="right">Configurações</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       </nav>
@@ -108,4 +108,4 @@ const MenuSlider = () => {
   )
 }
 
-export default MenuSlider;
+export default MenuLateral;

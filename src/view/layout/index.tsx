@@ -1,4 +1,4 @@
-import MenuSlider from "@/components/menuSlider"
+import MenuLateral from "@/components/menulateral"
 import TopBar from "@/components/topBar"
 import { ReactNode } from "react"
 
@@ -8,9 +8,9 @@ interface props {
 
 export function Layout({ children }: props) {
     return (
-        <div className="flex w-screen h-screen">
-            <div className="flex flex-col bg-muted/40">
-                <MenuSlider />
+        <div className="flex w-screen h-screen bg-muted/40">
+            <div className="flex flex-col ">
+                <MenuLateral />
             </div>
             <div className="flex flex-col w-full">
                 <TopBar />

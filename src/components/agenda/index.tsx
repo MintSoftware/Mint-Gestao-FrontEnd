@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { format, startOfMonth, subMonths, addMonths, eachWeekOfInterval, addWeeks, addDays, subWeeks, subDays, eachDayOfInterval } from 'date-fns';
+import { addDays, addMonths, addWeeks, eachWeekOfInterval, format, startOfMonth, subDays, subMonths, subWeeks } from 'date-fns';
 import { pt } from 'date-fns/locale';
-import { CaretLeft, CaretRight, Funnel } from '@phosphor-icons/react';
-import Mensal from './visualizacao/mensal';
-import Semanal from './visualizacao/semanal';
-import Diario from './visualizacao/diario';
+import { ChevronLeftIcon, ChevronRightIcon, FilterIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scroll-area';
+import Diario from './visualizacao/diario';
+import Mensal from './visualizacao/mensal';
+import Semanal from './visualizacao/semanal';
 
 type Visualizacao = 'mensal' | 'semanal' | 'diario';
 
-const Calendario = () => {
+const Agenda = () => {
     const [currentDate, setCurrentDate] = useState(new Date()),
         [vizualizacao, setVizualizacao] = useState<Visualizacao>('mensal'),
         [startHour, setStartHour] = useState('08:00'),
@@ -98,11 +98,11 @@ const Calendario = () => {
                         <div></div>
                         <div className='flex gap-10'>
                             <button onClick={retroceder}>
-                                <CaretLeft size={30} />
+                                <ChevronLeftIcon size={30} />
                             </button>
                             <span className='diaMes text-lg font-bold'>{mesDia.charAt(0).toUpperCase() + mesDia.slice(1)}</span>
                             <button onClick={avancar}>
-                                <CaretRight size={30} />
+                                <ChevronRightIcon size={30} />
                             </button>
                         </div>
                         <div>
@@ -118,7 +118,7 @@ const Calendario = () => {
                 <div className="funil flex items-center justify-center">
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Funnel size={30} onClick={onHoverFilterHandler} className='cursor-pointer' />
+                            <FilterIcon size={30} onClick={onHoverFilterHandler} className='cursor-pointer' />
                         </PopoverTrigger>
                         <PopoverContent className="flex text-center items-center flex-row justify-center text-center w-72 h-72 top-12 right-16 bg-opacity-90 backdrop-blur-md border border-200 border-opacity-30 shadow-lg rounded-2xl">
                             <div>
@@ -152,4 +152,4 @@ const Calendario = () => {
     );
 };
 
-export default Calendario;
+export default Agenda;

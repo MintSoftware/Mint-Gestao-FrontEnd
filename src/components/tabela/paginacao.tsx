@@ -1,12 +1,12 @@
 import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    DoubleArrowLeftIcon,
-    DoubleArrowRightIcon,
-  } from "@radix-ui/react-icons"
-  import { Table } from "@tanstack/react-table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
+} from "@radix-ui/react-icons"
+import { Table } from "@tanstack/react-table"
 import { Button } from "../ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 
    
   interface PaginacaoProps<TData> {
@@ -31,7 +31,7 @@ import { Button } from "../ui/button"
                 table.setPageSize(Number(value))
               }}
             >
-              <SelectTrigger className="h-8 w-[70px]">
+              <SelectTrigger className="h-8 w-[70px] bg-background">
                 <SelectValue placeholder={table.getState().pagination.pageSize} />
               </SelectTrigger>
               <SelectContent side="top">

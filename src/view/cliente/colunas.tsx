@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Cliente } from "@/types/Cliente"
-import { DotsThree } from "@phosphor-icons/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { EllipsisVerticalIcon } from "lucide-react"
 
 export const colunas = (): ColumnDef<Cliente>[] => [
     {
@@ -62,7 +62,7 @@ export const colunas = (): ColumnDef<Cliente>[] => [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <DotsThree size={14} className="h-4 w-4" />
+                            <EllipsisVerticalIcon className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

@@ -8,11 +8,10 @@ import { useAuth } from "@/hooks/useAuth"
 import Api from "@/infra/api"
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import "react-toastify/dist/ReactToastify.css"
 
 export default function Login() {
-  const [email, setEmail] = useState<string>("");
-  const [senha, setSenha] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
 
   const { handleSaveUserLogged } = useAuth();
 
