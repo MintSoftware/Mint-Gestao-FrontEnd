@@ -8,16 +8,16 @@ interface props {
 
 export function Layout({ children }: props) {
     return (
-        <div>
-            <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <div className="flex w-screen h-screen">
+            <div className="flex flex-col bg-muted/40">
                 <MenuSlider />
-                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-                    <TopBar />
-                    <main className="flex w-[97vw] p-3">
-                        {children}
-                    </main>
-                </div>
             </div>
-        </div >
+            <div className="flex flex-col w-full">
+                <TopBar />
+                <main className="flex justify-center items-center">
+                    {children}
+                </main>
+            </div>
+        </div>
     )
 }

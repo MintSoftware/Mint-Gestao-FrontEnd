@@ -1,12 +1,10 @@
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Link } from "react-router-dom";
-
-
 
 export default function RecuperarSenha() {
 
@@ -41,7 +39,7 @@ export default function RecuperarSenha() {
                     </div>
                     <div className="flex gap-2">
                         <Link to="/">
-                            <Button variant={"outline"} className="w-full">
+                            <Button variant="outline" className="w-full">
                                 Voltar
                             </Button>
                         </Link>

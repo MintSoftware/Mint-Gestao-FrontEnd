@@ -1,19 +1,22 @@
-import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Form, Link } from "react-router-dom"
-import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
 import { useAuth } from "@/hooks/useAuth"
 import Api from "@/infra/api"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [senha, setSenha] = useState<string>("");
 
   const { handleSaveUserLogged } = useAuth();
+
+  const { toast } = useToast();
 
   const logar = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,36 +26,33 @@ export default function Login() {
       senha
     }
 
-    const loading = toast.loading("Realizando login...");
-
     try {
       const { data } = await Api.post("auth/login", dto);
       if (data) {
-        toast.update(loading, {
-          render: "Login realizado com sucesso!",
-          type: "success",
-          isLoading: false,
-          autoClose: 2000,
-        });
+        toast({
+          variant: "default",
+          description: "Login realizado com sucesso!",
+        })
       }
 
       await handleSaveUserLogged(data);
 
     } catch (error: any) {
       if (error.response) {
-        toast.update(loading, {
-          render: `${error.response.data}`,
-          type: "error",
-          isLoading: false,
-          autoClose: 2000,
-        });
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: error.response.data,
+          action: <ToastAction altText="Tentar Novamente" onClick={() => logar(e)}>Tentar novamente</ToastAction>,
+        })
+
       } else {
-        toast.update(loading, {
-          render: "Erro ao realizar login!",
-          type: "error",
-          isLoading: false,
-          autoClose: 2000,
-        });
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: "Erro ao realizar login!",
+          action: <ToastAction altText="Tentar Novamente">Tentar novamente</ToastAction>,
+        })
       }
     }
   }
