@@ -48,7 +48,7 @@ function MainRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/clientes" element={<Cliente/>} />
         <Route path="/locais" element={<Locais/>} />
-        <Route path="/configuracoes" element={<Configuracoes />} />
+        <Route path="/configuracoes/*" element={<Configuracoes />} />
       </Routes>
     </Layout>
   )

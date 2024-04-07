@@ -1,8 +1,8 @@
-import Tabela from "@/components/tabela/tabela";
-import colunas from "./colunas";
-import { Cliente } from "@/types/Cliente";
-import { Label } from "@/components/ui/label";
 import CadastroCliente from "@/components/modal/cliente/cadastro";
+import Tabela from "@/components/tabela/tabela";
+import { Label } from "@/components/ui/label";
+import { Cliente } from "@/types/Cliente";
+import colunas from "./colunas";
 
 export const dados = (): Cliente[] => {
     return [
@@ -114,7 +114,7 @@ export const dados = (): Cliente[] => {
 
 export default function cliente() {
     return (
-        <div className="w-[95%] pt-[3%] h-[95%]">
+        <div className="w-[100%] px-5 pt-[50px] h-[100%]">
             <Label className="text-xl">Clientes</Label>
             <Tabela
                 colunas={colunas()}
