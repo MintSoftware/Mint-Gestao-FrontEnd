@@ -7,10 +7,10 @@ export default function ConfigAparencia() {
     return (
         <div className="flex flex-col gap-6 items-center w-[100%] h-[100%]">
             <Card className="flex flex-col gap-6 w-[60%] h-[100%]">
-                <div className="">
-                    <h1 className="text-2xl font-semibold">Appearance</h1>
+                <div className="flex flex-col space-y-1.5 p-6">
+                    <h1 className="text-2xl font-semibold">Aparência</h1>
                     <p className="text-sm  mt-2 mb-4">
-                        Customize the appearance of the app. Automatically switch between day and night themes.
+                        Customize a aparência com suas preferências.
                     </p>
                     <Separator />
                     <div className="mb-8">
@@ -28,7 +28,7 @@ export default function ConfigAparencia() {
                         <p className="text-sm text-gray-600 mt-2">Set the font you want to use in the dashboard.</p>
                     </div>
                     <div className="mb-8">
-                        <h2 className="text-lg font-semibold mb-2">Theme</h2>
+                        <h2 className="text-lg font-semibold mb-2">Tema</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <Card className="w-full">
                                 <CardContent className="flex items-center justify-center p-4">
@@ -39,7 +39,7 @@ export default function ConfigAparencia() {
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-center">
-                                    <Button variant="ghost">Light</Button>
+                                    <Button variant="ghost">Claro</Button>
                                 </CardFooter>
                             </Card>
                             <Card className="w-full">
@@ -51,13 +51,13 @@ export default function ConfigAparencia() {
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-center">
-                                    <Button variant="ghost">Dark</Button>
+                                    <Button variant="ghost">Escuro</Button>
                                 </CardFooter>
                             </Card>
                         </div>
-                        <p className="text-sm text-gray-600 mt-2">Select the theme for the dashboard.</p>
+                        <p className="text-sm text-gray-600 mt-2">Selecione o tema desejado.</p>
                     </div>
-                    <Button>Update preferences</Button>
+                    <Button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">Salvar</Button>
                 </div>
             </Card>
         </div>

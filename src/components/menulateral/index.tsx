@@ -41,18 +41,6 @@ const MenuLateral = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/financeiro' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
-                to="/financeiro"
-              >
-                <LineChartIcon className="h-5 w-5" />
-                <span className="sr-only">Financeiro</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Financeiro</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
                 className={pathname === '/agenda' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
                 to="/agenda"
               >
@@ -73,6 +61,18 @@ const MenuLateral = () => {
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right">Clientes</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                className={pathname === '/financeiro' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                to="/financeiro"
+              >
+                <LineChartIcon className="h-5 w-5" />
+                <span className="sr-only">Financeiro</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Financeiro</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
