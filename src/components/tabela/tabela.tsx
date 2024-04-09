@@ -1,4 +1,4 @@
-import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { ColumnDef, ColumnResizeMode, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import React from "react";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
@@ -16,6 +16,8 @@ interface TabelaProps<TData, TValue> {
 const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = React.useState("")
+    const [columnResizeMode, setColumnResizeMode] =
+        React.useState<ColumnResizeMode>('onChange')
 
     const tabela = useReactTable({
         columns: colunas,
@@ -24,6 +26,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
             sorting,
             globalFilter,
         },
+        columnResizeMode,
         getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -33,7 +36,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
     });
     return (
         <Dialog>
-            <div className="">
+            <div className="p-5">
                 <div className="flex items-center pt-[20px] pb-[20px]">
                     <Input
                         value={tabela.getState().globalFilter}
@@ -45,18 +48,35 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                     <EsconderColunas table={tabela} />
                 </div>
                 <div className="rounded-md border overflow-hidden">
-                    <ScrollArea className="w-full h-[60vh]">
+                    <ScrollArea className="w-full h-[68vh]">
                         <Table>
                             <TableHeader>
                                 {tabela.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow className="sticky top0" key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => {
-                                            return (
-                                                <TableHead key={header.id}>
-                                                    {flexRender(header.column.columnDef.header, header.getContext())}
-                                                </TableHead>
-                                            )
-                                        }
+                                    <TableRow className="sticky top-0" key={headerGroup.id}>
+                                        {headerGroup.headers.map((header) => (
+                                            <TableHead key={header.id}
+                                                style={{ width: `${header.getSize()}px` }}
+                                            >
+                                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                                <div
+                                                    {...{
+                                                        onMouseDown: header.getResizeHandler(),
+                                                        onTouchStart: header.getResizeHandler(),
+                                                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''} absolute right-0 top-0 h-full cursor-col-resize w-[5px]`,
+                                                        style: {
+                                                            transform:
+                                                                columnResizeMode === 'onEnd' &&
+                                                                    header.column.getIsResizing()
+                                                                    ? `translateX(${tabela.getState().columnSizingInfo
+                                                                        .deltaOffset
+                                                                    }px)`
+                                                                    : '',
+                                                        },
+                                                    }}
+                                                />
+                                            </TableHead>
+                                            
+                                        )
                                         )}
                                     </TableRow>
                                 ))}
@@ -65,11 +85,11 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                                 {tabela.getRowModel().rows.length ? (
                                     tabela.getRowModel().rows.map((row) => (
                                         <TableRow key={row.id} className="bg-background">
-                                            {row.getVisibleCells().map((cell) => (  
+                                            {row.getVisibleCells().map((cell) => (
                                                 <TableCell key={cell.id}>
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
-                                            ))  
+                                            ))
                                             }
                                         </TableRow>
                                     ))

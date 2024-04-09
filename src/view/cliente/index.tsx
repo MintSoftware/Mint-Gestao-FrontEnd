@@ -115,7 +115,7 @@ export const dados = (): Cliente[] => {
 export default function cliente() {
     return (
         <div className="w-[100%] px-5 pt-[50px] h-[100%]">
-            <Label className="text-xl">Clientes</Label>
+            <Label className="text-xl p-5">Clientes</Label>
             <Tabela
                 colunas={colunas()}
                 dados={dados()}
