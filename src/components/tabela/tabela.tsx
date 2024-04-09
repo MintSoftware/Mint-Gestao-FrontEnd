@@ -6,6 +6,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
+import { min } from "date-fns";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
@@ -16,8 +17,6 @@ interface TabelaProps<TData, TValue> {
 const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = React.useState("")
-    const [columnResizeMode, setColumnResizeMode] =
-        React.useState<ColumnResizeMode>('onChange')
 
     const tabela = useReactTable({
         columns: colunas,
@@ -26,7 +25,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
             sorting,
             globalFilter,
         },
-        columnResizeMode,
+        columnResizeMode: 'onChange',
         getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -48,25 +47,25 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                     <EsconderColunas table={tabela} />
                 </div>
                 <div className="rounded-md border overflow-hidden">
-                    <ScrollArea className="w-full h-[68vh]">
+                    <ScrollArea className="w-[auto] h-[68vh]">
                         <Table>
                             <TableHeader>
                                 {tabela.getHeaderGroups().map((headerGroup) => (
                                     <TableRow className="sticky top-0" key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => (
                                             <TableHead key={header.id}
-                                                style={{ width: `${header.getSize()}px` }}
+                                                style={{ width: `${header.getSize()}px`,
+                                                }}
+                                                className="sticky top-0 text-muted-foreground"
                                             >
                                                 {flexRender(header.column.columnDef.header, header.getContext())}
                                                 <div
                                                     {...{
                                                         onMouseDown: header.getResizeHandler(),
-                                                        onTouchStart: header.getResizeHandler(),
-                                                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''} absolute right-0 top-0 h-full cursor-col-resize w-[5px]`,
+                                                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''} h-7 m-[6px] rounded cursor-col-resize w-[3px] bg-background absolute right-0 top-0`,
                                                         style: {
                                                             transform:
-                                                                columnResizeMode === 'onEnd' &&
-                                                                    header.column.getIsResizing()
+                                                                header.column.getIsResizing()
                                                                     ? `translateX(${tabela.getState().columnSizingInfo
                                                                         .deltaOffset
                                                                     }px)`
@@ -75,7 +74,6 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                                                     }}
                                                 />
                                             </TableHead>
-                                            
                                         )
                                         )}
                                     </TableRow>
