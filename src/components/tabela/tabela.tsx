@@ -1,12 +1,11 @@
-import { ColumnDef, ColumnResizeMode, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import React from "react";
+import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import React, { useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
-import { min } from "date-fns";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
@@ -15,8 +14,8 @@ interface TabelaProps<TData, TValue> {
 }
 
 const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TValue>) => {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [globalFilter, setGlobalFilter] = React.useState("")
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [globalFilter, setGlobalFilter] = useState("")
 
     const tabela = useReactTable({
         columns: colunas,
@@ -33,6 +32,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
     });
+
     return (
         <Dialog>
             <div className="p-5">
@@ -74,8 +74,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                                                     }}
                                                 />
                                             </TableHead>
-                                        )
-                                        )}
+                                        ))}
                                     </TableRow>
                                 ))}
                             </TableHeader>
@@ -87,8 +86,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                                                 <TableCell key={cell.id}>
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
-                                            ))
-                                            }
+                                            ))}
                                         </TableRow>
                                     ))
                                 ) : (
