@@ -1,4 +1,8 @@
-import { Axios} from "axios";
+import { User } from "@/types/User";
+import { Axios } from "axios";
+import Api from "../api";
+import { useAuth } from "@/hooks/useAuth";
+import { json } from "stream/consumers";
 
 export function applyErrorHandler(axios: Axios) {
     axios.interceptors.response.use(
@@ -7,6 +11,30 @@ export function applyErrorHandler(axios: Axios) {
                 return Promise.reject(new Error(response.data.message));
             }
             return response;
+        }, async (error) => {
+            debugger;
+            if (error.response.status === 403) {
+                // get user from localstorage
+                const userLogged = localStorage.getItem('@userLogged'),
+                    userLoggedParsed: User = JSON.parse(userLogged == null || userLogged == 'undefined' ? '{}' : userLogged);
+                // validate refreshtoken
+                if (userLoggedParsed?.refreshToken) {
+                    const { data } = await Api.post('auth/refresh', { refreshToken: userLoggedParsed.refreshToken });
+
+                    // update token
+                    if (data.content.token) {
+                        debugger;
+                        userLoggedParsed.token = data.content.token;
+
+                        Api.defaults.headers.Authorization = `Bearer ${data.content.token}`;
+
+                        localStorage.setItem('@userLogged', JSON.stringify(userLoggedParsed));
+                    }
+                } else {
+                    await localStorage.setItem('@userLogged', JSON.stringify({}));
+                    window.location.href = '/';
+                }
+            }
         }
     );
 }

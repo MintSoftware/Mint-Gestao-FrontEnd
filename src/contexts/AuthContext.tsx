@@ -1,13 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 import Api from "../infra/api";
-
-interface UserLogged {
-    token: string;
-}
+import { User } from "@/types/User";
 
 interface AuthContextProps {
-    userLogged?: UserLogged;
-    handleSaveUserLogged: (userLogged?: UserLogged) => Promise<void>;
+    userLogged?: User;
+    handleSaveUserLogged: (userLogged?: User) => Promise<void>;
     handleGetUserLoggedFromStorageData: () => Promise<void>;
 
 }
@@ -16,7 +13,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: any) {
 
-    const [userLogged, setUserLogged] = useState<UserLogged | undefined>(undefined);
+    const [userLogged, setUserLogged] = useState<User | undefined>(undefined);
 
     async function handleGetUserLoggedFromStorageData() {
         const userLogged = localStorage.getItem('@userLogged'),
@@ -26,7 +23,7 @@ export function AuthProvider({ children }: any) {
         setUserLogged(userLoggedParsed);
     }
 
-    async function handleSaveUserLogged(userLogged?: UserLogged) {
+    async function handleSaveUserLogged(userLogged?: User) {
         setUserLogged(userLogged);
         localStorage.setItem('@userLogged', JSON.stringify(userLogged));
     }
