@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Local } from "@/types/Local";
 import CadastroLocal from "@/view/local/cadastro";
 import colunas from "./colunas";
-import ExportarLocal from "./importar";
+import ExportarLocal from "./exportar";
 
 export const dados = (): Local[] => {
     return [{

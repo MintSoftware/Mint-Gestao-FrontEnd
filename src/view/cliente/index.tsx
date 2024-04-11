@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Cliente } from "@/types/Cliente";
 import CadastroCliente from "@/view/cliente/cadastro";
 import colunas from "./colunas";
-import ExportarCliente from "./importar";
+import ExportarCliente from "./exportar";
 
 export const dados = (): Cliente[] => {
     return [
@@ -115,7 +115,7 @@ export const dados = (): Cliente[] => {
 
 export default function cliente() {
     return (
-        <div className="w-[100%] px-5 pt-[50px] h-[100%]">
+        <div id="tabela-clientes" className="w-[100%] px-5 pt-[50px] h-[100%]">
             <Label className="text-xl p-5">Clientes</Label>
             <Tabela
                 colunas={colunas()}

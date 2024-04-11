@@ -44,8 +44,10 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar }: TabelaProps<
                         className="w-[30%] bg-background"
                     />
                     {modal}
-                    {exportar}
-                    <EsconderColunas table={tabela} />
+                    <div className="ml-auto flex flex-row gap-3">
+                        {exportar}
+                        <EsconderColunas table={tabela} />
+                    </div>
                 </div>
                 <div className="rounded-md border relative">
                     <ScrollArea className="h-[68vh]">
@@ -55,9 +57,10 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar }: TabelaProps<
                                     <TableRow className="sticky top-0" key={headerGroup.id}>
                                         {headerGroup.headers.map((header) => (
                                             <TableHead key={header.id}
-                                                style={{ width: `${header.getSize()}px`,
-                                                resize: "horizontal",
-                                                overflow: 'auto'
+                                                style={{
+                                                    width: `${header.getSize()}px`,
+                                                    resize: "horizontal",
+                                                    overflow: 'auto'
                                                 }}
                                                 className="sticky top-0 text-muted-foreground"
                                             >
