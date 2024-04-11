@@ -1,8 +1,9 @@
-import CadastroLocal from "@/components/modal/local/cadastro";
 import Tabela from "@/components/tabela/tabela";
 import { Label } from "@/components/ui/label";
 import { Local } from "@/types/Local";
+import CadastroLocal from "@/view/local/cadastro";
 import colunas from "./colunas";
+import ExportarLocal from "./importar";
 
 export const dados = (): Local[] => {
     return [{
@@ -61,6 +62,7 @@ export default function Locais() {
                 colunas={colunas()}
                 dados={dados()}
                 modal={<CadastroLocal/>}
+                exportar={ExportarLocal(dados())}
             />
         </div>
     )

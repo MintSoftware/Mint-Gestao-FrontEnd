@@ -1,8 +1,9 @@
-import CadastroCliente from "@/components/modal/cliente/cadastro";
 import Tabela from "@/components/tabela/tabela";
 import { Label } from "@/components/ui/label";
 import { Cliente } from "@/types/Cliente";
+import CadastroCliente from "@/view/cliente/cadastro";
 import colunas from "./colunas";
+import ExportarCliente from "./importar";
 
 export const dados = (): Cliente[] => {
     return [
@@ -120,6 +121,7 @@ export default function cliente() {
                 colunas={colunas()}
                 dados={dados()}
                 modal={<CadastroCliente/>}
+                exportar={ExportarCliente(dados())}
             />
         </div>
     )

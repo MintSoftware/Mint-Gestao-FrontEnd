@@ -10,7 +10,7 @@ const CadastroCliente = () => {
         <div>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="default" className="ml-[10%]">Novo cliente</Button>
+                    <Button variant="default">Novo cliente</Button>
                 </DialogTrigger>
                 <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[700px]">
                     <DialogHeader>

@@ -9,7 +9,6 @@ import { EllipsisVerticalIcon } from "lucide-react"
 export const colunas = (): ColumnDef<Cliente>[] => [
     {
         id: "select",
-        size: 3,
         header: ({ table }) => (
             <Checkbox
                 checked={
@@ -41,21 +40,18 @@ export const colunas = (): ColumnDef<Cliente>[] => [
         header: ({ column }) => (
             <Cabecalho column={column} title="CPF" />
         ),
-        size: 10,
     },
     {
         accessorKey: 'email',
         header: ({ column }) => (
             <Cabecalho column={column} title="Email" />
         ),
-        size: 30,
     },
     {
         accessorKey: 'telefone',
         header: ({ column }) => (
             <Cabecalho column={column} title="Telefone" />
         ),
-        size: 30,
     }, {
         id: "actions",
         cell: ({ row }) => {
@@ -84,8 +80,6 @@ export const colunas = (): ColumnDef<Cliente>[] => [
             )
         },
         size: 3,
-        minSize: 3,
-        maxSize: 3,
     }
 ]
 

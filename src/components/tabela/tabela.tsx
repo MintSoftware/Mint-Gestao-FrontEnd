@@ -1,5 +1,5 @@
 import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
@@ -10,10 +10,11 @@ import { Paginacao } from "./paginacao";
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
     dados: any;
-    modal: any;
+    modal: JSX.Element;
+    exportar: JSX.Element;
 }
 
-const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TValue>) => {
+const Tabela = <TData, TValue>({ colunas, dados, modal, exportar }: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
 
@@ -24,7 +25,6 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
             sorting,
             globalFilter,
         },
-        columnResizeMode: 'onChange',
         getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -36,7 +36,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
     return (
         <Dialog>
             <div className="p-5">
-                <div className="flex items-center pt-[20px] pb-[20px]">
+                <div className="gap-3 flex items-center pt-[20px] pb-[20px]">
                     <Input
                         value={tabela.getState().globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
@@ -44,10 +44,11 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                         className="w-[30%] bg-background"
                     />
                     {modal}
+                    {exportar}
                     <EsconderColunas table={tabela} />
                 </div>
-                <div className="rounded-md border overflow-hidden">
-                    <ScrollArea className="w-[auto] h-[68vh]">
+                <div className="rounded-md border relative">
+                    <ScrollArea className="h-[68vh]">
                         <Table>
                             <TableHeader>
                                 {tabela.getHeaderGroups().map((headerGroup) => (
@@ -55,24 +56,12 @@ const Tabela = <TData, TValue>({ colunas, dados, modal }: TabelaProps<TData, TVa
                                         {headerGroup.headers.map((header) => (
                                             <TableHead key={header.id}
                                                 style={{ width: `${header.getSize()}px`,
+                                                resize: "horizontal",
+                                                overflow: 'auto'
                                                 }}
                                                 className="sticky top-0 text-muted-foreground"
                                             >
                                                 {flexRender(header.column.columnDef.header, header.getContext())}
-                                                <div
-                                                    {...{
-                                                        onMouseDown: header.getResizeHandler(),
-                                                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''} h-7 m-[6px] rounded cursor-col-resize w-[3px] bg-background absolute right-0 top-0`,
-                                                        style: {
-                                                            transform:
-                                                                header.column.getIsResizing()
-                                                                    ? `translateX(${tabela.getState().columnSizingInfo
-                                                                        .deltaOffset
-                                                                    }px)`
-                                                                    : '',
-                                                        },
-                                                    }}
-                                                />
                                             </TableHead>
                                         ))}
                                     </TableRow>
