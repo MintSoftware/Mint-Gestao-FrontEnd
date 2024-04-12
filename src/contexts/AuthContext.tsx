@@ -20,7 +20,7 @@ export function AuthProvider({ children }: any) {
     const [auth, setAuth] = useState<Auth>();
 
     async function recuperarUsuarioLogado() {
-        const usuarioLogadoJSON = localStorage.getItem('@userLogged'),
+        const usuarioLogadoJSON = localStorage.getItem('@usuario'),
             usuarioLogado: User = JSON.parse(usuarioLogadoJSON == null ? 'undefined' : usuarioLogadoJSON),
             token = localStorage.getItem('@token'),
             refreshToken = localStorage.getItem('@refreshToken');
@@ -40,21 +40,21 @@ export function AuthProvider({ children }: any) {
 
     async function salvarUsuarioLogado(dados: any) {
         const usuario = { nome: dados.nome, email: dados.email };
-        localStorage.setItem('@userLogged', JSON.stringify(usuario));
+        localStorage.setItem('@usuario', JSON.stringify(usuario));
         setUsuarioLogado(usuario);
 
 
         if (dados.token) {
             const auth = { token: dados.token, refreshToken: dados.refreshToken };
-            localStorage.setItem('@token', JSON.stringify(auth.token));
-            localStorage.setItem('@refreshToken', JSON.stringify(auth.refreshToken));
+            localStorage.setItem('@token', auth.token);
+            localStorage.setItem('@refreshToken', auth.refreshToken);
             setAuth(auth);
             ApiHelper.setAuthorization({ token: auth.token, refreshToken: auth.refreshToken });
         }
     }
 
     async function limparUsuarioLogado() {
-        localStorage.removeItem('@userLogged');
+        localStorage.removeItem('@usuario');
         localStorage.removeItem('@token');
         localStorage.removeItem('@refreshToken');
         setUsuarioLogado(undefined);

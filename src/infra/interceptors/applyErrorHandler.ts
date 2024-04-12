@@ -12,23 +12,36 @@ export function applyErrorHandler(axios: Axios) {
 
         }, async (error) => {
             if (error.response.status === 403) {
-                // get user from localstorage
+                const originalRequest = error.config;
+
                 const refreshToken = localStorage.getItem('@refreshToken');
 
-                // validate refreshtoken
                 if (refreshToken) {
-                    const { data } = await Api.post('auth/refresh', { refreshToken });
+                    try {
+                        ApiHelper.clearAuthorization();
+                        const { data } = await Api.post('auth/refresh', { refreshToken });
 
-                    // update token
-                    if (data.token) {
-                        localStorage.setItem('@token', JSON.stringify(data.token));
-                        ApiHelper.setAuthorization({ token: data.token, refreshToken: refreshToken });
+                        if (data) {
+                            localStorage.setItem('@token', data);
+                            ApiHelper.setAuthorization({ token: data, refreshToken: refreshToken });
+
+                            originalRequest.headers['token'] = `Bearer ${data}`;
+
+                            axios.request(originalRequest);
+                        }
+                    } catch (error) {
+                        localStorage.removeItem('@usuario');
+                        localStorage.removeItem('@token');
+                        localStorage.removeItem('@refreshToken');
+                        ApiHelper.clearAuthorization();
+                        window.location.href = '/';
                     }
+
                 } else {
-                    await localStorage.setItem('@usuario', JSON.stringify({}));
-                    await localStorage.setItem('@token', JSON.stringify({}));
-                    await localStorage.setItem('@refreshToken', JSON.stringify({}));
-                    await ApiHelper.clearAuthorization();
+                    localStorage.removeItem('@usuario');
+                    localStorage.removeItem('@token');
+                    localStorage.removeItem('@refreshToken');
+                    ApiHelper.clearAuthorization();
                     window.location.href = '/';
                 }
             }
