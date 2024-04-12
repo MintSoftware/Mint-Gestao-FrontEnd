@@ -1,6 +1,6 @@
-import { createContext, useEffect, useState } from "react";
-import Api from "../infra/api";
 import { User } from "@/types/User";
+import { createContext, useState } from "react";
+import Api from "../infra/api";
 
 interface AuthContextProps {
     userLogged?: User;
@@ -16,6 +16,7 @@ export function AuthProvider({ children }: any) {
     const [userLogged, setUserLogged] = useState<User | undefined>(undefined);
 
     async function handleGetUserLoggedFromStorageData() {
+        debugger
         const userLogged = localStorage.getItem('@userLogged'),
             userLoggedParsed = JSON.parse(userLogged == null || userLogged == 'undefined' ? '{}' : userLogged);
 

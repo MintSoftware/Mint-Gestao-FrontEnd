@@ -1,8 +1,6 @@
 import { User } from "@/types/User";
 import { Axios } from "axios";
 import Api from "../api";
-import { useAuth } from "@/hooks/useAuth";
-import { json } from "stream/consumers";
 
 export function applyErrorHandler(axios: Axios) {
     axios.interceptors.response.use(
@@ -22,9 +20,8 @@ export function applyErrorHandler(axios: Axios) {
                     const { data } = await Api.post('auth/refresh', { refreshToken: userLoggedParsed.refreshToken });
 
                     // update token
-                    if (data.content.token) {
-                        debugger;
-                        userLoggedParsed.token = data.content.token;
+                    if (data.token) {
+                        userLoggedParsed.token = data.token;
 
                         Api.defaults.headers.Authorization = `Bearer ${data.content.token}`;
 
