@@ -1,4 +1,4 @@
 export type User = {
-    token: string,
-    refreshToken: string
+    nome: string,
+    email: string,
 }

@@ -12,7 +12,7 @@ import RecuperarSenha from "./view/recuperarsenha";
 
 function MainRoutes() {
 
-  const { userLogged, handleGetUserLoggedFromStorageData } = useAuth();
+  const { usuarioLogado, recuperarUsuarioLogado } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -20,10 +20,14 @@ function MainRoutes() {
   }, [])
 
   async function handleLoadStorageData() {
-    setIsLoading(true);
-    setTimeout(() => {
-      handleGetUserLoggedFromStorageData().finally(() => setIsLoading(false))
-    }, 400)
+    try {
+      setIsLoading(true)
+      await recuperarUsuarioLogado();
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isLoading) {
@@ -32,11 +36,11 @@ function MainRoutes() {
     )
   }
 
-  if (!userLogged?.token) {
+  if (!usuarioLogado) {
     return (
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/recuperar" element={<RecuperarSenha/>} />
+        <Route path="/recuperar" element={<RecuperarSenha />} />
       </Routes>
     )
   }
@@ -46,8 +50,8 @@ function MainRoutes() {
       <Routes>
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/agenda" element={<Agenda />} />
-        <Route path="/clientes" element={<Cliente/>} />
-        <Route path="/locais" element={<Locais/>} />
+        <Route path="/clientes" element={<Cliente />} />
+        <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
       </Routes>
     </Layout>

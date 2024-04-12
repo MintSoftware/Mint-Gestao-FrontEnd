@@ -1,6 +1,6 @@
-import { User } from "@/types/User";
 import { Axios } from "axios";
 import Api from "../api";
+import { ApiHelper } from "../helpers/apiHelper";
 
 export function applyErrorHandler(axios: Axios) {
     axios.interceptors.response.use(
@@ -9,26 +9,26 @@ export function applyErrorHandler(axios: Axios) {
                 return Promise.reject(new Error(response.data.message));
             }
             return response;
+
         }, async (error) => {
-            debugger;
             if (error.response.status === 403) {
                 // get user from localstorage
-                const userLogged = localStorage.getItem('@userLogged'),
-                    userLoggedParsed: User = JSON.parse(userLogged == null || userLogged == 'undefined' ? '{}' : userLogged);
+                const refreshToken = localStorage.getItem('@refreshToken');
+
                 // validate refreshtoken
-                if (userLoggedParsed?.refreshToken) {
-                    const { data } = await Api.post('auth/refresh', { refreshToken: userLoggedParsed.refreshToken });
+                if (refreshToken) {
+                    const { data } = await Api.post('auth/refresh', { refreshToken });
 
                     // update token
                     if (data.token) {
-                        userLoggedParsed.token = data.token;
-
-                        Api.defaults.headers.Authorization = `Bearer ${data.content.token}`;
-
-                        localStorage.setItem('@userLogged', JSON.stringify(userLoggedParsed));
+                        localStorage.setItem('@token', JSON.stringify(data.token));
+                        ApiHelper.setAuthorization({ token: data.token, refreshToken: refreshToken });
                     }
                 } else {
-                    await localStorage.setItem('@userLogged', JSON.stringify({}));
+                    await localStorage.setItem('@usuario', JSON.stringify({}));
+                    await localStorage.setItem('@token', JSON.stringify({}));
+                    await localStorage.setItem('@refreshToken', JSON.stringify({}));
+                    await ApiHelper.clearAuthorization();
                     window.location.href = '/';
                 }
             }

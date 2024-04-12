@@ -1,11 +1,14 @@
-import { User } from "@/types/User";
 import { createContext, useState } from "react";
-import Api from "../infra/api";
+import { ApiHelper } from "@/infra/helpers/apiHelper";
+import { Auth } from "@/types/Auth";
+import { User } from "@/types/User";
 
 interface AuthContextProps {
-    userLogged?: User;
-    handleSaveUserLogged: (userLogged?: User) => Promise<void>;
-    handleGetUserLoggedFromStorageData: () => Promise<void>;
+    usuarioLogado?: User;
+    auth?: Auth;
+    limparUsuarioLogado: () => Promise<void>;
+    salvarUsuarioLogado: (dados: any) => Promise<void>;
+    recuperarUsuarioLogado: () => Promise<{ user: User, auth: Auth }>;
 
 }
 
@@ -13,27 +16,59 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: any) {
 
-    const [userLogged, setUserLogged] = useState<User | undefined>(undefined);
+    const [usuarioLogado, setUsuarioLogado] = useState<User>();
+    const [auth, setAuth] = useState<Auth>();
 
-    async function handleGetUserLoggedFromStorageData() {
-        debugger
-        const userLogged = localStorage.getItem('@userLogged'),
-            userLoggedParsed = JSON.parse(userLogged == null || userLogged == 'undefined' ? '{}' : userLogged);
+    async function recuperarUsuarioLogado() {
+        const usuarioLogadoJSON = localStorage.getItem('@userLogged'),
+            usuarioLogado: User = JSON.parse(usuarioLogadoJSON == null ? 'undefined' : usuarioLogadoJSON),
+            token = localStorage.getItem('@token'),
+            refreshToken = localStorage.getItem('@refreshToken');
 
-        if (userLoggedParsed?.token) Api.defaults.headers['Authorization'] = `Bearer ${userLoggedParsed?.token}`
-        setUserLogged(userLoggedParsed);
+        if (refreshToken && token) ApiHelper.setAuthorization({ token: token, refreshToken: refreshToken });
+
+        setUsuarioLogado(usuarioLogado);
+
+        return {
+            user: usuarioLogado,
+            auth: {
+                token: token ? token : '',
+                refreshToken: refreshToken ? refreshToken : ''
+            }
+        }
     }
 
-    async function handleSaveUserLogged(userLogged?: User) {
-        setUserLogged(userLogged);
-        localStorage.setItem('@userLogged', JSON.stringify(userLogged));
+    async function salvarUsuarioLogado(dados: any) {
+        const usuario = { nome: dados.nome, email: dados.email };
+        localStorage.setItem('@userLogged', JSON.stringify(usuario));
+        setUsuarioLogado(usuario);
+
+
+        if (dados.token) {
+            const auth = { token: dados.token, refreshToken: dados.refreshToken };
+            localStorage.setItem('@token', JSON.stringify(auth.token));
+            localStorage.setItem('@refreshToken', JSON.stringify(auth.refreshToken));
+            setAuth(auth);
+            ApiHelper.setAuthorization({ token: auth.token, refreshToken: auth.refreshToken });
+        }
+    }
+
+    async function limparUsuarioLogado() {
+        localStorage.removeItem('@userLogged');
+        localStorage.removeItem('@token');
+        localStorage.removeItem('@refreshToken');
+        setUsuarioLogado(undefined);
+        setAuth(undefined);
+        ApiHelper.clearAuthorization();
     }
 
     return (
         <AuthContext.Provider value={{
-            userLogged,
-            handleSaveUserLogged,
-            handleGetUserLoggedFromStorageData
+            recuperarUsuarioLogado,
+            salvarUsuarioLogado,
+            limparUsuarioLogado,
+            usuarioLogado,
+            auth
         }}>
             {children}
         </AuthContext.Provider>

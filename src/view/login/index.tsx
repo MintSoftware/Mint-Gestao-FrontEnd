@@ -13,7 +13,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const { handleSaveUserLogged } = useAuth();
+  const { salvarUsuarioLogado } = useAuth();
 
   const { toast } = useToast();
 
@@ -33,8 +33,7 @@ export default function Login() {
           description: "Login realizado com sucesso!",
         })
       }
-
-      await handleSaveUserLogged(data);
+      await salvarUsuarioLogado(data);
 
     } catch (error: any) {
       if (error.response) {

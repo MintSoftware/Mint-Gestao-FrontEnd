@@ -10,7 +10,7 @@ import { Input } from "../ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const TopBar = () => {
-    const { handleSaveUserLogged } = useAuth();
+    const { limparUsuarioLogado } = useAuth();
 
     return (
         <AlertDialog >
@@ -112,7 +112,7 @@ const TopBar = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleSaveUserLogged()}>
+                        <AlertDialogAction onClick={() => limparUsuarioLogado()}>
                             <Link to="/">
                                 Sair
                             </Link>

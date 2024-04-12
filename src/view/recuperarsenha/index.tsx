@@ -11,7 +11,6 @@ export default function RecuperarSenha() {
     const { toast } = useToast()
 
     const NotificarErro = () => {
-        debugger
         toast({
             variant: "destructive",
             title: "Erro",
