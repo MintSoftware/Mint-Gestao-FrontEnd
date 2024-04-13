@@ -61,20 +61,17 @@ export const colunas = (): ColumnDef<Cliente>[] => [
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
+                            <span className="sr-only">Abrir menu</span>
                             <EllipsisVerticalIcon className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(cliente.id.toString())}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
+                        <DropdownMenuLabel className="font-bold">Ver</DropdownMenuLabel>
+                        <DropdownMenuItem className="cursor-pointer">Historico financeiro</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuLabel className="font-bold">Ações</DropdownMenuLabel>
+                        <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer text-red-500">Inativar</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

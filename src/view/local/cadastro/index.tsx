@@ -4,6 +4,8 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 import Api from "@/infra/api";
 import { useState } from "react";
 
@@ -15,6 +17,7 @@ const CadastroLocal = () => {
     const [horarioAbertura, setHorarioAbertura] = useState("");
     const [horarioFechamento, setHorarioFechamento] = useState("");
     const [observacao, setObservacao] = useState("");
+    const { toast } = useToast();
 
     const dto = {
         nome,
@@ -27,7 +30,20 @@ const CadastroLocal = () => {
     }
 
     const salvar = async () => {
-        const { data } = await Api.post("local", dto);
+        try {
+            const { data } = await Api.post("local", dto);
+            toast({
+                title: "Sucesso!",
+                description: `O local ${dto.nome} foi cadastrado com sucesso.`,
+            });  
+        } catch (error) {
+            toast({
+                title: "Erro!",
+                description: `Ocorreu um erro ao cadastrar o local: ${error}`,
+                variant: "destructive",
+                action: <ToastAction altText="Tentar Novamente" onClick={() => salvar()}>Tentar novamente</ToastAction>,
+            });
+        }
     }
     
     return (
