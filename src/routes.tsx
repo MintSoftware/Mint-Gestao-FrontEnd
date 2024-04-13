@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes, } from "react-router-dom";
 import Agenda from "./components/agenda";
 import { useAuth } from "./hooks/useAuth";
-import Cliente from "./view/cliente";
+import Clientes from "./view/cliente";
 import Configuracoes from "./view/configuracoes";
 import { Layout } from "./view/layout";
 import LoadingScreen from "./view/loading/Loading";
@@ -50,7 +50,7 @@ function MainRoutes() {
       <Routes>
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/agenda" element={<Agenda />} />
-        <Route path="/clientes" element={<Cliente />} />
+        <Route path="/clientes" element={<Clientes />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
       </Routes>

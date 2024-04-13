@@ -4,8 +4,32 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import Api from "@/infra/api";
+import { useState } from "react";
 
 const CadastroLocal = () => {
+    const [nome, setNome] = useState("");
+    const [endereco, setEndereco] = useState("");
+    const [diasFuncionamento, setDiasFuncionamento] = useState("");
+    const [complemento, setComplemento] = useState("");
+    const [horarioAbertura, setHorarioAbertura] = useState("");
+    const [horarioFechamento, setHorarioFechamento] = useState("");
+    const [observacao, setObservacao] = useState("");
+
+    const dto = {
+        nome,
+        endereco,
+        diasFuncionamento,
+        complemento,
+        horarioAbertura,
+        horarioFechamento,
+        observacao
+    }
+
+    const salvar = async () => {
+        const { data } = await Api.post("local", dto);
+    }
+    
     return (
         <div>
             <Dialog>
@@ -21,36 +45,36 @@ const CadastroLocal = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="name">Nome</Label>
-                                <Input className="w-[300px]" id="name" placeholder="Digite o nome do local" />
+                                <Input onChange={(e) => setNome(e.target.value)} className="w-[300px]" id="name" placeholder="Digite o nome do local" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="address">Endereço</Label>
-                                <Input className="w-[300px]" id="address" placeholder="Digite o endereço do local" />
+                                <Input onChange={(e) => setEndereco(e.target.value)} className="w-[300px]" id="address" placeholder="Digite o endereço do local" />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="cnpj">Dias funcionamento</Label>
-                                <Input className="w-[300px]" id="cnpj" placeholder="Digite o complemento" />
+                                <Input onChange={(e) => setDiasFuncionamento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Digite o complemento" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="cnpj">Complemento</Label>
-                                <Input className="w-[300px]" id="cnpj" placeholder="Digite os dias de funcionamento" />
+                                <Input onChange={(e) => setComplemento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Digite os dias de funcionamento" />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="dob">Horario de Abertura</Label>
-                                <Input className="w-[300px] fill-white stroke-white" id="dob" type="time" />
+                                <Input onChange={(e) => setHorarioAbertura(e.target.value)} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="dob">Horario de Fechamento</Label>
-                                <Input className="w-[300px] fill-white stroke-white" id="dob" type="time" />
+                                <Input onChange={(e) => setHorarioFechamento(e.target.value)} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
                             </div>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="observation">Observação</Label>
-                            <Textarea className="h-[100px]" id="observation" placeholder="Digite uma observação sobre o cliente" />
+                            <Textarea onChange={(e) => setObservacao(e.target.value)} className="h-[100px]" id="observation" placeholder="Digite uma observação sobre o cliente" />
                         </div>
                     </CardContent>
                     <DialogFooter>
@@ -58,7 +82,7 @@ const CadastroLocal = () => {
                             <DialogClose asChild>
                                 <Button variant="outline">Fechar</Button>
                             </DialogClose>
-                            <Button>Salvar</Button>
+                            <Button onClick={salvar}>Salvar</Button>
                         </div>
                     </DialogFooter>
                 </DialogContent>

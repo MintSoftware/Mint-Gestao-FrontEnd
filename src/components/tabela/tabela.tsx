@@ -12,9 +12,10 @@ interface TabelaProps<TData, TValue> {
     dados: any;
     modal: JSX.Element;
     exportar: JSX.Element;
+    functionSearch: () => Promise<void>;
 }
 
-const Tabela = <TData, TValue>({ colunas, dados, modal, exportar }: TabelaProps<TData, TValue>) => {
+const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch}: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
 
@@ -92,7 +93,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar }: TabelaProps<
                         </Table>
                     </ScrollArea>
                 </div>
-                <Paginacao table={tabela} />
+                <Paginacao table={tabela} functionSearch={functionSearch}/>
             </div>
         </Dialog>
     )
