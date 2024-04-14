@@ -3,9 +3,18 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Api from "@/infra/api"
 import { Cliente } from "@/types/Cliente"
 import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisVerticalIcon } from "lucide-react"
+
+const inativar = (cliente: Cliente) => async () => {
+    await Api.put(`/cliente/${cliente.id}/inativar`)
+}
+
+const ativar = (cliente: Cliente) => async () => {
+    await Api.put(`/cliente/${cliente.id}/ativar`)
+}
 
 export const colunas = (): ColumnDef<Cliente>[] => [
     {
@@ -35,13 +44,13 @@ export const colunas = (): ColumnDef<Cliente>[] => [
             <Cabecalho column={column} title="Nome" />
         ),
     }, {
-        accessorKey: 'tatus',
+        accessorKey: 'status',
         header: ({ column }) => (
             <Cabecalho column={column} title="Status" />
         ),
         cell: ({ row }) => (
-            <Badge className='w-[60px] justify-center' variant={row.original.status.toString() === 'Ativo' ? "outline" : "secondary"}>
-                {row.original.status.toString()}
+            <Badge className='w-[60px] justify-center' variant={row.original.status ? "outline" : "secondary"}>
+                {row.original.status.toString() === '1' ? "Ativo" : "Inativo"}
             </Badge>
         ),
     }, {
@@ -78,7 +87,10 @@ export const colunas = (): ColumnDef<Cliente>[] => [
                         <DropdownMenuSeparator />
                         <DropdownMenuLabel className="font-bold">Ações</DropdownMenuLabel>
                         <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer text-red-500">Inativar</DropdownMenuItem>
+                        {row.original.status.toString() === '1' ?
+                            <DropdownMenuItem onClick={inativar(row.original)} className="cursor-pointer text-red-500">Inativar</DropdownMenuItem>
+                            : <DropdownMenuItem onClick={ativar(row.original)} className="cursor-pointer text-green-500">Ativar</DropdownMenuItem>
+                        }
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

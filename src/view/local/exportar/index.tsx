@@ -11,9 +11,10 @@ const baixarExcel = (dados : any) => {
     const colunas: IJsonSheet[] = [
         {
             sheet: 'Locais',
-            columns: [
+            columns: [ 
                 { label: 'ID', value: 'id' },
                 { label: 'Nome', value: 'nome' },
+                { label: "Status", value: "status"},
                 { label: 'Endereço', value: 'endereco' },
                 { label: 'Complemento', value: 'complemento' },
                 { label: 'Observação', value: 'observacao' },
