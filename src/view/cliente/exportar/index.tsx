@@ -14,6 +14,7 @@ const baixarExcel = (dados: any) => {
             columns: [
                 { label: "Id", value: "id" },
                 { label: "Nome", value: "nome" },
+                { label: "Status", value: "status"},
                 { label: "Cpf", value: "cpf" },
                 { label: "Email", value: "email" },
                 { label: "Telefone", value: "telefone" },
