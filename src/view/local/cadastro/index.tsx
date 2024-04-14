@@ -21,6 +21,7 @@ const CadastroLocal = () => {
 
     const dto = {
         nome,
+        status: 1,
         endereco,
         diasFuncionamento,
         complemento,

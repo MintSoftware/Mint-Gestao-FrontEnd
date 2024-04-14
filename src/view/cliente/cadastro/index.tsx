@@ -18,6 +18,7 @@ const CadastroCliente = () => {
 
     const dto = {
         nome,
+        status: 1,
         email,
         telefone,
         endereco,

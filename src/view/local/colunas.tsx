@@ -33,6 +33,11 @@ export const colunas = (): ColumnDef<Cliente>[] => [{
         <Cabecalho column={column} title="Nome" />
     ),
 }, {
+    accessorKey: 'status',
+    header: ({ column }) => (
+        <Cabecalho column={column} title="Status" />
+    ),
+}, {
     accessorKey: 'endereco',
     header: ({ column }) => (
         <Cabecalho column={column} title="Endereço" />

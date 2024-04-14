@@ -1,4 +1,5 @@
 import Cabecalho from "@/components/tabela/cabecalho"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -28,26 +29,32 @@ export const colunas = (): ColumnDef<Cliente>[] => [
         ),
         enableSorting: false,
         enableHiding: false,
-    },
-    {
+    }, {
         accessorKey: 'nome',
         header: ({ column }) => (
             <Cabecalho column={column} title="Nome" />
         ),
-    },
-    {
+    }, {
+        accessorKey: 'tatus',
+        header: ({ column }) => (
+            <Cabecalho column={column} title="Status" />
+        ),
+        cell: ({ row }) => (
+            <Badge className='w-[60px] justify-center' variant={row.original.status.toString() === 'Ativo' ? "outline" : "secondary"}>
+                {row.original.status.toString()}
+            </Badge>
+        ),
+    }, {
         accessorKey: 'cpf',
         header: ({ column }) => (
             <Cabecalho column={column} title="CPF" />
         ),
-    },
-    {
+    }, {
         accessorKey: 'email',
         header: ({ column }) => (
             <Cabecalho column={column} title="Email" />
         ),
-    },
-    {
+    }, {
         accessorKey: 'telefone',
         header: ({ column }) => (
             <Cabecalho column={column} title="Telefone" />
