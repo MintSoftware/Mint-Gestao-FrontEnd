@@ -6,9 +6,13 @@ import CadastroCliente from "@/view/cliente/cadastro";
 import { useEffect, useState } from "react";
 import colunas from "./colunas";
 import ExportarCliente from "./exportar";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 export default function Clientes() {
     const [clientes, setClientes] = useState<Cliente[]>([]);
+    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
 
     useEffect(() => {
         buscarClientes();
@@ -16,10 +20,19 @@ export default function Clientes() {
 
     const buscarClientes = async () => {
         try {
+            setLoading(true);
             const { data } = await Api.get('cliente');
             setClientes(data);
+            setLoading(false);
         } catch (error) {
-            console.error("Erro ao buscar clientes:", error);
+            setLoading(false);
+            toast({
+                title: "Erro!",
+                description: `Ocorreu um erro ao buscar os clientes: ${error}`,
+                variant: "destructive",
+                action: <ToastAction altText="Tentar Novamente" onClick={() => buscarClientes()}>Tentar novamente</ToastAction>,
+            });
+            
         }
     };
 
@@ -32,6 +45,7 @@ export default function Clientes() {
                 modal={<CadastroCliente />}
                 exportar={ExportarCliente(clientes)}
                 functionSearch={buscarClientes}
+                loading={loading}
             />
         </div>
     );

@@ -6,16 +6,18 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
+import { Loader, Loader2Icon, LoaderCircle, LoaderCircleIcon } from "lucide-react";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
     dados: any;
-    modal: JSX.Element;
-    exportar: JSX.Element;
+    modal?: JSX.Element;
+    exportar?: JSX.Element;
     functionSearch: () => Promise<void>;
+    loading: boolean;
 }
 
-const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch}: TabelaProps<TData, TValue>) => {
+const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch, loading }: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
 
@@ -72,28 +74,35 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                                 ))}
                             </TableHeader>
                             <TableBody>
-                                {tabela.getRowModel().rows.length ? (
-                                    tabela.getRowModel().rows.map((row) => (
-                                        <TableRow key={row.id} className="bg-background">
-                                            {row.getVisibleCells().map((cell) => (
-                                                <TableCell key={cell.id}>
-                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                </TableCell>
-                                            ))}
+                                {!loading ? (
+                                    tabela.getRowModel().rows.length ? (
+                                        tabela.getRowModel().rows.map((row) => (
+                                            <TableRow key={row.id} className="bg-background">
+                                                {row.getVisibleCells().map((cell) => (
+                                                    <TableCell key={cell.id}>
+                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                    </TableCell>
+                                                ))}
+                                            </TableRow>
+                                        ))
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={colunas.length} className="text-center">
+                                                Nenhum resultado encontrado
+                                            </TableCell>
                                         </TableRow>
-                                    ))
-                                ) : (
-                                    <TableRow>
-                                        <TableCell colSpan={colunas.length} className="text-center">
-                                            Nenhum resultado encontrado
-                                        </TableCell>
-                                    </TableRow>
-                                )}
+                                    )
+                                ) : null}
                             </TableBody>
                         </Table>
+                        {loading && (
+                            <div className="absolute inset-0 grid place-items-center">
+                                <LoaderCircleIcon className="animate-spin h-10 w-10 text-primary" />
+                            </div>
+                        )}
                     </ScrollArea>
                 </div>
-                <Paginacao table={tabela} functionSearch={functionSearch}/>
+                <Paginacao table={tabela} functionSearch={functionSearch} />
             </div>
         </Dialog>
     )

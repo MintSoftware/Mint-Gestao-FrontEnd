@@ -6,9 +6,13 @@ import CadastroLocal from "@/view/local/cadastro";
 import { useEffect, useState } from "react";
 import colunas from "./colunas";
 import ExportarLocal from "./exportar";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Locais() {
     const [locais, setLocais] = useState<Local[]>([]);
+    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
 
     useEffect(() => {
         buscarLocais();
@@ -16,10 +20,18 @@ export default function Locais() {
 
     const buscarLocais = async () => {
         try {
+            setLoading(true);
             const { data } = await Api.get('local');
             setLocais(data);
+            setLoading(false);
         } catch (error) {
-            console.error("Erro ao buscar clientes:", error);
+            setLoading(false);
+            toast({
+                title: "Erro!",
+                description: `Ocorreu um erro ao buscar os locais: ${error}`,
+                variant: "destructive",
+                action: <ToastAction altText="Tentar Novamente" onClick={() => buscarLocais()}>Tentar novamente</ToastAction>,
+            });
         }
     };
 
@@ -32,6 +44,7 @@ export default function Locais() {
                 modal={<CadastroLocal/>}
                 exportar={ExportarLocal(locais)}
                 functionSearch={buscarLocais}
+                loading={loading}
             />
         </div>
     )
