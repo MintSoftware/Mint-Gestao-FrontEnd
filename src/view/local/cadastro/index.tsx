@@ -72,11 +72,11 @@ const CadastroLocal = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="cnpj">Dias funcionamento</Label>
-                                <Input onChange={(e) => setDiasFuncionamento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Digite o complemento" />
+                                <Input onChange={(e) => setDiasFuncionamento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Informe os dias de funcionamento" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="cnpj">Complemento</Label>
-                                <Input onChange={(e) => setComplemento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Digite os dias de funcionamento" />
+                                <Input onChange={(e) => setComplemento(e.target.value)} className="w-[300px]" id="cnpj" placeholder="Digite o complemento" />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -91,7 +91,7 @@ const CadastroLocal = () => {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="observation">Observação</Label>
-                            <Textarea onChange={(e) => setObservacao(e.target.value)} className="h-[100px]" id="observation" placeholder="Digite uma observação sobre o cliente" />
+                            <Textarea onChange={(e) => setObservacao(e.target.value)} className="h-[100px]" id="observation" placeholder="Digite uma observação sobre o local" />
                         </div>
                     </CardContent>
                     <DialogFooter>
