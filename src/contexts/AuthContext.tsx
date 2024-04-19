@@ -39,9 +39,8 @@ export function AuthProvider({ children }: any) {
     }
 
     async function salvarUsuarioLogado(dados: any) {
-        const usuario = { nome: dados.nome, email: dados.email };
-        localStorage.setItem('@usuario', JSON.stringify(usuario));
-        setUsuarioLogado(usuario);
+        localStorage.setItem('@usuario', JSON.stringify(dados.usuario));
+        setUsuarioLogado(dados.usuario);
 
 
         if (dados.token) {
