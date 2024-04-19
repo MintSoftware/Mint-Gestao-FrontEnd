@@ -29,7 +29,7 @@ export default function Login() {
       const { data } = await Api.post("auth/login", dto);
       if (data) {
         toast({
-          variant: "default",
+          variant: "success",
           description: "Login realizado com sucesso!",
         })
       }
@@ -39,7 +39,7 @@ export default function Login() {
       if (error.response) {
         toast({
           variant: "destructive",
-          title: "Erro",
+          title: "Erro!",
           description: error.response.data,
           action: <ToastAction altText="Tentar Novamente" onClick={() => logar(e)}>Tentar novamente</ToastAction>,
         })
