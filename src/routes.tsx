@@ -9,6 +9,8 @@ import LoadingScreen from "./view/loading/Loading";
 import Locais from "./view/local";
 import Login from "./view/login";
 import RecuperarSenha from "./view/recuperarsenha";
+import { Filial } from "./view/filial";
+import PaginaNaoEncontrada from "./view/paginanaoencontrada";
 
 function MainRoutes() {
 
@@ -48,11 +50,12 @@ function MainRoutes() {
   return (
     <Layout>
       <Routes>
-        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="*" element={<PaginaNaoEncontrada/>} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
+        <Route path="/filial" element={<Filial />} />
       </Routes>
     </Layout>
   )
