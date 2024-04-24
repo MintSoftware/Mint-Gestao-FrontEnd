@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, } from "react-router-dom";
-import Agenda from "./components/agenda";
 import { useAuth } from "./hooks/useAuth";
 import Clientes from "./view/cliente";
 import Configuracoes from "./view/configuracoes";
@@ -11,6 +10,7 @@ import Login from "./view/login";
 import RecuperarSenha from "./view/recuperarsenha";
 import { Filial } from "./view/filial";
 import PaginaNaoEncontrada from "./view/paginanaoencontrada";
+import Agenda from "./view/agenda";
 
 function MainRoutes() {
 

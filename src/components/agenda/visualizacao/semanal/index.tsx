@@ -15,7 +15,7 @@ const Semanal = ({ currentDate }: SemanalProps) => {
   }
 
   return (
-    <div className="flex justify-center items-center h-100 w-full">
+    <div className="flex justify-center items-center h-full w-full">
       <div className="flex gap-7 h-[35.9rem] w-full">
         {diasDaSemana.map((dia, indiceDia) => (
           <div

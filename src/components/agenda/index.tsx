@@ -12,7 +12,7 @@ import Semanal from './visualizacao/semanal';
 
 type Visualizacao = 'mensal' | 'semanal' | 'diario';
 
-const Agenda = () => {
+const Calendario = () => {
     const [currentDate, setCurrentDate] = useState(new Date()),
         [vizualizacao, setVizualizacao] = useState<Visualizacao>('mensal'),
         [startHour, setStartHour] = useState('08:00'),
@@ -91,65 +91,72 @@ const Agenda = () => {
     }, []);
 
     return (
-        <div className="flex flex-col m-10 p-5 w-[70%] h-[85%] max-h-screen border border-white border-opacity-30 rounded-2xl ">
-            <div className='flex items-center justify-between'>
-                <div className='flex p-2 items-center w-full justify-center mb-8 bg-rgba(36, 36, 36, 0.985) backdrop-filter backdrop-blur-md bg-opacity-70 border border-white border-opacity-30 rounded-full '>
-                    <div className='right-0 left-0 flex items-center justify-between w-full'>
-                        <div></div>
-                        <div className='flex gap-10'>
-                            <button onClick={retroceder}>
-                                <ChevronLeftIcon size={30} />
-                            </button>
-                            <span className='diaMes text-lg font-bold'>{mesDia.charAt(0).toUpperCase() + mesDia.slice(1)}</span>
-                            <button onClick={avancar}>
-                                <ChevronRightIcon size={30} />
-                            </button>
-                        </div>
-                        <div>
-                            <Button className=' flex items-center justify-center px-4 py-2 rounded-full' onClick={irParaDiaAtual}>Hoje</Button>
-                        </div>
-                    </div>
-                </div>
+        // <div className="flex flex-col p-5 border rounded h-full w-full max-w-[90vw] max-h-[90vh]">
+        //     <div className='flex items-center justify-between'>
+        //         <div className='flex p-2 items-center w-full justify-center mb-8 bg-rgba(36, 36, 36, 0.985) backdrop-filter backdrop-blur-md bg-opacity-70 border border-white border-opacity-30 rounded-full '>
+        //             <div className='right-0 left-0 flex items-center justify-between w-full'>
+        //                 <div></div>
+        //                 <div className='flex gap-10'>
+        //                     <button onClick={retroceder}>
+        //                         <ChevronLeftIcon size={30} />
+        //                     </button>
+        //                     <span className='diaMes text-lg font-bold'>{mesDia.charAt(0).toUpperCase() + mesDia.slice(1)}</span>
+        //                     <button onClick={avancar}>
+        //                         <ChevronRightIcon size={30} />
+        //                     </button>
+        //                 </div>
+        //                 <div>
+        //                     <Button className=' flex items-center justify-center px-4 py-2 rounded-full' onClick={irParaDiaAtual}>Hoje</Button>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className=' mb-4 flex justify-center space-x-4'>
+        //         <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'mensal' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('mensal')}>Mensal</button>
+        //         <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'semanal' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('semanal')}>Semanal</button>
+        //         <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'diario' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('diario')}>Diário</button>
+        //         <div className="funil flex items-center justify-center">
+        //             <Popover>
+        //                 <PopoverTrigger asChild>
+        //                     <FilterIcon size={30} onClick={onHoverFilterHandler} className='cursor-pointer' />
+        //                 </PopoverTrigger>
+        //                 <PopoverContent className="flex text-center items-center flex-row justify-center text-center w-72 h-72 top-12 right-16 bg-opacity-90 backdrop-blur-md border border-200 border-opacity-30 shadow-lg rounded-2xl">
+        //                     <div>
+        //                         <label className='text-200 justify-center text-center items-center'>Inicio:</label>
+        //                         <Input
+        //                             type='time'
+        //                             placeholder="00:00"
+        //                             value={startHour}
+        //                             onChange={handleStartHourChange}
+        //                             className='flex itens-center text-center justify-center border-[#03bb85] rounded-full h-10 px-4 text-200 bg-transparent'
+        //                         />
+        //                         <label className='text-200'>Fim:</label>
+        //                         <Input
+        //                             type='time'
+        //                             placeholder="00:00"
+        //                             value={endHour}
+        //                             onChange={handleEndHourChange}
+        //                             className='flex itens-center hover:border-[#03bb85] border-[#03bb85] rounded-full h-10 px-4 text-200 bg-transparent'
+        //                         />
+        //                     </div>
+        //                 </PopoverContent>
+        //             </Popover>
+        //         </div>
+        //     </div>
+        <div className='flex h-full w-full'>
+            <div className='flex items-center h-full w-full justify-between'>
+                <Button variant={'ghost'} className='rounded-full p-5'>
+                    <ChevronLeftIcon size={30} onClick={retroceder} />
+                </Button>
+                    {vizualizacao === 'mensal' && <Mensal semanasDoMes={semanasDoMes} currentDate={currentDate} />}
+                    {vizualizacao === 'semanal' && <Semanal currentDate={currentDate} />}
+                    {vizualizacao === 'diario' && <Diario currentDate={currentDate} timeInterval={dateRange} />}
+                <Button variant={'ghost'} className='rounded-full'>
+                    <ChevronRightIcon size={30} onClick={avancar} />
+                </Button>
             </div>
-            <div className=' mb-4 flex justify-center space-x-4'>
-                <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'mensal' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('mensal')}>Mensal</button>
-                <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'semanal' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('semanal')}>Semanal</button>
-                <button className={`bg-transparent border-none cursor-pointer rounded-full font-bold font-size-14 h-full w-32 focus:outline-none ${vizualizacao === 'diario' ? 'text-200' : 'text-white'}`} onClick={() => mudarVisualizacao('diario')}>Diário</button>
-                <div className="funil flex items-center justify-center">
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <FilterIcon size={30} onClick={onHoverFilterHandler} className='cursor-pointer' />
-                        </PopoverTrigger>
-                        <PopoverContent className="flex text-center items-center flex-row justify-center text-center w-72 h-72 top-12 right-16 bg-opacity-90 backdrop-blur-md border border-200 border-opacity-30 shadow-lg rounded-2xl">
-                            <div>
-                                <label className='text-200 justify-center text-center items-center'>Inicio:</label>
-                                <Input
-                                    type='time'
-                                    placeholder="00:00"
-                                    value={startHour}
-                                    onChange={handleStartHourChange}
-                                    className='flex itens-center text-center justify-center border-[#03bb85] rounded-full h-10 px-4 text-200 bg-transparent'
-                                />
-                                <label className='text-200'>Fim:</label>
-                                <Input
-                                    type='time'
-                                    placeholder="00:00"
-                                    value={endHour}
-                                    onChange={handleEndHourChange}
-                                    className='flex itens-center hover:border-[#03bb85] border-[#03bb85] rounded-full h-10 px-4 text-200 bg-transparent'
-                                />
-                            </div>
-                        </PopoverContent>
-                    </Popover>
-                </div>
-            </div>
-            <ScrollArea onBlur={(e) => e.preventDefault()} className='flex p-5 h-[100%]'>
-                {vizualizacao === 'mensal' && <Mensal semanasDoMes={semanasDoMes} currentDate={currentDate} />}
-                {vizualizacao === 'semanal' && <Semanal currentDate={currentDate} />}
-                {vizualizacao === 'diario' && <Diario currentDate={currentDate} timeInterval={dateRange} />}
-            </ScrollArea>
         </div >
     );
 };
 
-export default Agenda;
+export default Calendario;

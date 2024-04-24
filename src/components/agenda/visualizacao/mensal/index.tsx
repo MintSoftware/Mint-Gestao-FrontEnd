@@ -1,5 +1,6 @@
 import Evento from '@/components/agenda/evento';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import { eachDayOfInterval, format, isSameMonth, isToday } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { useState } from 'react';
@@ -18,7 +19,7 @@ const Mensal = ({ semanasDoMes, currentDate }: MensalProps) => {
 
   return (
     <Dialog>
-      <div className="grid grid-cols-1 items-center h-[80%] gap-4">
+      <div className="grid grid-cols-1 items-center h-full w-full  gap-4">
         {semanasDoMes.map((semana, indiceSemana) => (
           <div key={indiceSemana + semana.getMilliseconds()} className="grid grid-cols-7 gap-4">
             {eachDayOfInterval({
@@ -29,13 +30,23 @@ const Mensal = ({ semanasDoMes, currentDate }: MensalProps) => {
                 <div
                   key={indiceDia}
                   onClick={() => handleDayClick(dia)}
-                  className={`border text-center h-full flex flex-col justify-between 
-                ${isSameMonth(dia, currentDate) ? ' hover:border-200 hover:text-200 border-2 cursor-pointer' : 'text-gray-300 border-gray-300 font-bold text-gray-500 cursor-not-allowed '}
-                ${isToday(dia) ? 'bg-200 text-white hover:bg-white' : 'bg-white'}
-                rounded-2xl text-black gap-[100px] `}
+                  className={`border text-center h-[130px] flex flex-col justify-between
+                    ${isSameMonth(dia, currentDate) ? '' : 'bg-muted cursor-not-allowed'}
+                    ${isToday(dia) ? 'bg-200 text-white hover:border-white hover:text-white' : 'bg-background'}
+                    rounded-2xl text-mutedwhite hover:text-200 hover:border-200`}
                 >
-                  <span className="font-bold">{format(dia, 'dd')}</span>
-                  <span className="font-bold">{format(dia, 'EEEE', { locale: pt })}</span>
+                  {indiceSemana === 0 &&
+                    <div className='flex flex-col'>
+                      <Label className='p-2 text-200'>{format(dia, 'EEEE', { locale: pt })}</Label>
+                      <Label className="font-small">{format(dia, 'dd')}</Label>
+                    </div>
+                  }
+                  {indiceSemana !== 0 &&
+                    <div className=''>
+                      <Label className="font-small">{format(dia, 'dd')}</Label>
+                    </div>
+                  }
+                  <Label className='p-1 text-xs'>Ver mais</Label>
                 </div>
               </DialogTrigger>
             ))}

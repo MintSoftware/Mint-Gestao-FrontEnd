@@ -37,7 +37,7 @@ export default function Clientes() {
     };
 
     return (
-        <div id="tabela-clientes" className="w-[100%] px-5 pt-[50px] h-[100%]">
+        <div id="tabela-clientes" className="w-full px-5 pt-[50px] h-full">
             <Label className="text-xl p-5">Clientes</Label>
             <Tabela
                 colunas={colunas()}
