@@ -50,7 +50,7 @@ function MainRoutes() {
   return (
     <Layout>
       <Routes>
-        <Route path="*" element={<PaginaNaoEncontrada/>} />
+        <Route path="*" element={<PaginaNaoEncontrada />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/locais" element={<Locais />} />

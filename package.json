@@ -1,12 +1,14 @@
 {
-  "name": "purplegym",
+  "name": "mintgestao",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,ext}\" --quiet",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -67,7 +69,10 @@
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.35",
+    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
