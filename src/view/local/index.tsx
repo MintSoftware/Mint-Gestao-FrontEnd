@@ -21,7 +21,7 @@ export default function Locais() {
     const buscarLocais = async () => {
         try {
             setLoading(true);
-            const { data } = await Api.get('local');
+            const { data } = await Api.get('gestao/local');
             setLocais(data);
             setLoading(false);
         } catch (error) {

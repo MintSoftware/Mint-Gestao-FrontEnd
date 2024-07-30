@@ -19,19 +19,19 @@ const Mensal = ({ semanasDoMes, currentDate }: MensalProps) => {
 
   return (
     <Dialog>
-      <div className="grid grid-cols-1 items-center h-full w-full  gap-4">
+      <div className="grid grid-cols-1 items-center h-full w-full gap-4">
         {semanasDoMes.map((semana, indiceSemana) => (
           <div key={indiceSemana + semana.getMilliseconds()} className="grid grid-cols-7 gap-4">
             {eachDayOfInterval({
               start: semana,
               end: new Date(semana.getFullYear(), semana.getMonth(), semana.getDate() + 6),
             }).map((dia, indiceDia) => (
-              <DialogTrigger>
+              <DialogTrigger key={`${indiceSemana}-${indiceDia}`}>
                 <div
-                  key={indiceDia}
+                  key={`${indiceSemana}-${indiceDia}`}
                   onClick={() => handleDayClick(dia)}
                   className={`border text-center h-[130px] flex flex-col justify-between
-                    ${isSameMonth(dia, currentDate) ? '' : 'bg-muted cursor-not-allowed'}
+                    ${isSameMonth(dia, currentDate) ? '' : 'bg-muted cursor-not-allowed border-black'}
                     ${isToday(dia) ? 'bg-200 text-white hover:border-white hover:text-white' : 'bg-background'}
                     rounded-2xl text-mutedwhite hover:text-200 hover:border-200`}
                 >
@@ -39,14 +39,14 @@ const Mensal = ({ semanasDoMes, currentDate }: MensalProps) => {
                     <div className='flex flex-col'>
                       <Label className='p-2 text-200'>{format(dia, 'EEEE', { locale: pt })}</Label>
                       <Label className="font-small">{format(dia, 'dd')}</Label>
-                    </div>
+                    </div>                          
                   }
                   {indiceSemana !== 0 &&
                     <div className=''>
                       <Label className="font-small">{format(dia, 'dd')}</Label>
                     </div>
                   }
-                  <Label className='p-1 text-xs'>Ver mais</Label>
+                  <Label className='p-1 text-xs cursor-pointer'>Ver mais</Label>
                 </div>
               </DialogTrigger>
             ))}

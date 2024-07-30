@@ -9,11 +9,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisVerticalIcon } from "lucide-react"
 
 const inativar = (local: Local) => async () => {
-    await Api.put(`/local/${local.id}/inativar`)
+    await Api.put(`gestao/local/${local.id}/inativar`)
 }
 
 const ativar = (local: Local) => async () => {
-    await Api.put(`/local/${local.id}/ativar`)
+    await Api.put(`gestao/local/${local.id}/ativar`)
 }
 
 export const colunas = (): ColumnDef<Local>[] => [{

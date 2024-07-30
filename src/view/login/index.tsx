@@ -26,7 +26,7 @@ export default function Login() {
     }
 
     try {
-      const { data } = await Api.post("auth/login", dto);
+      const { data } = await Api.post("autenticacao/entrar", dto);
       if (data) {
         toast({
           variant: "success",

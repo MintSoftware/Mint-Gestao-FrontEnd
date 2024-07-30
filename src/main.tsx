@@ -8,7 +8,6 @@ import './style/global.css'
 import { Toaster } from "@/components/ui/toaster"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
     <AuthProvider>
       <BrowserRouter>
         <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme'>
@@ -17,5 +16,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </ThemeProvider>
       </BrowserRouter>
     </AuthProvider>
-  </React.StrictMode>
 )

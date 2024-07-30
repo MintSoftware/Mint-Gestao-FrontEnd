@@ -5,9 +5,10 @@ export const realizaRefresh = async () => {
     const refreshToken = localStorage.getItem('@refreshToken');
 
     if (refreshToken) {
+        debugger
         try {
             ApiHelper.clearAuthorization();
-            const { data } = await Api.post('auth/refresh', { refreshToken });
+            const { data } = await Api.post('autenticacao/atualizartoken', { refreshToken });
 
             if (data) {
                 localStorage.setItem('@token', data);

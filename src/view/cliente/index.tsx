@@ -21,7 +21,7 @@ export default function Clientes() {
     const buscarClientes = async () => {
         try {
             setLoading(true);
-            const { data } = await Api.get('cliente');
+            const { data } = await Api.get('gestao/cliente');
             setClientes(data);
             setLoading(false);
         } catch (error) {

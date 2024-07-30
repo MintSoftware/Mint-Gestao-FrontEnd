@@ -28,7 +28,7 @@ const CadastroCliente = () => {
     }
 
     const salvar = async () => {
-        const { data } = await Api.post("cliente", dto);
+        const { data } = await Api.post("gestao/cliente", dto);
     }
 
     return (

@@ -5,5 +5,5 @@ export type User = {
     email: string,
     senha: string,
     role: string,
-    filiais: Array<Filial>
+    // filiais: Array<Filial>
 }

@@ -22,7 +22,7 @@ const Calendario = () => {
         inicioDoMes = startOfMonth(currentDate),
         finalDoMes = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0),
         semanasDoMes = eachWeekOfInterval({ start: inicioDoMes, end: finalDoMes }, { weekStartsOn: 1 }).slice(0, 5),
-        mesDia = vizualizacao === 'diario' ? format(currentDate, 'dd, MMMM, yyyy', { locale: pt }) : format(currentDate, 'MMMM, yyyy', { locale: pt }),
+        //mesDia = vizualizacao === 'diario' ? format(currentDate, 'dd, MMMM, yyyy', { locale: pt }) : format(currentDate, 'MMMM, yyyy', { locale: pt }),
         filterRef = useRef(null),
         filter = useRef(null);
 
