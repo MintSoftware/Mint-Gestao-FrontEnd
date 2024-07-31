@@ -1,12 +1,14 @@
 {
-  "name": "purplegym",
+  "name": "mintgestao",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx}\"",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,ext}\" --quiet",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,9 +47,12 @@
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
     "date-fns": "^3.5.0",
+    "embla-carousel-react": "^8.0.2",
+    "input-otp": "^1.2.4",
     "json-as-xlsx": "^2.5.6",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.365.0",
+    "next-themes": "^0.3.0",
     "npm": "^10.5.2",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",
@@ -56,8 +61,10 @@
     "react-resizable-panels": "^2.0.16",
     "react-router-dom": "^6.22.0",
     "react-to-pdf": "^1.0.1",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "vaul": "^0.9.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -66,7 +73,10 @@
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
+    "eslint": "^9.8.0",
+    "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.35",
+    "prettier": "^3.3.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"

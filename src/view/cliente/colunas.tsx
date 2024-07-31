@@ -9,11 +9,11 @@ import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisVerticalIcon } from "lucide-react"
 
 const inativar = (cliente: Cliente) => async () => {
-    await Api.put(`/cliente/${cliente.id}/inativar`)
+    await Api.put(`gestao/cliente/${cliente.id}/inativar`)
 }
 
 const ativar = (cliente: Cliente) => async () => {
-    await Api.put(`/cliente/${cliente.id}/ativar`)
+    await Api.put(`gestao/cliente/${cliente.id}/ativar`)
 }
 
 export const colunas = (): ColumnDef<Cliente>[] => [
@@ -71,7 +71,7 @@ export const colunas = (): ColumnDef<Cliente>[] => [
     }, {
         id: "actions",
         cell: ({ row }) => {
-            const cliente = row.original
+            //const cliente = row.original
 
             return (
                 <DropdownMenu>

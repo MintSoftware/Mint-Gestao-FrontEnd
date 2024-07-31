@@ -1,13 +1,13 @@
 import { useAuth } from "@/hooks/useAuth";
 import { HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, SearchIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ComboBoxFilial } from "../filial";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { ComboBoxFilial } from "../filial";
 
 const TopBar = () => {
     const { limparUsuarioLogado } = useAuth();
@@ -63,7 +63,7 @@ const TopBar = () => {
                     />
                 </div>
                 <div className="absolute left-[46vw] ">
-                <ComboBoxFilial />
+                    <ComboBoxFilial />
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

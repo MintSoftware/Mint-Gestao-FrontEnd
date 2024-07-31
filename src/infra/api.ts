@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { realizaRefresh } from './helpers/refreshToken';
 import { applyErrorHandler } from './interceptors/applyErrorHandler';
 import { criaLogDev } from './interceptors/criaLogDev';
-import { realizaRefresh } from './helpers/refreshToken';
 
 const Api = axios.create({
     baseURL: 'http://localhost:8080',
@@ -14,7 +14,7 @@ const Api = axios.create({
 
 applyErrorHandler(Api);
 
-setInterval(() => realizaRefresh(), 10 * 60 * 1000);
+setInterval(() => realizaRefresh(), 1 * 60 * 1000);
 
 criaLogDev(Api, 'ApiGeral');
 

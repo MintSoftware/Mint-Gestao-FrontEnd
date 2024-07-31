@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './BackgroundFlutuante.css';
 
 interface Bolha {
@@ -23,6 +23,7 @@ const BackgroundFlutuante = ({ cor = "#88B702" }: BackgroundFlutuanteProps) => {
         }));
 
         setBolhas(novasBolhas);
+        
 
         const handleResize = () => {
             setBolhas((prevBolhas) =>
