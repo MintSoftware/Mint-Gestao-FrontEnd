@@ -71,7 +71,7 @@ export const colunas = (): ColumnDef<Cliente>[] => [
     }, {
         id: "actions",
         cell: ({ row }) => {
-            const cliente = row.original
+            //const cliente = row.original
 
             return (
                 <DropdownMenu>

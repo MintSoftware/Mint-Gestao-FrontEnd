@@ -1,5 +1,3 @@
-import { Filial } from "./Filial"
-
 export type User = {
     nome: string,
     email: string,

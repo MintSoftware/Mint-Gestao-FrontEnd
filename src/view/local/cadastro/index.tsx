@@ -32,7 +32,7 @@ const CadastroLocal = () => {
 
     const salvar = async () => {
         try {
-            const { data } = await Api.post("gestao/local", dto);
+            await Api.post("gestao/local", dto);
             toast({
                 title: "Sucesso!",
                 description: `O local ${dto.nome} foi cadastrado com sucesso.`,

@@ -1,11 +1,7 @@
-import { createContext, useState } from "react";
 import { ApiHelper } from "@/infra/helpers/apiHelper";
 import { Auth } from "@/types/Auth";
 import { User } from "@/types/User";
-import { Filial } from "@/types/Filial";
-import Api from "@/infra/api";
-import { toast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { createContext, useState } from "react";
 
 interface AuthContextProps {
     usuarioLogado?: User;

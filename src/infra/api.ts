@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { realizaRefresh } from './helpers/refreshToken';
 import { applyErrorHandler } from './interceptors/applyErrorHandler';
 import { criaLogDev } from './interceptors/criaLogDev';
-import { realizaRefresh } from './helpers/refreshToken';
 
 const Api = axios.create({
     baseURL: 'http://localhost:8080',

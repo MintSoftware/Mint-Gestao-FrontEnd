@@ -1,11 +1,7 @@
-import { addDays, addMonths, addWeeks, eachWeekOfInterval, format, startOfMonth, subDays, subMonths, subWeeks } from 'date-fns';
-import { pt } from 'date-fns/locale';
-import { ChevronLeftIcon, ChevronRightIcon, FilterIcon } from 'lucide-react';
+import { addDays, addMonths, addWeeks, eachWeekOfInterval, startOfMonth, subDays, subMonths, subWeeks } from 'date-fns';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { ScrollArea } from '../ui/scroll-area';
 import Diario from './visualizacao/diario';
 import Mensal from './visualizacao/mensal';
 import Semanal from './visualizacao/semanal';
@@ -14,11 +10,11 @@ type Visualizacao = 'mensal' | 'semanal' | 'diario';
 
 const Calendario = () => {
     const [currentDate, setCurrentDate] = useState(new Date()),
-        [vizualizacao, setVizualizacao] = useState<Visualizacao>('mensal'),
-        [startHour, setStartHour] = useState('08:00'),
-        [endHour, setEndHour] = useState('22:00'),
+        [vizualizacao, /*setVizualizacao*/] = useState<Visualizacao>('mensal'),
+        [startHour, /*setStartHour*/] = useState('08:00'),
+        [endHour, /*setEndHour*/] = useState('22:00'),
         [dateRange, setDateRange] = useState<Date[]>([]),
-        [onHoverFilter, setOnHoverFilter] = useState(false),
+        [/*onHoverFilter*/, setOnHoverFilter] = useState(false),
         inicioDoMes = startOfMonth(currentDate),
         finalDoMes = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0),
         semanasDoMes = eachWeekOfInterval({ start: inicioDoMes, end: finalDoMes }, { weekStartsOn: 1 }).slice(0, 5),
@@ -26,13 +22,13 @@ const Calendario = () => {
         filterRef = useRef(null),
         filter = useRef(null);
 
-    const handleStartHourChange = (event: any) => {
-        setStartHour(event.target.value);
-    };
+    // const handleStartHourChange = (event: any) => {
+    //     setStartHour(event.target.value);
+    // };
 
-    const handleEndHourChange = (event: any) => {
-        setEndHour(event.target.value);
-    };
+    // const handleEndHourChange = (event: any) => {
+    //     setEndHour(event.target.value);
+    // };
 
     useEffect(() => {
         setDateRange(gerarPeriodo());
@@ -63,17 +59,17 @@ const Calendario = () => {
         if (vizualizacao === 'diario') setCurrentDate(addDays(currentDate, 1));
     };
 
-    const irParaDiaAtual = () => {
-        setCurrentDate(new Date());
-    };
+    // const irParaDiaAtual = () => {
+    //     setCurrentDate(new Date());
+    // };
 
-    const mudarVisualizacao = (novaVizualizacao: Visualizacao) => {
-        setVizualizacao(novaVizualizacao);
-    };
+    // const mudarVisualizacao = (novaVizualizacao: Visualizacao) => {
+    //     setVizualizacao(novaVizualizacao);
+    // };
 
-    const onHoverFilterHandler = () => {
-        setOnHoverFilter(!onHoverFilter);
-    };
+    // const onHoverFilterHandler = () => {
+    //     setOnHoverFilter(!onHoverFilter);
+    // };
 
     const handleClickOutsideFilter = (event: MouseEvent) => {
         const target = event.target as Node;

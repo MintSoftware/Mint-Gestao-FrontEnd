@@ -86,7 +86,7 @@ export const colunas = (): ColumnDef<Local>[] => [{
 }, {
     id: "actions",
     cell: ({ row }) => {
-        const local = row.original;
+        // const local = row.original;
 
         return (
             <DropdownMenu>

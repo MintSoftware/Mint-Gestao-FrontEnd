@@ -1,4 +1,5 @@
 import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
+import { LoaderCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
@@ -6,7 +7,6 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
-import { Loader, Loader2Icon, LoaderCircle, LoaderCircleIcon } from "lucide-react";
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];

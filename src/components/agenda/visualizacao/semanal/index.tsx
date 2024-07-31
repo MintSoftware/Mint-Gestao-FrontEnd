@@ -1,4 +1,4 @@
-import { format, startOfWeek, addDays, isSameWeek, isToday } from 'date-fns';
+import { addDays, format, isToday, startOfWeek } from 'date-fns';
 import { pt } from 'date-fns/locale';
 
 interface SemanalProps {
