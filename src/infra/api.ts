@@ -15,7 +15,7 @@ const Api = axios.create({
 
 applyErrorHandler(Api);
 
-setInterval(() => realizaRefresh(), 1 * 60 * 1000);
+setInterval(() => realizaRefresh(), 10 * 60 * 1000);
 
 criaLogDev(Api, 'ApiGeral');
 
