@@ -4,7 +4,8 @@ import { applyErrorHandler } from './interceptors/applyErrorHandler';
 import { criaLogDev } from './interceptors/criaLogDev';
 
 const Api = axios.create({
-    baseURL: 'http://localhost:8080',
+    //baseURL: 'http://localhost:8080',
+    baseURL: 'https://mintgestao-api.onrender.com',
     headers: {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
