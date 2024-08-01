@@ -9,7 +9,7 @@ export default function PaginaNaoEncontrada() {
           alt="Perdido no espaço"
           className="mx-auto"
           height="500"
-          src="/src/view/paginanaoencontrada/404.png"
+          src="/404.png"
           style={{
             aspectRatio: "500/500",
             objectFit: "cover",
