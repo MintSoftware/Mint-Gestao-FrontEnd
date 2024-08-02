@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/useAuth";
 import { HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, SearchIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
@@ -8,10 +7,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { useAuth } from "@/infra/hooks/useAuth";
 
 const TopBar = () => {
     const { limparUsuarioLogado } = useAuth();
-    
+
     const recuperarEmpresa = () => {
         debugger
         const usuarioLogado = localStorage.getItem('@usuario');
