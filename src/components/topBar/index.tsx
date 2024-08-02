@@ -1,10 +1,9 @@
-import { HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, SearchIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
+import { BellIcon, HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useAuth } from "@/infra/hooks/useAuth";
@@ -63,51 +62,51 @@ const TopBar = () => {
                         </nav>
                     </SheetContent>
                 </Sheet>
-                <div className="relative flex md:grow-0">
-                    <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-                        placeholder="Search..."
-                        type="search"
-                    />
-                </div>
-                <div className="absolute left-[50vw] ">
+                <div className="absolute w-[95vw] flex justify-center z-[-1]">
                     <Label className="text-lg">{recuperarEmpresa()}</Label>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className="overflow-hidden rounded-full" size="icon" variant="outline">
-                            <Avatar className='cursor-pointer'>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Link to="/perfil">
-                                Minha conta
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link to="/configuracoes">
-                                Configurações
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link to="/ajuda">
-                                Ajuda
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <AlertDialogTrigger className="w-full text-left">
-                                Sair
-                            </AlertDialogTrigger>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex w-full justify-end">
+                    <div className="relative flex h-9 w-9 justify-center items-center mr-3 cursor-pointer">
+                        <BellIcon className="flex" />
+                        <div className="bg-red-500 w-4 h-4 absolute items-center justify-center flex rounded-full left-5 bottom-4 text-black">
+                            1
+                        </div>
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button className="overflow-hidden rounded-full" size="icon" variant="outline">
+                                <Avatar className='cursor-pointer'>
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                                <Link to="/perfil">
+                                    Minha conta
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <Link to="/configuracoes">
+                                    Configurações
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Link to="/ajuda">
+                                    Ajuda
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <AlertDialogTrigger className="w-full text-left">
+                                    Sair
+                                </AlertDialogTrigger>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>Sair</AlertDialogTitle>
