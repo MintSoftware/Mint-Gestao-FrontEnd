@@ -3,9 +3,11 @@ import { realizaRefresh } from './helpers/refreshToken';
 import { applyErrorHandler } from './interceptors/applyErrorHandler';
 import { criaLogDev } from './interceptors/criaLogDev';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+console.log('API Base URL:', baseURL);
+
 const Api = axios.create({
-    //baseURL: 'http://localhost:8080',
-    baseURL: 'https://mintgestao-api.onrender.com',
+    baseURL: baseURL,
     headers: {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
@@ -20,6 +22,3 @@ setInterval(() => realizaRefresh(), 10 * 60 * 1000);
 criaLogDev(Api, 'ApiGeral');
 
 export default Api;
-
-
-
