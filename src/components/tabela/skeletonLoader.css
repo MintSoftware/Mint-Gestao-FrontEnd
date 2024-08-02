@@ -1,0 +1,23 @@
+@keyframes dynamicWidth {
+    0% {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scaleX(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+.skeleton {
+    width: 21rem;
+    height: 2rem;
+    transform-origin: left;
+    animation: dynamicWidth ease-in-out infinite;
+}

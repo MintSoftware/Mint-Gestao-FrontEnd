@@ -1,16 +1,25 @@
 import { useAuth } from "@/hooks/useAuth";
 import { HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, SearchIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ComboBoxFilial } from "../filial";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 const TopBar = () => {
     const { limparUsuarioLogado } = useAuth();
+    
+    const recuperarEmpresa = () => {
+        debugger
+        const usuarioLogado = localStorage.getItem('@usuario');
+        if (usuarioLogado) {
+            const usuario = JSON.parse(usuarioLogado);
+            return usuario.empresa.nomefantasia;
+        }
+    }
 
     return (
         <AlertDialog >
@@ -62,8 +71,8 @@ const TopBar = () => {
                         type="search"
                     />
                 </div>
-                <div className="absolute left-[46vw] ">
-                    <ComboBoxFilial />
+                <div className="absolute left-[50vw] ">
+                    <Label className="text-lg">{recuperarEmpresa()}</Label>
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
