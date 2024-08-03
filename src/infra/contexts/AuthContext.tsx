@@ -44,7 +44,6 @@ export function AuthProvider({ children }: any) {
     }
 
     async function salvarUsuarioLogado(dados: any) {
-        debugger;
         localStorage.setItem('@usuario', JSON.stringify(dados.usuario));
         setUsuarioLogado(dados.usuario);
         // localStorage.setItem('@filial', JSON.stringify(dados.usuario.filiais));

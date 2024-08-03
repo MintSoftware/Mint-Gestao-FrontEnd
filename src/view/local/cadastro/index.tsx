@@ -4,10 +4,9 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
 import Api from "@/infra/api";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const CadastroLocal = () => {
     const [nome, setNome] = useState("");
@@ -17,7 +16,7 @@ const CadastroLocal = () => {
     const [horarioAbertura, setHorarioAbertura] = useState("");
     const [horarioFechamento, setHorarioFechamento] = useState("");
     const [observacao, setObservacao] = useState("");
-    const { toast } = useToast();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const dto = {
         nome,
@@ -31,26 +30,20 @@ const CadastroLocal = () => {
     }
 
     const salvar = async () => {
-        try {
-            await Api.post("gestao/local", dto);
-            toast({
-                title: "Sucesso!",
-                description: `O local ${dto.nome} foi cadastrado com sucesso.`,
-            });  
-        } catch (error) {
-            toast({
-                title: "Erro!",
-                description: `Ocorreu um erro ao cadastrar o local: ${error}`,
-                variant: "destructive",
-                action: <ToastAction altText="Tentar Novamente" onClick={() => salvar()}>Tentar novamente</ToastAction>,
-            });
-        }
+        toast.promise(Api.post("gestao/local", dto).then(() => {
+            toast.success("Local cadastrado com sucesso!");
+            setIsDialogOpen(false);
+        }).catch(() => {
+            toast.error("Erro ao cadastrar local!");
+        }), {
+            loading: "Cadastrando...",
+        });
     }
     
     return (
         <div>
-            <Dialog>
-                <DialogTrigger asChild>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
                     <Button variant="default" className="ml-[10%]">Novo local</Button>
                 </DialogTrigger>
                 <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[700px]">

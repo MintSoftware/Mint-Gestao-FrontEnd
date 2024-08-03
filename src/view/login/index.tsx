@@ -2,20 +2,17 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ToastAction } from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
 import Api from "@/infra/api"
 import { useAuth } from "@/infra/hooks/useAuth"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { toast } from "sonner"
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   const { salvarUsuarioLogado } = useAuth();
-
-  const { toast } = useToast();
 
   const logar = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,34 +22,14 @@ export default function Login() {
       senha
     }
 
-    try {
-      const { data } = await Api.post("autenticacao/entrar", dto);
-      if (data) {
-        toast({
-          variant: "success",
-          description: "Login realizado com sucesso!",
-        })
-      }
-      await salvarUsuarioLogado(data);
-
-    } catch (error: any) {
-      if (error.response) {
-        toast({
-          variant: "destructive",
-          title: "Erro!",
-          description: error.response.data,
-          action: <ToastAction altText="Tentar Novamente" onClick={() => logar(e)}>Tentar novamente</ToastAction>,
-        })
-
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Erro",
-          description: "Erro ao realizar login!",
-          action: <ToastAction altText="Tentar Novamente">Tentar novamente</ToastAction>,
-        })
-      }
-    }
+    toast.promise(Api.post("autenticacao/entrar", dto, {}).then(async (response) => {
+      toast.success("Login realizado com sucesso!");
+      await salvarUsuarioLogado(response.data);
+    }).catch(() => {
+      toast.error("Erro ao entrar, verifique suas credenciais!");
+    }), {
+      loading: "Entrando...",
+    });
   }
 
   return (
@@ -84,4 +61,3 @@ export default function Login() {
     </form>
   )
 }
-

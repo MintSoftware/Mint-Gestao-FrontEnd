@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import Api from "@/infra/api";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const CadastroCliente = () => {
     const [nome, setNome] = useState("");
@@ -15,6 +16,7 @@ const CadastroCliente = () => {
     const [dataNascimento, setDataNascimento] = useState("");
     const [cpf, setCpf] = useState("");
     const [observacao, setObservacao] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const dto = {
         nome,
@@ -28,13 +30,20 @@ const CadastroCliente = () => {
     }
 
     const salvar = async () => {
-        await Api.post("gestao/cliente", dto);
+        toast.promise(Api.post("gestao/cliente", dto).then(() => {
+            toast.success("Cliente cadastrado com sucesso!");
+            setIsDialogOpen(false);
+        }).catch(() => {
+            toast.error("Erro ao cadastrar cliente!");
+        }), {
+            loading: "Cadastrando...",
+        });
     }
 
     return (
         <div>
-            <Dialog>
-                <DialogTrigger asChild>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
                     <Button variant="default">Novo cliente</Button>
                 </DialogTrigger>
                 <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[700px]">

@@ -1,23 +1,30 @@
+import { useAuth } from "@/infra/hooks/useAuth";
 import { BellIcon, HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { useAuth } from "@/infra/hooks/useAuth";
 
 const TopBar = () => {
     const { limparUsuarioLogado } = useAuth();
+    const navigate = useNavigate();
 
     const recuperarEmpresa = () => {
-        debugger
         const usuarioLogado = localStorage.getItem('@usuario');
         if (usuarioLogado) {
             const usuario = JSON.parse(usuarioLogado);
             return usuario.empresa.nomefantasia;
         }
+    }
+
+    const sair = () => {
+        limparUsuarioLogado();
+        toast.success("Saiu com sucesso!");
+        navigate('/');
     }
 
     return (
@@ -116,10 +123,8 @@ const TopBar = () => {
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => limparUsuarioLogado()}>
-                            <Link to="/">
+                        <AlertDialogAction onClick={() => sair()}>
                                 Sair
-                            </Link>
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
