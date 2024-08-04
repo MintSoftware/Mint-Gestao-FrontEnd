@@ -1,33 +1,32 @@
 import { ApiHelper } from "@/infra/helpers/apiHelper";
 import { Auth } from "@/types/Auth";
-import { User } from "@/types/User";
+import { Usuario } from "@/types/Usuario";
 import { createContext, useState } from "react";
 
 interface AuthContextProps {
-    usuarioLogado?: User;
+    usuarioLogado?: Usuario;
     auth?: Auth;
     // filialSelecionada?: Filial,
     limparUsuarioLogado: () => Promise<void>;
     salvarUsuarioLogado: (dados: any) => Promise<void>;
-    recuperarUsuarioLogado: () => Promise<{ user: User, auth: Auth }>;
+    recuperarUsuarioLogado: () => Promise<{ user: Usuario, auth: Auth }>;
     // alterarFilialSelecionada: (Filial: Filial) => Promise<void>;
-
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: any) {
 
-    const [usuarioLogado, setUsuarioLogado] = useState<User>();
+    const [usuarioLogado, setUsuarioLogado] = useState<Usuario>();
     // const [filialSelecionada, setFilialSelecionada] = useState<Filial>();
     const [auth, setAuth] = useState<Auth>();
 
     async function recuperarUsuarioLogado() {
-        const usuarioLogadoJSON = localStorage.getItem('@usuario'),
-            usuarioLogado: User = JSON.parse(usuarioLogadoJSON == null ? 'undefined' : usuarioLogadoJSON),
-            token = localStorage.getItem('@token'),
-            refreshToken = localStorage.getItem('@refreshToken');
-            // filial = JSON.parse(localStorage.getItem('@filial') as string);
+        const usuarioLogadoJSON = localStorage.getItem('usuario'),
+            usuarioLogado: Usuario = JSON.parse(usuarioLogadoJSON == null ? 'undefined' : usuarioLogadoJSON),
+            token = localStorage.getItem('token'),
+            refreshToken = localStorage.getItem('refreshToken');
+            // filial = JSON.parse(localStorage.getItem('filial') as string);
 
         if (refreshToken && token) ApiHelper.setAuthorization({ token: token, refreshToken: refreshToken });
 
@@ -44,25 +43,25 @@ export function AuthProvider({ children }: any) {
     }
 
     async function salvarUsuarioLogado(dados: any) {
-        localStorage.setItem('@usuario', JSON.stringify(dados.usuario));
+        localStorage.setItem('usuario', JSON.stringify(dados.usuario));
         setUsuarioLogado(dados.usuario);
-        // localStorage.setItem('@filial', JSON.stringify(dados.usuario.filiais));
+        // localStorage.setItem('filial', JSON.stringify(dados.usuario.filiais));
         // setFilialSelecionada(dados.usuario.filiais.find((filial: Filial) => filial.padrao == true));
 
         if (dados.token) {
             const auth = { token: dados.token, refreshToken: dados.refreshToken };
-            localStorage.setItem('@token', auth.token);
-            localStorage.setItem('@refreshToken', auth.refreshToken);
+            localStorage.setItem('token', auth.token);
+            localStorage.setItem('refreshToken', auth.refreshToken);
             setAuth(auth);
             ApiHelper.setAuthorization({ token: auth.token, refreshToken: auth.refreshToken });
         }
     }
 
     async function limparUsuarioLogado() {
-        localStorage.removeItem('@usuario');
-        localStorage.removeItem('@filial');
-        localStorage.removeItem('@token');
-        localStorage.removeItem('@refreshToken');
+        localStorage.removeItem('usuario');
+        localStorage.removeItem('filial');
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         setUsuarioLogado(undefined);
         setAuth(undefined);
         ApiHelper.clearAuthorization();
@@ -98,7 +97,7 @@ export function AuthProvider({ children }: any) {
     //     setFilialSelecionada(filial);
     //     try {
     //         const { data } = await Api.get('gestao/filial')
-    //         localStorage.setItem('@filial', JSON.stringify(data));
+    //         localStorage.setItem('filial', JSON.stringify(data));
     //     } catch (error: any) {
     //         toast({
     //             variant: "destructive",
