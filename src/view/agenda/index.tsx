@@ -1,5 +1,4 @@
 import Calendario from "@/components/agenda";
-import { Label } from "@/components/ui/label";
 
 export default function Agenda() {
     return (
