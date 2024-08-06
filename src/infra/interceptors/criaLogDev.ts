@@ -27,4 +27,6 @@ export function criaLogDev(axios: Axios, tag: string) {
             return Promise.reject(error);
         }
     );
+
+
 }

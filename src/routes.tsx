@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Route, Routes, } from "react-router-dom";
 import Clientes from "./view/cliente";
 import Configuracoes from "./view/configuracoes";
 import { Layout } from "./view/layout";
-import LoadingScreen from "./view/loading/Loading";
 import Locais from "./view/local";
 import Login from "./view/login";
 import RecuperarSenha from "./view/recuperarsenha";
@@ -15,7 +14,7 @@ import { useAuth } from "./infra/hooks/useAuth";
 function MainRoutes() {
 
   const { usuarioLogado, recuperarUsuarioLogado } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     handleLoadStorageData()
@@ -23,19 +22,11 @@ function MainRoutes() {
 
   async function handleLoadStorageData() {
     try {
-      setIsLoading(true)
       await recuperarUsuarioLogado();
     } catch (error) {
       console.log(error)
     } finally {
-      setIsLoading(false)
     }
-  }
-
-  if (isLoading) {
-    return (
-      <LoadingScreen />
-    )
   }
 
   if (!usuarioLogado) {

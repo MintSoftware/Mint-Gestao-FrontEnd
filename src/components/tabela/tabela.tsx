@@ -49,14 +49,14 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                         placeholder="Pesquisar..."
                         className="w-[30%] bg-background"
                     />
-                    <Button onClick={functionSearch} variant="outline"><SearchIcon className="w-4 h-4"/></Button>
+                    <Button onClick={functionSearch} variant="outline"><SearchIcon className="w-4 h-4" /></Button>
                     {modal}
                     <div className="ml-auto flex flex-row gap-3">
                         {exportar}
                         <EsconderColunas table={tabela} />
                     </div>
                 </div>
-                <div className="rounded-md border relative">
+                <div className="rounded-md border relative bg-background">
                     <ScrollArea className="h-[68vh]">
                         <Table>
                             <TableHeader>

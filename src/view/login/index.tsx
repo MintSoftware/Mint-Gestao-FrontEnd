@@ -33,7 +33,7 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={logar}>
+    <form onSubmit={logar} className="flex w-full h-[100vh] justify-center items-center">
       <Card className="mx-auto max-w-sm">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
