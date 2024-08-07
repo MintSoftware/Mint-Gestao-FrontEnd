@@ -26,15 +26,15 @@ export default function Cabecalho<TData, TValue>({
   }
 
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn("flex items-center", className)}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent"
-          >
-            <span>{title}</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="-ml-3 h-8 data-[state=open]:bg-accent"
+        >
+          <span>{title}</span>
+          <DropdownMenuTrigger asChild>
             {column.getIsSorted() === "desc" ? (
               <ArrowDownIcon className="ml-2 h-4 w-4" />
             ) : column.getIsSorted() === "asc" ? (
@@ -42,8 +42,8 @@ export default function Cabecalho<TData, TValue>({
             ) : (
               <CaretSortIcon className="ml-2 h-4 w-4" />
             )}
-          </Button>
-        </DropdownMenuTrigger>
+          </DropdownMenuTrigger>
+        </Button>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />

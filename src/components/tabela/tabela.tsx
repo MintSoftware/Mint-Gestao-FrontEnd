@@ -1,19 +1,25 @@
-import { ColumnDef, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import { useState } from "react";
+import { useState } from 'react';
+import {
+    ColumnDef, SortingState, flexRender, getCoreRowModel,
+    getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
+} from "@tanstack/react-table";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
 import "./skeletonLoader.css";
 import { Button } from "../ui/button";
 import { SearchIcon } from "lucide-react";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DraggableCol } from './colunas';
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
-    dados: any;
+    dados: TData[];
     modal?: JSX.Element;
     exportar?: JSX.Element;
     functionSearch: () => Promise<void>;
@@ -23,9 +29,10 @@ interface TabelaProps<TData, TValue> {
 const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch, loading }: TabelaProps<TData, TValue>) => {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
+    const [mutableColumns, setMutableColumns] = useState(colunas);
 
     const tabela = useReactTable({
-        columns: colunas,
+        columns: mutableColumns,
         data: dados,
         state: {
             sorting,
@@ -57,72 +64,75 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                     </div>
                 </div>
                 <div className="rounded-md border relative bg-background">
-                    <ScrollArea className="h-[68vh]">
-                        <Table>
-                            <TableHeader>
-                                {tabela.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow className="sticky top-0" key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => (
-                                            <TableHead key={header.id}
-                                                style={{
-                                                    width: `${header.getSize()}px`,
-                                                    resize: "horizontal",
-                                                    overflow: 'auto'
-                                                }}
-                                                className="sticky top-0 text-muted-foreground"
-                                            >
-                                                {flexRender(header.column.columnDef.header, header.getContext())}
-                                            </TableHead>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableHeader>
-                            <TableBody>
-                                {!loading ? (
-                                    tabela.getRowModel().rows.length ? (
-                                        tabela.getRowModel().rows.map((row) => (
-                                            <TableRow key={row.id} className="bg-background">
-                                                {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell colSpan={colunas.length} className="text-center">
-                                                Nenhum resultado encontrado
-                                            </TableCell>
+                    <DndProvider backend={HTML5Backend}>
+                        <ScrollArea className="h-[68vh]">
+                            <Table>
+                                <TableHeader>
+                                    {tabela.getHeaderGroups().map((headerGroup) => (
+                                        <TableRow className="sticky top-0" key={headerGroup.id}>
+                                            {headerGroup.headers.map((header) => {
+                                                const columnOrder = headerGroup.headers.map((header, index) => ({ id: header.column.id, index }));
+                                                return (
+                                                    <DraggableCol
+                                                        key={header.id}
+                                                        header={header}
+                                                        col={header.column}
+                                                        columnOrder={columnOrder}
+                                                        columns={mutableColumns}
+                                                        setColumns={setMutableColumns}
+                                                    />
+                                                );
+                                            })}
                                         </TableRow>
-                                    )
-                                ) : null}
-                            </TableBody>
-                        </Table>
-                        {loading && Array.from({ length: 15 }).map((_, index) => (
-                            <div key={index} className="inset-0 flex place-items-center">
-                                <div className="h-full w-full flex">
-                                    {loading && Array.from({ length: 5 }).map((_, index) => (
-                                        <div key={index} className="inset-0 flex place-items-center">
-                                            <div className="flex h-full w-full p-2">
-                                                <Skeleton
-                                                    className=" flex skeleton"
-                                                    style={{
-                                                        animation: `dynamicWidth infinite ${(Math.random() * (7 - 2) + 2)}s ease-in-out`
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
                                     ))}
+                                </TableHeader>
+                                <TableBody>
+                                    {!loading ? (
+                                        tabela.getRowModel().rows.length ? (
+                                            tabela.getRowModel().rows.map((row) => (
+                                                <TableRow key={row.id} className="bg-background">
+                                                    {row.getVisibleCells().map((cell) => (
+                                                        <TableCell key={cell.id}>
+                                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell colSpan={colunas.length} className="text-center">
+                                                    Nenhum resultado encontrado
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    ) : null}
+                                </TableBody>
+                            </Table>
+                            {loading && Array.from({ length: 15 }).map((_, index) => (
+                                <div key={index} className="inset-0 flex place-items-center">
+                                    <div className="h-full w-full flex">
+                                        {loading && Array.from({ length: 5 }).map((_, index) => (
+                                            <div key={index} className="inset-0 flex place-items-center">
+                                                <div className="flex h-full w-full p-2">
+                                                    <Skeleton
+                                                        className=" flex skeleton"
+                                                        style={{
+                                                            animation: `dynamicWidth infinite ${(Math.random() * (7 - 2) + 2)}s ease-in-out`
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </ScrollArea>
+                            ))}
+                        </ScrollArea>
+                    </DndProvider>
                 </div>
                 <Paginacao table={tabela} functionSearch={functionSearch} />
             </div>
         </Dialog>
-    )
+    );
 }
 
 export default Tabela;
