@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { Route, Routes, } from "react-router-dom";
+import { useAuth } from "./infra/hooks/useAuth";
+import Agenda from "./view/agenda";
 import Clientes from "./view/cliente";
 import Configuracoes from "./view/configuracoes";
+import { Filial } from "./view/filial";
 import { Layout } from "./view/layout";
 import Locais from "./view/local";
 import Login from "./view/login";
-import RecuperarSenha from "./view/recuperarsenha";
-import { Filial } from "./view/filial";
 import PaginaNaoEncontrada from "./view/paginanaoencontrada";
-import Agenda from "./view/agenda";
-import { useAuth } from "./infra/hooks/useAuth";
+import RecuperarSenha from "./view/recuperarsenha";
 
 function MainRoutes() {
 

@@ -1,11 +1,11 @@
+import { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner.tsx';
 import { AuthProvider } from "./infra/contexts/AuthContext.tsx";
 import './style/global.css';
 import { ThemeProvider } from './style/theme/theme-provider.tsx';
-import { Suspense, lazy } from 'react';
-import LoadingScreen from "./view/loading/Loading";
+import Loading from './view/loading/Loading.tsx';
 
 const MainRoutesLazy = lazy(() => import('./routes.tsx'));
 
@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvider>
     <BrowserRouter>
       <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme'>
-        <Suspense fallback={<LoadingScreen />}>
+        <Suspense fallback={<Loading />}>
           <MainRoutesLazy />
         </Suspense>
         <Toaster toastOptions={{

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { CartesianGrid, XAxis, Line, LineChart } from "recharts";
-import { ChartTooltipContent, ChartTooltip, ChartContainer } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from "react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
-export default function Component() {
+export default function Loading() {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
