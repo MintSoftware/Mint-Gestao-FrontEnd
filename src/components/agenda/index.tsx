@@ -183,7 +183,7 @@ export default function Calendario() {
                             <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <div className=" cursor-pointer ml-4 flex w-[7rem] justify-start items-center w-full h-full gap-2">
+                                        <div className=" cursor-pointer ml-4 flex w-[7rem] justify-start items-center h-full gap-2">
                                             <Label className="cursor-pointer text-xs items-center flex text-muted-foreground">Legenda:</Label>
                                             <div className="w-3 h-3 rounded-full bg-primary border" />
                                             <div className="w-3 h-3 rounded-full bg-purple-500 border" />
