@@ -38,11 +38,13 @@ export const colunas = (): ColumnDef<Local>[] => [{
     ),
     enableSorting: false,
     enableHiding: false,
+    size: 50
 }, {
     accessorKey: 'nome',
     header: ({ column }) => (
         <Cabecalho column={column} title="Nome" />
     ),
+    size: 400,
 }, {
     accessorKey: 'status',
     header: ({ column }) => (
@@ -53,36 +55,43 @@ export const colunas = (): ColumnDef<Local>[] => [{
             {row.original.status.toString() === '1' ? "Ativo" : "Inativo"}
         </Badge>
     ),
+    size: 100
 }, {
     accessorKey: 'endereco',
     header: ({ column }) => (
         <Cabecalho column={column} title="Endereço" />
     ),
+    size: 300
 }, {
     accessorKey: 'complemento',
     header: ({ column }) => (
         <Cabecalho column={column} title="Complemento" />
     ),
+    size: 300
 }, {
     accessorKey: 'observacao',
     header: ({ column }) => (
         <Cabecalho column={column} title="Observação" />
     ),
+    size: 300
 }, {
     accessorKey: 'horaAbertura',
     header: ({ column }) => (
         <Cabecalho column={column} title="Hora Ini" />
     ),
+    size: 200,
 }, {
     accessorKey: 'horaFechamento',
     header: ({ column }) => (
         <Cabecalho column={column} title="Hora Fim" />
     ),
+    size: 200
 }, {
     accessorKey: 'diasFuncionamento',
     header: ({ column }) => (
         <Cabecalho column={column} title="Dias Func." />
     ),
+    size: 100
 }, {
     id: "actions",
     cell: ({ row }) => {
@@ -110,6 +119,9 @@ export const colunas = (): ColumnDef<Local>[] => [{
             </DropdownMenu>
         )
     },
+    enableSorting: false,
+    enableHiding: false,
+    size: 50
 }
 ]
 
