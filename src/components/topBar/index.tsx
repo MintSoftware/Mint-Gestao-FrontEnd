@@ -14,7 +14,7 @@ const TopBar = () => {
     const navigate = useNavigate();
 
     const recuperarEmpresa = () => {
-        const usuarioLogado = localStorage.getItem('@usuario');
+        const usuarioLogado = localStorage.getItem('usuario');
         if (usuarioLogado) {
             const usuario = JSON.parse(usuarioLogado);
             return usuario.empresa.nomefantasia;

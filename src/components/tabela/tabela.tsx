@@ -1,22 +1,21 @@
-import { useState } from 'react';
 import {
     ColumnDef, ColumnSizingState, SortingState, flexRender, getCoreRowModel,
     getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
 } from "@tanstack/react-table";
+import { SearchIcon } from "lucide-react";
+import { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
+import { DraggableCol } from './colunas';
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";
 import "./skeletonLoader.css";
-import { Button } from "../ui/button";
-import { SearchIcon } from "lucide-react";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DraggableCol } from './colunas';
-import { table } from 'console';
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
