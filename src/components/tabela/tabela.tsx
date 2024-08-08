@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import {
-    ColumnDef, SortingState, flexRender, getCoreRowModel,
+    ColumnDef, ColumnSizingState, SortingState, flexRender, getCoreRowModel,
     getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
 } from "@tanstack/react-table";
 import { Dialog } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { Skeleton } from "../ui/skeleton";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import { EsconderColunas } from "./esconderColunas";
@@ -16,6 +16,7 @@ import { SearchIcon } from "lucide-react";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DraggableCol } from './colunas';
+import { table } from 'console';
 
 interface TabelaProps<TData, TValue> {
     colunas: ColumnDef<TData, TValue>[];
@@ -30,6 +31,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState("")
     const [mutableColumns, setMutableColumns] = useState(colunas);
+    const [colSizing, setColSizing] = useState<ColumnSizingState>({});
 
     const tabela = useReactTable({
         columns: mutableColumns,
@@ -37,7 +39,12 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
         state: {
             sorting,
             globalFilter,
+            columnSizing: colSizing,
         },
+        enableColumnResizing: true,
+        columnResizeMode: "onChange",
+        onColumnSizingChange: setColSizing,
+
         getFilteredRowModel: getFilteredRowModel(),
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -65,8 +72,8 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                 </div>
                 <div className="rounded-md border relative bg-background">
                     <DndProvider backend={HTML5Backend}>
-                        <ScrollArea className="h-[68vh]">
-                            <Table>
+                        <ScrollArea className="h-[38rem] w-[111.4rem]">
+                            <Table style={{ width: tabela.getTotalSize() }}>
                                 <TableHeader>
                                     {tabela.getHeaderGroups().map((headerGroup) => (
                                         <TableRow className="sticky top-0" key={headerGroup.id}>
@@ -126,12 +133,13 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                                     </div>
                                 </div>
                             ))}
+                            <ScrollBar orientation="horizontal" />
                         </ScrollArea>
                     </DndProvider>
                 </div>
                 <Paginacao table={tabela} functionSearch={functionSearch} />
             </div>
-        </Dialog>
+        </Dialog >
     );
 }
 

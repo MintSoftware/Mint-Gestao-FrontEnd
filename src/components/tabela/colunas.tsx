@@ -1,6 +1,7 @@
 import { useDrag, useDrop, DragSourceMonitor } from 'react-dnd';
 import { Header, flexRender, Column, ColumnDef } from "@tanstack/react-table";
 import { TableHead, TableCell } from "../ui/table"; // Importações dos seus componentes de UI
+import { ColumnResizer } from './resizer';
 
 interface DraggableColProps<TData, TValue> {
     col: Column<TData, unknown>;
@@ -46,6 +47,7 @@ const DraggableCol = <TData, TValue>({ col, header, columnOrder, columns, setCol
                     {flexRender(header.column.columnDef.header, header.getContext())}
                 </div>
             </TableCell>
+            <ColumnResizer header={header} />
         </TableHead>
     );
 };
