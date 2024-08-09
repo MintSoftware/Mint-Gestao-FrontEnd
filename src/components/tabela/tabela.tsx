@@ -40,6 +40,12 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
             globalFilter,
             columnSizing: colSizing,
         },
+        initialState: {
+            columnVisibility: {
+                horaAbertura: false,
+                horaFechamento: false,
+            }
+        },
         enableColumnResizing: true,
         columnResizeMode: "onChange",
         onColumnSizingChange: setColSizing,

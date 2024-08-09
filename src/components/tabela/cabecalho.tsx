@@ -7,8 +7,8 @@ import {
 import { Column } from "@tanstack/react-table"
 
 import { cn } from "@/style/lib/utils"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -26,11 +26,10 @@ export default function Cabecalho<TData, TValue>({
   }
 
   return (
-    <div className={cn("flex items-center", className)}>
+    <div style={{ width: column.getSize() }} className={cn("flex items-center", className)}>
       <DropdownMenu>
         <Button
           variant="ghost"
-          size="sm"
           className="-ml-3 h-8 data-[state=open]:bg-accent"
         >
           <span>{title}</span>

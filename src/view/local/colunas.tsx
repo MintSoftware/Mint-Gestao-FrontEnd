@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Label } from "@/components/ui/label"
 import Api from "@/infra/api"
 import { Local } from "@/types/Local"
 import { ColumnDef } from "@tanstack/react-table"
@@ -27,6 +28,7 @@ export const colunas = (): ColumnDef<Local>[] => [{
             }
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
             aria-label="Select all"
+            className="mr-5"
         />
     ),
     cell: ({ row }) => (
@@ -34,66 +36,88 @@ export const colunas = (): ColumnDef<Local>[] => [{
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
             aria-label="Select row"
+            className="relative left-2"
         />
     ),
     enableSorting: false,
     enableHiding: false,
-    size: 50
 }, {
     accessorKey: 'nome',
+    size: 400,
     header: ({ column }) => (
         <Cabecalho column={column} title="Nome" />
     ),
-    size: 400,
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.nome}</Label>
+    ),
 }, {
     accessorKey: 'status',
+    size: 100,
     header: ({ column }) => (
         <Cabecalho column={column} title="Status" />
     ),
     cell: ({ row }) => (
-        <Badge className='w-[60px] justify-center' variant={row.original.status ? "outline" : "secondary"}>
-            {row.original.status.toString() === '1' ? "Ativo" : "Inativo"}
-        </Badge>
+            <Badge className='flex mx-[20%] left-[50%] justify-center items-center' variant={row.original.status ? "outline" : "secondary"}>
+                {row.original.status.toString() === '1' ? "Ativo" : "Inativo"}
+            </Badge>
     ),
-    size: 100
 }, {
     accessorKey: 'endereco',
+    size: 250,
     header: ({ column }) => (
         <Cabecalho column={column} title="Endereço" />
     ),
-    size: 300
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.endereco}</Label>
+    ),
 }, {
     accessorKey: 'complemento',
+    size: 270,
     header: ({ column }) => (
         <Cabecalho column={column} title="Complemento" />
     ),
-    size: 300
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.complemento}</Label>
+    ),
 }, {
     accessorKey: 'observacao',
+    size: 270,
     header: ({ column }) => (
         <Cabecalho column={column} title="Observação" />
     ),
-    size: 300
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.observacao}</Label>
+    ),
 }, {
     accessorKey: 'horaAbertura',
-    header: ({ column }) => (
-        <Cabecalho column={column} title="Hora Ini" />
-    ),
     size: 200,
+    header: ({ column }) => (
+        <Cabecalho column={column} title="Hora Aber." />
+    ),
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.horaAbertura.toString()}</Label>
+    ),
 }, {
     accessorKey: 'horaFechamento',
+    size: 200,
     header: ({ column }) => (
         <Cabecalho column={column} title="Hora Fim" />
     ),
-    size: 200
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.horaFechamento.toString()}</Label>
+    ),
 }, {
     accessorKey: 'diasFuncionamento',
+    size: 200,
     header: ({ column }) => (
         <Cabecalho column={column} title="Dias Func." />
     ),
-    size: 100
+    cell: ({ row }) => (
+        <Label className="relative left-3">{row.original.diasFuncionamento.toString()}</Label>
+    ),
 }, {
     id: "actions",
+    size: 50,
     cell: ({ row }) => {
         // const local = row.original;
 
@@ -121,7 +145,6 @@ export const colunas = (): ColumnDef<Local>[] => [{
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50
 }
 ]
 
