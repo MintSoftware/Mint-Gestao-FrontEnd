@@ -1,11 +1,10 @@
 import {
   CalendarDaysIcon,
+  DollarSignIcon,
   HomeIcon,
-  LineChartIcon,
   MapPinIcon,
   Package2Icon,
-  SettingsIcon,
-  Users2Icon,
+  SettingsIcon
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
@@ -53,22 +52,10 @@ const MenuLateral = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/clientes' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
-                to="/clientes"
-              >
-                <Users2Icon className="h-5 w-5" />
-                <span className="sr-only">Clientes</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Clientes</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
                 className={pathname === '/financeiro' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
                 to="/financeiro"
               >
-                <LineChartIcon className="h-5 w-5" />
+                <DollarSignIcon className="h-5 w-5" />
                 <span className="sr-only">Financeiro</span>
               </Link>
             </TooltipTrigger>

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Route, Routes, } from "react-router-dom";
 import { useAuth } from "./infra/hooks/useAuth";
 import Agenda from "./view/agenda";
-import Clientes from "./view/cliente";
 import Configuracoes from "./view/configuracoes";
 import { Filial } from "./view/filial";
 import { Layout } from "./view/layout";
@@ -43,7 +42,6 @@ function MainRoutes() {
       <Routes>
         <Route path="*" element={<PaginaNaoEncontrada />} />
         <Route path="/agenda" element={<Agenda />} />
-        <Route path="/clientes" element={<Clientes />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
         <Route path="/filial" element={<Filial />} />
