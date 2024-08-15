@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface EventoProps {
-    date: Date;
+    data?: Date;
     onClose: () => void;
 }
 
@@ -25,94 +25,118 @@ const FormSchema = z.object({
     }),
 })
 
-const Evento = ({ date, onClose }: EventoProps) => {
+const Evento = ({ data, onClose }: EventoProps) => {
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     return (
-        <DialogContent onInteractOutside={(evento) => evento.preventDefault()} onCloseAutoFocus={() => onClose()} className="sm:max-w-[60%] h-[65%]">
+        <DialogContent onInteractOutside={(evento) => evento.preventDefault()} onCloseAutoFocus={() => onClose()} className="sm:max-w-[60%] h-[75%]">
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel className='p-5 w-max max-w-[75%] min-w-[45%]'>
                     <DialogHeader>
                         <DialogTitle>Cadastro</DialogTitle>
                         <DialogDescription>
-                            Cadastre eventos para o dia {format(date, 'dd/MM/yyyy', { locale: pt })}
+                            {(data) ? `Cadastre eventos para o dia ${format(data, 'dd/MM/yyyy', { locale: pt })}` : 'Cadastre eventos'}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex flex-col gap-4 align-middle py-5">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="cliente" className="text-right">
-                                Cliente
-                            </Label>
-                            <Input id="cliente" value="Inseira um nome" className="col-span-3" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="local" className="text-right">
-                                Local
-                            </Label>
-                            <Input id="local" value="Insira um local" className="col-span-3" />
-                        </div>
-                        <div className="flex flex-row items-center gap-4 justify-end">
-                            <Label htmlFor="dia" className="text-right">
-                                Dia
-                            </Label>
-                            <Form {...form} >
-                                <form className="flex ">
-                                    <FormField
-                                        control={form.control}
-                                        name="dob"
-                                        defaultValue={date}
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-col">
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <FormControl
-                                                        >
-                                                            <Button
-                                                                variant={"outline"}
-                                                                className={cn(
-                                                                    "w-[240px] pl-3 text-left font-normal",
-                                                                    !field.value && "text-muted-foreground"
-                                                                )}
-                                                            >
-                                                                {field.value ? (
-                                                                    format(field.value, "PPP", { locale: pt })
-                                                                ) : (
-                                                                    <span>Selecione a data</span>
-                                                                )}
-                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                            </Button>
-                                                        </FormControl>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="flex" align="start">
-                                                        <Calendar
-                                                            mode="single"
-                                                            selected={field.value}
-                                                            onSelect={field.onChange}
-                                                            initialFocus
-                                                        />
-                                                    </PopoverContent>
-                                                </Popover>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </form>
-                            </Form>
-                            <Label htmlFor="inicio" className="text-right">
-                                Início
-                            </Label>
-                            <Input id="inicio" type="time" value="00:00" className="w-[12%]" />
-                            <Label htmlFor="fim" className="text-right">
-                                Fim
-                            </Label>
-                            <Input id="fim" type="time" value="00:00" className="w-[12%]" />
+                    <div className="flex flex-col gap-4 align-middle py-5 mt-5">
+                        <div className="flex flex-col gap-4">
+                            <div>
+                                <Label htmlFor="local" className="text-right">Local</Label>
+                                <Input id="local" placeholder="Insira um local" className="col-span-3" />
+                            </div>
+                            <div className='flex justify-between'>
+                                <div>
+                                    <Label>Data</Label>
+                                    <Form {...form} >
+                                        <form className="flex ">
+                                            <FormField
+                                                control={form.control}
+                                                name="dob"
+                                                defaultValue={data}
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-col">
+                                                        <Popover>
+                                                            <PopoverTrigger asChild>
+                                                                <FormControl
+                                                                >
+                                                                    <Button
+                                                                        variant={"outline"}
+                                                                        className={cn(
+                                                                            "w-[240px] pl-3 text-left font-normal",
+                                                                            !field.value && "text-muted-foreground"
+                                                                        )}
+                                                                    >
+                                                                        {field.value ? (
+                                                                            format(field.value, "PPP", { locale: pt })
+                                                                        ) : (
+                                                                            <span>Selecione a data</span>
+                                                                        )}
+                                                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                    </Button>
+                                                                </FormControl>
+                                                            </PopoverTrigger>
+                                                            <PopoverContent className="flex" align="start">
+                                                                <Calendar
+                                                                    mode="single"
+                                                                    selected={field.value}
+                                                                    onSelect={field.onChange}
+                                                                    initialFocus
+                                                                    className='bg-background border rounded'
+                                                                />
+                                                            </PopoverContent>
+                                                        </Popover>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </form>
+                                    </Form>
+                                </div>
+                                <div>
+                                    <Label htmlFor="inicio" className="text-right">
+                                        Início
+                                    </Label>
+                                    <Input id="inicio" type="time" value="00:00" className="time-input" />
+                                </div>
+                                <div>
+                                    <Label htmlFor="fim" className="text-right">
+                                        Fim
+                                    </Label>
+                                    <Input className="time-input" id="fim" type="time" value="00:00" />
+                                </div>
+                            </div>
+                            <div>
+                                <Label htmlFor="cliente" className="flex text-right mb-2">Nome</Label>
+                                <Input id="cliente" placeholder="Inseira o nome" className="col-span-3" />
+                            </div>
+                            <div>
+                                <Label htmlFor="cliente" className="flex text-right mb-2">Sobrenome</Label>
+                                <Input id="cliente" placeholder="Inseira o sobrenome" className="col-span-3" />
+                            </div>
+                            <div>
+                                <Label htmlFor="cliente" className="flex text-right mb-2">Telefone</Label>
+                                <Input id="cliente" placeholder="Inseira o telefone" className="col-span-3" />
+                            </div>
+                            <div>
+                                <Label htmlFor="cliente" className="flex text-right mb-2">Email</Label>
+                                <Input id="email" type='email' placeholder="Inseira o email" className="col-span-3" />
+                            </div>
                         </div>
                     </div>
-                    <DialogFooter className='py-10'>
-                        <Button type="submit">Save changes</Button>
+                    <DialogFooter>
+                        <div className='flex justify-between w-full items-center mt-10'>
+                            <div>
+                                <Label>Total: </Label>
+                                <span>R$ 0,00</span>
+                            </div>
+                            <div className='flex gap-2'>
+                                <Button type="submit">Reservar</Button>
+                                <Button variant="outline" onClick={onClose}>Voltar</Button>
+                            </div>
+                        </div>
                     </DialogFooter>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
@@ -120,7 +144,7 @@ const Evento = ({ date, onClose }: EventoProps) => {
                     Eventos
                 </ResizablePanel>
             </ResizablePanelGroup>
-        </DialogContent>
+        </DialogContent >
     );
 }
 

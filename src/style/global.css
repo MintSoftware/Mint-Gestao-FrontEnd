@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .time-input::-webkit-calendar-picker-indicator {
+    filter: invert(40%);
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
