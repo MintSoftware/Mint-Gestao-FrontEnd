@@ -1,7 +1,7 @@
 import { Status } from "./Status"
 
 export type Local = {
-    id: number
+    id: string
     nome: string
     status: Status
     endereco: string

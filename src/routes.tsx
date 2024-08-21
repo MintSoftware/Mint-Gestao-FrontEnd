@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Route, Routes, } from "react-router-dom";
+import { realizaRefresh } from "./infra/helpers/refreshToken";
 import { useAuth } from "./infra/hooks/useAuth";
 import Agenda from "./view/agenda";
 import Configuracoes from "./view/configuracoes";
@@ -22,6 +23,7 @@ function MainRoutes() {
   async function handleLoadStorageData() {
     try {
       await recuperarUsuarioLogado();
+      realizaRefresh();
     } catch (error) {
       console.log(error)
     } finally {

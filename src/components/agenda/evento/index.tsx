@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -31,8 +31,12 @@ const Evento = ({ data, onClose }: EventoProps) => {
         resolver: zodResolver(FormSchema),
     })
 
+    if(!data || data < new Date()) {
+        data = new Date();
+    }
+
     return (
-        <DialogContent onInteractOutside={(evento) => evento.preventDefault()} onCloseAutoFocus={() => onClose()} className="sm:max-w-[60%] h-[75%]">
+        <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[60%] h-[75%]">
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel className='p-5 w-max max-w-[75%] min-w-[45%]'>
                     <DialogHeader>
@@ -133,8 +137,12 @@ const Evento = ({ data, onClose }: EventoProps) => {
                                 <span>R$ 0,00</span>
                             </div>
                             <div className='flex gap-2'>
-                                <Button type="submit">Reservar</Button>
-                                <Button variant="outline" onClick={onClose}>Voltar</Button>
+                                <Button type="submit">
+                                    Reservar
+                                    </Button>
+                                <DialogClose>
+                                    <Button variant="outline" onClick={() => onClose()}>Voltar</Button>
+                                </DialogClose>
                             </div>
                         </div>
                     </DialogFooter>

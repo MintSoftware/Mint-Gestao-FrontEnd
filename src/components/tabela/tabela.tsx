@@ -112,7 +112,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                                             ))
                                         ) : (
                                             <TableRow>
-                                                <TableCell colSpan={colunas.length} className="relative left-[40vw]">
+                                                <TableCell colSpan={colunas.length} className="bg-background relative left-[40vw]">
                                                     Nenhum resultado encontrado
                                                 </TableCell>
                                             </TableRow>
