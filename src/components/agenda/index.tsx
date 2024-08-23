@@ -8,11 +8,14 @@ import { cn } from "@/style/lib/utils"
 import { Local } from "@/types/Local"
 import Holidays from 'date-holidays'
 import { CalendarDaysIcon, CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 import { Dialog, DialogTrigger } from "../ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import Evento from "./evento"
+import { Evento } from "@/types/Evento"
+import { CadastroEvento } from "./cadastro/cadastroevento"
+import { toast } from "sonner"
+import { Skeleton } from "../ui/skeleton"
 
 export default function Calendario() {
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -30,41 +33,62 @@ export default function Calendario() {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
     const [selectedDate, setSelectedDate] = useState(undefined)
     const feriados = new Holidays('BR');
-    const [eventos, setEventos] = useState();
-
+    const [eventos, setEventos] = useState<Evento[]>([]);
+    const [eventosDia, setEventosDia] = useState<Evento[]>([]);
+    const [loadingEventos, setLoadingEventos] = useState(false);
+    const [loadingLocais, setLoadingLocais] = useState(false);
     const [locais, setLocais] = useState<Local[]>();
     const [localSelecionadoFiltro, setLocalSelecionadoFiltro] = useState<Local>();
     const [openFiltroLocal, setOpenFiltroLocal] = useState(false);
 
     const handleDateClick = (date: any) => {
         setSelectedDate(date);
+        setEventosDia(eventos.filter(
+            (evento) =>
+                new Date(evento.horainicio).getDate() ===
+                new Date(date).getDate() &&
+                new Date(evento.horainicio).getMonth() ===
+                new Date(date).getMonth() &&
+                new Date(evento.horainicio).getFullYear() ===
+                new Date(date).getFullYear()
+        ));
     }
 
     const handleLocalSelecionadoFiltro = (local: Local) => {
-        (localSelecionadoFiltro == local) ? setLocalSelecionadoFiltro(undefined) : setLocalSelecionadoFiltro(local);
+
+        if (localSelecionadoFiltro === local) {
+            setLocalSelecionadoFiltro(undefined);
+            setEventos([]);
+            return;
+        }
+
+        setLocalSelecionadoFiltro(local);
+        buscarEventos(local.id);
     }
 
-    const buscarEventos = async () => {
+    const buscarEventos = async (id: string) => {
         try {
-            const { data } = await Api.get('gestao/evento/buscarporlocal');
+            setLoadingEventos(true);
+            const { data } = await Api.get(`gestao/evento/buscarporlocal/${id}`);
             setEventos(data);
+            setLoadingEventos(false);
         } catch (error) {
-
+            setLoadingEventos(false);
+            toast.error('Erro ao buscar eventos');
         }
     };
 
     const buscarLocais = async () => {
         try {
+            setLoadingLocais(true);
             const { data } = await Api.get('gestao/local');
             setLocais(data);
+            setLoadingLocais(false);
         } catch (error) {
-
+            setLoadingLocais(false);
+            toast.error('Erro ao buscar locais');
         }
     };
-
-    useEffect(() => {
-        buscarLocais();
-    }, []);
 
     return (
         <Dialog>
@@ -89,6 +113,7 @@ export default function Calendario() {
                                                         role="combobox"
                                                         aria-expanded={openFiltroLocal}
                                                         className="w-[20rem] justify-between p-5 border"
+                                                        onClick={() => buscarLocais()}
                                                     >
                                                         <FilterIcon className="h-5 w-5" />
                                                         <Label className="text-muted-foreground">
@@ -103,28 +128,40 @@ export default function Calendario() {
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-[20rem] p-0">
                                                     <Command>
-                                                        <CommandInput placeholder="Busque o local aqui..." />
-                                                        <CommandEmpty>
-                                                            <Label>Local não encontrado</Label>
-                                                            </CommandEmpty>
+                                                        {(loadingLocais) ? <></> :
+                                                            <div>
+                                                                <CommandInput placeholder="Busque o local aqui..." />
+                                                                <CommandEmpty>
+                                                                    <Label>Local não encontrado</Label>
+                                                                </CommandEmpty>
+                                                            </div>
+                                                        }
                                                         <CommandGroup>
-                                                            {locais?.map((local) => (
-                                                                <CommandList
-                                                                    key={local.id}
-                                                                    onClick={() => handleLocalSelecionadoFiltro(local)}
-                                                                    className="flex cursor-pointer w-[20rem] bg-background hover:bg-muted/50"
-                                                                >
-                                                                    <CommandItem className="flex w-[20rem] bg-background">
-                                                                        <CheckIcon
-                                                                            className={cn(
-                                                                                "mr-2 h-4 w-4",
-                                                                                localSelecionadoFiltro?.id === local.id ? "opacity-100" : "opacity-0"
-                                                                            )}
-                                                                        />
-                                                                        {local.nome}
-                                                                    </CommandItem>
-                                                                </CommandList>
-                                                            ))}
+                                                            {(loadingLocais) ? <div className="flex flex-col gap-2">
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[2rem] w-full" />
+                                                            </div> :
+                                                                locais?.map((local) => (
+                                                                    <CommandList
+                                                                        key={local.id}
+                                                                        onClick={() => handleLocalSelecionadoFiltro(local)}
+                                                                        className="flex cursor-pointer w-[20rem] bg-background hover:bg-muted/50"
+                                                                    >
+                                                                        <CommandItem className="flex w-[20rem] bg-background">
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "mr-2 h-4 w-4",
+                                                                                    localSelecionadoFiltro?.id === local.id ? "opacity-100" : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                            {local.nome}
+                                                                        </CommandItem>
+                                                                    </CommandList>
+                                                                ))}
                                                         </CommandGroup>
                                                     </Command>
                                                 </PopoverContent>
@@ -211,44 +248,46 @@ export default function Calendario() {
                                                                     <div className="w-3 h-3 rounded-full bg-purple-500" />
                                                                 }
                                                                 {eventos.filter(
-                                                                    (event) =>
-                                                                        event.date ===
-                                                                        new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
+                                                                    (evento) =>
+                                                                        new Date(evento.horainicio) ===
+                                                                        new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)
                                                                 ).length > 0}
                                                                 <div></div>
                                                             </div>
                                                             <div className="flex absolute top-2 left-2 flex-col h-[7rem] w-[14rem] justify-end">
-                                                                {eventos
+                                                                {!loadingEventos ? eventos
                                                                     .filter(
-                                                                        (event) =>
-                                                                            event.date ===
-                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
+                                                                        (evento) =>
+                                                                            new Date(evento.horainicio).getDate() ===
+                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
                                                                     )
-                                                                    .map((event, index) => (
-                                                                        <div key={index} className="flex text-sm text-white bg-secondary rounded mt-1">
-                                                                            <div className="flex h-5 mx-2 overflow-hidden">
-                                                                                {event.title} - {event.time}
+                                                                    .map((evento, index) => (
+                                                                        <div key={index} className="flex text-sm text-muted-foreground bg-secondary rounded mt-1">
+                                                                            <div className="flex w-full h-5 mx-2 overflow-hidden justify-center items-center">
+                                                                                <Label>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
                                                                             </div>
                                                                         </div>
-                                                                    ))}
+                                                                    )) : <div>
+                                                                    <Skeleton className="h-[6rem] w-[14rem]" />
+                                                                </div>}
                                                             </div>
                                                         </div>
                                                     </DialogTrigger>
                                                 </TooltipTrigger>
                                                 <TooltipContent className="bg-muted">
                                                     {(eventos.filter(
-                                                        (event) =>
-                                                            event.date ===
-                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
+                                                        (evento) =>
+                                                            new Date(evento.horainicio).getDate() ===
+                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
                                                     ).length > 0) ? eventos
                                                         .filter(
-                                                            (event) =>
-                                                                event.date ===
-                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
+                                                            (evento) =>
+                                                                new Date(evento.horainicio).getDate() ===
+                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
                                                         )
-                                                        .map((event, index) => (
-                                                            <div key={index} className="text-sm text-muted-foreground">
-                                                                {event.time} - {event.title}
+                                                        .map((evento, index) => (
+                                                            <div key={index} className="flex text-sm text-muted-foreground p-1 items-center justify-center">
+                                                                <Label>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
                                                             </div>
                                                         )) : (
                                                         <div className="text-sm text-muted-foreground">Sem Eventos</div>
@@ -257,7 +296,7 @@ export default function Calendario() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     ))}
-                                    {<Evento data={selectedDate} onClose={() => setSelectedDate(undefined)} />}
+                                    {<CadastroEvento data={selectedDate} onClose={() => setSelectedDate(undefined)} eventos={eventosDia} />}
                                 </div>
                             </ScrollArea>
                             <div className="flex h-[1.5rem]">

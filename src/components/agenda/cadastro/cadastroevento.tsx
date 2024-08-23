@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { cn } from '@/style/lib/utils';
+import { Evento } from '@/types/Evento';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
@@ -17,6 +18,7 @@ import { z } from "zod";
 interface EventoProps {
     data?: Date;
     onClose: () => void;
+    eventos?: Evento[];
 }
 
 const FormSchema = z.object({
@@ -25,13 +27,13 @@ const FormSchema = z.object({
     }),
 })
 
-const Evento = ({ data, onClose }: EventoProps) => {
+export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
-    if(!data || data < new Date()) {
+    if (!data || data < new Date()) {
         data = new Date();
     }
 
@@ -139,7 +141,7 @@ const Evento = ({ data, onClose }: EventoProps) => {
                             <div className='flex gap-2'>
                                 <Button type="submit">
                                     Reservar
-                                    </Button>
+                                </Button>
                                 <DialogClose>
                                     <Button variant="outline" onClick={() => onClose()}>Voltar</Button>
                                 </DialogClose>
@@ -150,10 +152,16 @@ const Evento = ({ data, onClose }: EventoProps) => {
                 <ResizableHandle withHandle />
                 <ResizablePanel defaultSize={10} className='p-5 max-w-[55%] min-w-[25%]'>
                     Eventos
+                    <div>
+                        {eventos?.map((evento) => (
+                            <div key={evento.id}>
+                                <div>{evento.nome}</div>
+                                <div>{new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</div>
+                            </div>
+                        ))}
+                    </div>
                 </ResizablePanel>
             </ResizablePanelGroup>
         </DialogContent >
     );
 }
-
-export default Evento;
