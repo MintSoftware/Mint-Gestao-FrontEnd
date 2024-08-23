@@ -47,6 +47,10 @@ export default function Calendario() {
         setSelectedDate(date);
     }
 
+    const handleLocalSelecionadoFiltro = (local: Local) => {
+        (localSelecionadoFiltro == local) ? setLocalSelecionadoFiltro(undefined) : setLocalSelecionadoFiltro(local);
+    }
+
     const buscarLocais = async () => {
         try {
             const { data } = await Api.get('gestao/local');
@@ -97,13 +101,15 @@ export default function Calendario() {
                                                 </PopoverTrigger>
                                                 <PopoverContent className="w-[20rem] p-0">
                                                     <Command>
-                                                        <CommandEmpty>Local não encontrado</CommandEmpty>
                                                         <CommandInput placeholder="Busque o local aqui..." />
+                                                        <CommandEmpty>
+                                                            <Label>Local não encontrado</Label>
+                                                            </CommandEmpty>
                                                         <CommandGroup>
                                                             {locais?.map((local) => (
                                                                 <CommandList
                                                                     key={local.id}
-                                                                    onClick={() => setLocalSelecionadoFiltro(local)}
+                                                                    onClick={() => handleLocalSelecionadoFiltro(local)}
                                                                     className="flex cursor-pointer w-[20rem] bg-background hover:bg-muted/50"
                                                                 >
                                                                     <CommandItem className="flex w-[20rem] bg-background">
