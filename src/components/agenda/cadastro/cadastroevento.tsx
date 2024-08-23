@@ -7,11 +7,13 @@ import { Label } from '@/components/ui/label';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { cn } from '@/style/lib/utils';
 import { Evento } from '@/types/Evento';
+import { Local } from '@/types/Local';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
+import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -28,6 +30,17 @@ const FormSchema = z.object({
 })
 
 export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
+
+    const [local, setLocal] = useState<Local>();
+    const [nome, setNome] = useState('');
+    const [sobrenome, setSobrenome] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [email, setEmail] = useState('');
+    const [valorTotal, setValorTotal] = useState(0);
+    const [valorHora, setValorHora] = useState(0);
+    const [diaEvento, setDiaEvento] = useState<Date>();
+    const [horainicio, setHoraInicio] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
+    const [horafim, setHoraFim] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -51,7 +64,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <Label htmlFor="local" className="text-right">Local</Label>
-                                <Input id="local" placeholder="Insira um local" className="col-span-3" />
+                                <Input id="local" placeholder="Insira um local" className="col-span-3" value={local?.nome} />
                             </div>
                             <div className='flex justify-between'>
                                 <div>
@@ -87,8 +100,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                             <PopoverContent className="flex" align="start">
                                                                 <Calendar
                                                                     mode="single"
-                                                                    selected={field.value}
-                                                                    onSelect={field.onChange}
+                                                                    selected={diaEvento}
+                                                                    onSelect={(date) => setDiaEvento(date)}
                                                                     initialFocus
                                                                     className='bg-background border rounded'
                                                                 />
@@ -105,38 +118,42 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                     <Label htmlFor="inicio" className="text-right">
                                         Início
                                     </Label>
-                                    <Input id="inicio" type="time" value="00:00" className="time-input" />
+                                    <Input id="inicio" type="time" className="time-input" value={horainicio?.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} onChange={(e) => setHoraInicio(new Date(e.target.value))} />
                                 </div>
                                 <div>
                                     <Label htmlFor="fim" className="text-right">
                                         Fim
                                     </Label>
-                                    <Input className="time-input" id="fim" type="time" value="00:00" />
+                                    <Input className="time-input" id="fim" type="time" value={horafim?.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} onChange={(e) => setHoraFim(new Date(e.target.value))} />
                                 </div>
                             </div>
                             <div>
                                 <Label htmlFor="cliente" className="flex text-right mb-2">Nome</Label>
-                                <Input id="cliente" placeholder="Inseira o nome" className="col-span-3" />
+                                <Input id="cliente" placeholder="Inseira o nome" className="col-span-3" value={nome} onChange={(e) => setNome(e.target.value)} />
                             </div>
                             <div>
                                 <Label htmlFor="cliente" className="flex text-right mb-2">Sobrenome</Label>
-                                <Input id="cliente" placeholder="Inseira o sobrenome" className="col-span-3" />
+                                <Input id="cliente" placeholder="Inseira o sobrenome" className="col-span-3" value={sobrenome} onChange={(e) => setSobrenome(e.target.value)} />
                             </div>
                             <div>
                                 <Label htmlFor="cliente" className="flex text-right mb-2">Telefone</Label>
-                                <Input id="cliente" placeholder="Inseira o telefone" className="col-span-3" />
+                                <Input id="cliente" placeholder="Inseira o telefone" className="col-span-3" value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                             </div>
                             <div>
                                 <Label htmlFor="cliente" className="flex text-right mb-2">Email</Label>
-                                <Input id="email" type='email' placeholder="Inseira o email" className="col-span-3" />
+                                <Input id="email" type='email' placeholder="Inseira o email" className="col-span-3" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         </div>
                     </div>
                     <DialogFooter>
                         <div className='flex justify-between w-full items-center mt-10'>
-                            <div>
-                                <Label>Total: </Label>
-                                <span>R$ 0,00</span>
+                            <div className='flex gap-8'>
+                                <div>
+                                    <Label>Valor Hora: R$ {valorHora}</Label>
+                                </div>
+                                <div>
+                                    <Label>Valor Total: R$ {valorTotal}</Label>
+                                </div>
                             </div>
                             <div className='flex gap-2'>
                                 <Button type="submit">
@@ -150,14 +167,29 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                     </DialogFooter>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={10} className='p-5 max-w-[55%] min-w-[25%]'>
+                <ResizablePanel defaultSize={10} className='relative py-5 pl-5 max-w-[55%] min-w-[25%]'>
                     Eventos
                     <div>
                         {eventos?.map((evento) => (
-                            <div key={evento.id}>
-                                <div>{evento.nome}</div>
-                                <div>{new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</div>
-                            </div>
+                            <Button key={evento.id} className="flex text-sm text-muted-foreground w-full bg-secondary rounded mt-1 hover:bg-muted/80"
+                                onClick={() => {
+                                    setLocal(evento.local);
+                                    setNome(evento.nome);
+                                    setSobrenome(evento.sobrenome);
+                                    setTelefone(evento.telefone);
+                                    setEmail(evento.email);
+                                    setValorTotal(evento.valortotal);
+                                    setValorHora(evento.valorhora);
+                                    setDiaEvento(new Date(evento.horainicio));
+                                    setHoraInicio(new Date(evento.horainicio));
+                                    setHoraFim(new Date(evento.horafim));
+                                }
+                                }
+                            >
+                                <div className="flex w-full h-5 overflow-hidden justify-center items-center">
+                                    <Label className='cursor-pointer'>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                </div>
+                            </Button>
                         ))}
                     </div>
                 </ResizablePanel>

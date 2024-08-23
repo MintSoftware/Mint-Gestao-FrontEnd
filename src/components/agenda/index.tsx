@@ -138,12 +138,15 @@ export default function Calendario() {
                                                         }
                                                         <CommandGroup>
                                                             {(loadingLocais) ? <div className="flex flex-col gap-2">
-                                                                <Skeleton className="h-[2rem] w-full" />
-                                                                <Skeleton className="h-[2rem] w-full" />
-                                                                <Skeleton className="h-[2rem] w-full" />
-                                                                <Skeleton className="h-[2rem] w-full" />
-                                                                <Skeleton className="h-[2rem] w-full" />
-                                                                <Skeleton className="h-[2rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
+                                                                <Skeleton className="h-[1.5rem] w-full" />
                                                             </div> :
                                                                 locais?.map((local) => (
                                                                     <CommandList
@@ -259,7 +262,11 @@ export default function Calendario() {
                                                                     .filter(
                                                                         (evento) =>
                                                                             new Date(evento.horainicio).getDate() ===
-                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
+                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
+                                                                            new Date(evento.horainicio).getMonth() ===
+                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
+                                                                            new Date(evento.horainicio).getFullYear() ===
+                                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                                     )
                                                                     .map((evento, index) => (
                                                                         <div key={index} className="flex text-sm text-muted-foreground bg-secondary rounded mt-1">
@@ -278,12 +285,20 @@ export default function Calendario() {
                                                     {(eventos.filter(
                                                         (evento) =>
                                                             new Date(evento.horainicio).getDate() ===
-                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
+                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
+                                                            new Date(evento.horainicio).getMonth() ===
+                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
+                                                            new Date(evento.horainicio).getFullYear() ===
+                                                            new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                     ).length > 0) ? eventos
                                                         .filter(
                                                             (evento) =>
                                                                 new Date(evento.horainicio).getDate() ===
-                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate()
+                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
+                                                                new Date(evento.horainicio).getMonth() ===
+                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
+                                                                new Date(evento.horainicio).getFullYear() ===
+                                                                new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                         )
                                                         .map((evento, index) => (
                                                             <div key={index} className="flex text-sm text-muted-foreground p-1 items-center justify-center">
