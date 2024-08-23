@@ -16,6 +16,8 @@ import { pt } from 'date-fns/locale';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import TimeLine from '../timeline';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface EventoProps {
     data?: Date;
@@ -31,13 +33,13 @@ const FormSchema = z.object({
 
 export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
-    const [local, setLocal] = useState<Local>();
+    const [local, /* setLocal */] = useState<Local>();
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
-    const [valorTotal, setValorTotal] = useState(0);
-    const [valorHora, setValorHora] = useState(0);
+    const [valorTotal, /* setValorTotal */] = useState(0);
+    const [valorHora, /* setValorHora */] = useState(0);
     const [diaEvento, setDiaEvento] = useState<Date>();
     const [horainicio, setHoraInicio] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
     const [horafim, setHoraFim] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
@@ -170,27 +172,9 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                 <ResizablePanel defaultSize={10} className='relative py-5 pl-5 max-w-[55%] min-w-[25%]'>
                     Eventos
                     <div>
-                        {eventos?.map((evento) => (
-                            <Button key={evento.id} className="flex text-sm text-muted-foreground w-full bg-secondary rounded mt-1 hover:bg-muted/80"
-                                onClick={() => {
-                                    setLocal(evento.local);
-                                    setNome(evento.nome);
-                                    setSobrenome(evento.sobrenome);
-                                    setTelefone(evento.telefone);
-                                    setEmail(evento.email);
-                                    setValorTotal(evento.valortotal);
-                                    setValorHora(evento.valorhora);
-                                    setDiaEvento(new Date(evento.horainicio));
-                                    setHoraInicio(new Date(evento.horainicio));
-                                    setHoraFim(new Date(evento.horafim));
-                                }
-                                }
-                            >
-                                <div className="flex w-full h-5 overflow-hidden justify-center items-center">
-                                    <Label className='cursor-pointer'>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
-                                </div>
-                            </Button>
-                        ))}
+                        <ScrollArea className='h-[37rem]'>
+                            <TimeLine eventos={eventos} />
+                        </ScrollArea>
                     </div>
                 </ResizablePanel>
             </ResizablePanelGroup>
