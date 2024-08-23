@@ -30,14 +30,7 @@ export default function Calendario() {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
     const [selectedDate, setSelectedDate] = useState(undefined)
     const feriados = new Holidays('BR');
-    const [events, /*setEvents*/] = useState([
-        { date: "2024-08-10", title: "Team Meeting", time: "2:00 PM" },
-        { date: "2024-08-10", title: "Dentist Appointment", time: "9:30 AM" },
-        { date: "2024-08-15", title: "Vacation Planning", time: "7:00 PM" },
-        { date: "2024-08-20", title: "Lunch with Friends", time: "12:00 PM" },
-        { date: "2024-08-20", title: "Movie Night", time: "8:00 PM" },
-        { date: "2024-08-07", title: "Client Meeting", time: "10:00 AM" },
-    ])
+    const [eventos, setEventos] = useState();
 
     const [locais, setLocais] = useState<Local[]>();
     const [localSelecionadoFiltro, setLocalSelecionadoFiltro] = useState<Local>();
@@ -50,6 +43,15 @@ export default function Calendario() {
     const handleLocalSelecionadoFiltro = (local: Local) => {
         (localSelecionadoFiltro == local) ? setLocalSelecionadoFiltro(undefined) : setLocalSelecionadoFiltro(local);
     }
+
+    const buscarEventos = async () => {
+        try {
+            const { data } = await Api.get('gestao/evento/buscarporlocal');
+            setEventos(data);
+        } catch (error) {
+
+        }
+    };
 
     const buscarLocais = async () => {
         try {
@@ -208,7 +210,7 @@ export default function Calendario() {
                                                                 {feriados.isHoliday(new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)) &&
                                                                     <div className="w-3 h-3 rounded-full bg-purple-500" />
                                                                 }
-                                                                {events.filter(
+                                                                {eventos.filter(
                                                                     (event) =>
                                                                         event.date ===
                                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
@@ -216,7 +218,7 @@ export default function Calendario() {
                                                                 <div></div>
                                                             </div>
                                                             <div className="flex absolute top-2 left-2 flex-col h-[7rem] w-[14rem] justify-end">
-                                                                {events
+                                                                {eventos
                                                                     .filter(
                                                                         (event) =>
                                                                             event.date ===
@@ -234,11 +236,11 @@ export default function Calendario() {
                                                     </DialogTrigger>
                                                 </TooltipTrigger>
                                                 <TooltipContent className="bg-muted">
-                                                    {(events.filter(
+                                                    {(eventos.filter(
                                                         (event) =>
                                                             event.date ===
                                                             new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).toISOString().slice(0, 10),
-                                                    ).length > 0) ? events
+                                                    ).length > 0) ? eventos
                                                         .filter(
                                                             (event) =>
                                                                 event.date ===
