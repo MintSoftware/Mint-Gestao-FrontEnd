@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/style/lib/utils';
 import { Evento } from '@/types/Evento';
 import { Local } from '@/types/Local';
@@ -17,7 +18,6 @@ import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import TimeLine from '../timeline';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface EventoProps {
     data?: Date;
@@ -158,18 +158,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                 </div>
                             </div>
                             <div className='flex gap-2'>
-                                <Button type="submit">
-                                    Reservar
-                                </Button>
                                 <DialogClose>
                                     <Button variant="outline" onClick={() => onClose()}>Voltar</Button>
                                 </DialogClose>
+                                <Button type="submit">
+                                    Reservar
+                                </Button>
                             </div>
                         </div>
                     </DialogFooter>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={10} className='relative py-5 pl-5 max-w-[55%] min-w-[25%]'>
+                <ResizablePanel defaultSize={40} className='relative py-5 pl-5 max-w-[55%] min-w-[25%]'>
                     Eventos
                     <div>
                         <ScrollArea className='h-[37rem]'>

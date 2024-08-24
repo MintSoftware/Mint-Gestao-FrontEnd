@@ -5,17 +5,17 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Api from "@/infra/api"
 import { cn } from "@/style/lib/utils"
+import { Evento } from "@/types/Evento"
 import { Local } from "@/types/Local"
 import Holidays from 'date-holidays'
 import { CalendarDaysIcon, CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "lucide-react"
 import { useState } from "react"
+import { toast } from "sonner"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 import { Dialog, DialogTrigger } from "../ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Evento } from "@/types/Evento"
-import { CadastroEvento } from "./cadastro/cadastroevento"
-import { toast } from "sonner"
 import { Skeleton } from "../ui/skeleton"
+import { CadastroEvento } from "./cadastro/cadastroevento"
 
 export default function Calendario() {
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -56,13 +56,15 @@ export default function Calendario() {
 
     const handleLocalSelecionadoFiltro = (local: Local) => {
 
-        if (localSelecionadoFiltro === local) {
+        if (localSelecionadoFiltro == local) {
             setLocalSelecionadoFiltro(undefined);
             setEventos([]);
+            setOpenFiltroLocal(false);
             return;
         }
 
         setLocalSelecionadoFiltro(local);
+        setOpenFiltroLocal(false);
         buscarEventos(local.id);
     }
 
