@@ -12,7 +12,7 @@ export type Evento = {
     valorhora: number
     horainicio: Date
     horafim: Date
-    datahoracadastro: Date
+    diaevento: Date
     local: Local
     cliente?: Cliente
     idtenant: number
