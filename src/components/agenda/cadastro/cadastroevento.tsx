@@ -1,3 +1,4 @@
+import { TimePicker } from '@/components/core/time-picker/time-picker.';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -131,6 +132,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
             loading: "Salvando...",
         });
     }
+
+    const listaHora: Date[] = [
+        new Date(1970, 0, 1, 0, 0, 0),
+        new Date(1971, 0, 1, 1, 0, 0),
+        new Date(1972, 0, 1, 2, 0, 0),
+        new Date(1973, 0, 1, 3, 0, 0),
+        new Date(1974, 0, 1, 4, 0, 0),
+        new Date(1975, 0, 1, 5, 0, 0),
+        new Date(1976, 0, 1, 6, 0, 0),
+        new Date(1977, 0, 1, 7, 0, 0),
+        new Date(1978, 0, 1, 8, 0, 0)
+    ]
 
     return (
         <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[60%] h-[75%]">
@@ -266,13 +279,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                     <Label htmlFor="inicio" className="text-right">
                                         Início
                                     </Label>
-                                    <Input id="inicio" type="time" className="time-input" value={horainicio?.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} onChange={(e) => setHoraInicio(new Date(e.target.value))} />
+                                    <TimePicker date={horainicio} setDate={(date) => date && setHoraInicio(date)} listaHoras={listaHora} />
                                 </div>
                                 <div>
                                     <Label htmlFor="fim" className="text-right">
                                         Fim
                                     </Label>
-                                    <Input className="time-input" id="fim" type="time" value={horafim?.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} onChange={(e) => setHoraFim(new Date(e.target.value))} />
+                                    <TimePicker date={horafim} setDate={(date) => date && setHoraFim(date)} listaHoras={listaHora} />
                                 </div>
                             </div>
                             <div>
