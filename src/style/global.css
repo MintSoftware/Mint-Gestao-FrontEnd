@@ -6,6 +6,11 @@
   .time-input::-webkit-calendar-picker-indicator {
     filter: invert(40%);
   }
+
+  .popover-content-width-full {
+    width: var(--radix-popover-trigger-width);
+    max-height: var(--radix-popover-content-available-height);
+  }
 }
 
 @layer base {

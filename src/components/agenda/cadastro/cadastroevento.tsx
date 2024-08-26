@@ -1,12 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import Api from '@/infra/api';
 import { cn } from '@/style/lib/utils';
 import { Evento } from '@/types/Evento';
 import { Local } from '@/types/Local';
@@ -15,9 +18,10 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
-import { ClockIcon, FlagIcon, PhoneCallIcon } from 'lucide-react';
+import { CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
+import { toast } from 'sonner';
 import { z } from "zod";
 
 interface EventoProps {
@@ -34,7 +38,6 @@ const FormSchema = z.object({
 
 export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
-    const [local, /* setLocal */] = useState<Local>();
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [telefone, setTelefone] = useState('');
@@ -44,6 +47,11 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     const [diaEvento, setDiaEvento] = useState<Date>();
     const [horainicio, setHoraInicio] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
     const [horafim, setHoraFim] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
+
+    const [loadingLocais, setLoadingLocais] = useState(false);
+    const [locais, setLocais] = useState<Local[]>();
+    const [localSelecionadoFiltro, setLocalSelecionadoFiltro] = useState<Local>();
+    const [openFiltroLocal, setOpenFiltroLocal] = useState(false);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -57,6 +65,71 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
     const calcularTamanhoPelaQuantHora = (quantidadeHoras: number) => {
         return quantidadeHoras * 3.4
+    }
+
+    const buscarLocais = async () => {
+        try {
+            setLoadingLocais(true);
+            const { data } = await Api.get('gestao/local');
+            setLocais(data);
+            setLoadingLocais(false);
+        } catch (error) {
+            setLoadingLocais(false);
+            toast.error('Erro ao buscar locais');
+        }
+    };
+
+    const handleLocalSelecionadoFiltro = (local: Local) => {
+
+        if (localSelecionadoFiltro == local) {
+            setLocalSelecionadoFiltro(undefined);
+            setOpenFiltroLocal(false);
+            return;
+        }
+
+        setLocalSelecionadoFiltro(local);
+        setOpenFiltroLocal(false);
+    }
+
+    const definirHoraIni = () => {
+        horainicio.setFullYear(diaEvento?.getFullYear() as number);
+        horainicio.setMonth(diaEvento?.getMonth() as number);
+        horainicio.setDate(diaEvento?.getDate() as number);
+
+        return horainicio;
+    }
+
+    const definirHoraFim = () => {
+        horafim.setFullYear(diaEvento?.getFullYear() as number);
+        horafim.setMonth(diaEvento?.getMonth() as number);
+        horafim.setDate(diaEvento?.getDate() as number);
+
+        return horafim;
+    }
+
+    const salvarEvento = (event: any) => {
+        event.preventDefault();
+
+        const evento = {
+            nome: nome,
+            sobrenome: sobrenome,
+            email: email,
+            telefone: telefone,
+            valortotal: valorTotal,
+            valorhora: valorHora,
+            horainicio: definirHoraIni(),
+            horafim: definirHoraFim(),
+            datahoracadastro: new Date(),
+            local: localSelecionadoFiltro
+        }
+
+        toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
+            toast.success("Evento Salvo com sucesso!");
+        }).catch((error) => {
+            toast.error(error);
+        }), {
+            loading: "Salvando...",
+        });
     }
 
     return (
@@ -73,7 +146,70 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                         <div className="flex flex-col gap-4">
                             <div>
                                 <Label htmlFor="local" className="text-right">Local</Label>
-                                <Input id="local" placeholder="Insira um local" className="col-span-3" value={local?.nome} />
+                                <div>
+                                    <Popover open={openFiltroLocal} onOpenChange={setOpenFiltroLocal}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="ghost"
+                                                role="combobox"
+                                                aria-expanded={openFiltroLocal}
+                                                className=" justify-between border flex w-full"
+                                                onClick={() => buscarLocais()}
+                                            >
+                                                <Label className="text-muted-foreground ">
+                                                    {localSelecionadoFiltro?.nome
+                                                        ? locais?.find((local) => local.id === localSelecionadoFiltro.id)?.nome
+                                                        : "Selecione um local"}
+                                                </Label>
+                                                <ChevronDownIcon className='m-2 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200' style={{
+                                                    transform: openFiltroLocal ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                }} />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="p-0 popover-content-width-full z-20 border">
+                                            <Command>
+                                                {(loadingLocais) ? <></> :
+                                                    <div>
+                                                        <CommandInput placeholder="Busque o local aqui..." />
+                                                        <CommandEmpty>
+                                                            <Label>Local não encontrado</Label>
+                                                        </CommandEmpty>
+                                                    </div>
+                                                }
+                                                <CommandGroup heading=''>
+                                                    {(loadingLocais) ? <div className="flex flex-col gap-2">
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                        <Skeleton className="h-[1.5rem] w-full" />
+                                                    </div> :
+                                                        locais?.map((local) => (
+                                                            <CommandList
+                                                                key={local.id}
+                                                                onClick={() => handleLocalSelecionadoFiltro(local)}
+                                                                className="flex cursor-pointer w-full max-w-full hover:bg-muted/50"
+                                                            >
+                                                                <CommandItem>
+                                                                    <CheckIcon
+                                                                        className={cn(
+                                                                            "mr-2 h-4 w-4",
+                                                                            localSelecionadoFiltro?.id === local.id ? "opacity-100" : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                    {local.nome}
+                                                                </CommandItem>
+                                                            </CommandList>
+                                                        ))}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
                             <div className='flex justify-between'>
                                 <div>
@@ -110,7 +246,10 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                 <Calendar
                                                                     mode="single"
                                                                     selected={diaEvento}
-                                                                    onSelect={(date) => setDiaEvento(date)}
+                                                                    onSelect={(date) => {
+                                                                        setDiaEvento(date)
+                                                                        field.onChange(date)
+                                                                    }}
                                                                     initialFocus
                                                                     className='bg-background border rounded'
                                                                 />
@@ -168,7 +307,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                 <DialogClose>
                                     <Button variant="outline" onClick={() => onClose()}>Voltar</Button>
                                 </DialogClose>
-                                <Button type="submit">
+                                <Button type="submit" onClick={salvarEvento}>
                                     Reservar
                                 </Button>
                             </div>
@@ -214,7 +353,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                     setTelefone(evento.telefone);
                                                                     setEmail(evento.email);
                                                                 }
-                                                            }
+                                                                }
                                                             >
                                                                 <div className="flex items-center gap-2 cursor-pointer">
                                                                     <div className="flex gap-2 mt-0.5 mr-4 cursor-pointer">
