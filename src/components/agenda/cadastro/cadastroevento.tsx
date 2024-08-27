@@ -127,7 +127,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
             toast.success("Evento Salvo com sucesso!");
         }).catch((error) => {
-            toast.error(error);
+            toast.error(
+                error.response.data
+                  .join(';\n\n'),
+                {
+                  style: {
+                    whiteSpace: 'pre-line',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                  },
+                }
+              );
         }), {
             loading: "Salvando...",
         });

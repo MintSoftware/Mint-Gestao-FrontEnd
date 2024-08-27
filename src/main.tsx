@@ -16,13 +16,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Suspense fallback={<Loading />}>
           <MainRoutesLazy />
         </Suspense>
-        <Toaster toastOptions={{
-          className: 'h-[3rem] p-3',
+        <Toaster expand visibleToasts={20} toastOptions={{
+          className: 'min-h-[3rem] p-3',
           classNames: {
             success: 'bg-green-500 text-black font-bold',
             info: 'bg-blue-500 text-black font-bold',
             warning: 'bg-yellow-500 text-black font-bold',
-            error: 'bg-red-500 text-black font-bold',
+            error: 'bg-red-500 text-black font-bold flex',
           }
         }} />
       </ThemeProvider>
