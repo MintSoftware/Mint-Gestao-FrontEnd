@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 
+import { cn } from "@/style/lib/utils";
 import React from "react";
 import {
   Period,
@@ -8,13 +9,12 @@ import {
   getDateByType,
   setDateByType,
 } from "./time-picker-utils";
-import { cn } from "@/style/lib/utils";
 
 export interface TimePickerInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   picker: TimePickerType;
   date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
+  setDate: (date: Date) => void;
   period?: Period;
   onRightFocus?: () => void;
   onLeftFocus?: () => void;
@@ -129,3 +129,4 @@ const TimePickerInput = React.forwardRef<
 TimePickerInput.displayName = "TimePickerInput";
 
 export { TimePickerInput };
+

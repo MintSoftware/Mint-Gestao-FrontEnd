@@ -15,12 +15,12 @@ import { cn } from '@/style/lib/utils';
 import { Evento } from '@/types/Evento';
 import { Local } from '@/types/Local';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from 'sonner';
 import { z } from "zod";
@@ -32,9 +32,11 @@ interface EventoProps {
 }
 
 const FormSchema = z.object({
-    dob: z.date({
-        required_error: "A Data do evento é obrigatória!",
-    }),
+    nome: z.string().nonempty("Nome é obrigatório"),
+    sobrenome: z.string().nonempty("Sobrenome é obrigatório"),
+    telefone: z.string().nonempty("Telefone é obrigatório"),
+    email: z.string().email("Email inválido").nonempty("Email é obrigatório"),
+    dob: z.date({ required_error: "A Data do evento é obrigatória!" }),
 })
 
 export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
@@ -43,8 +45,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     const [sobrenome, setSobrenome] = useState('');
     const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
-    const [valorTotal, /* setValorTotal */] = useState(0);
-    const [valorHora, /* setValorHora */] = useState(0);
+    const [valorTotal, setValorTotal] = useState(0);
+    const [valorHora, setValorHora] = useState(0);
     const [diaEvento, setDiaEvento] = useState<Date>();
     const [horainicio, setHoraInicio] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
     const [horafim, setHoraFim] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
@@ -56,6 +58,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
+        errors: {
+            nome: { type: 'required' , message: 'Nome é obrigatório'},
+            sobrenome: { type: 'required' , message: 'Sobrenome é obrigatório'},
+            telefone: { type: 'required' , message: 'Telefone é obrigatório'},
+            email: { type: 'required' , message: 'Email é obrigatório'},
+            dob: { type: 'required' , message: 'Data do evento é obrigatória'},
+        },
     })
 
     if (!data || data < new Date()) {
@@ -80,6 +89,28 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         }
     };
 
+    const limparDados = () => {
+        setNome('');
+        setSobrenome('');
+        setTelefone('');
+        setEmail('');
+        setValorTotal(0);
+        setValorHora(0);
+        setDiaEvento(undefined);
+        setHoraInicio(new Date(0, 0, 0, 0, 0, 0));
+        setHoraFim(new Date(0, 0, 0, 0, 0, 0));
+        setLocalSelecionadoFiltro(undefined);
+    }
+
+    const limparDadosEFechar = () => {
+        limparDados();
+        fechar();
+    }
+
+    const fechar = () => {
+        onClose();
+    }
+
     const handleLocalSelecionadoFiltro = (local: Local) => {
 
         if (localSelecionadoFiltro == local) {
@@ -92,24 +123,49 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         setOpenFiltroLocal(false);
     }
 
-    const definirHoraIni = () => {
-        horainicio.setFullYear(diaEvento?.getFullYear() as number);
-        horainicio.setMonth(diaEvento?.getMonth() as number);
-        horainicio.setDate(diaEvento?.getDate() as number);
-
+    const definirHoraInicio = () => {
+        if (diaEvento) {
+            horainicio.setDate(diaEvento.getDate());
+            horainicio.setMonth(diaEvento.getMonth());
+            horainicio.setFullYear(diaEvento.getFullYear());
+        }
         return horainicio;
     }
 
-    const definirHoraFim = () => {
-        horafim.setFullYear(diaEvento?.getFullYear() as number);
-        horafim.setMonth(diaEvento?.getMonth() as number);
-        horafim.setDate(diaEvento?.getDate() as number);
-
+    const ajustarDataHoraFim = () => {
+        if (diaEvento) {
+            horafim.setDate(diaEvento.getDate());
+            horafim.setMonth(diaEvento.getMonth());
+            horafim.setFullYear(diaEvento.getFullYear());
+        }
         return horafim;
     }
 
-    const salvarEvento = (event: any) => {
-        event.preventDefault();
+    useEffect(() => {
+        calcularValorHora();
+    }, [localSelecionadoFiltro]);
+
+    useEffect(() => {
+        calcularValorTotal();
+    }, [horainicio, horafim]);
+
+    const calcularValorHora = () => {
+        setValorHora(localSelecionadoFiltro?.valorHora || 0);
+    
+        if (!horainicio || !horafim || horafim.getHours() <= horainicio.getHours()) return;
+    
+        const quantidadeHoras = horafim.getHours() - horainicio.getHours();
+        setValorTotal((localSelecionadoFiltro?.valorHora || 0) * quantidadeHoras);
+    }
+
+    const calcularValorTotal = () => {
+        if (horafim.getHours() <= horainicio.getHours()) return;
+
+        const quantidadeHoras = new Date(horafim).getHours() - new Date(horainicio).getHours();
+        setValorTotal((localSelecionadoFiltro?.valorHora || 0) * quantidadeHoras);
+    }
+
+    const salvarEvento = (data: z.infer<typeof FormSchema>) => {
 
         const evento = {
             nome: nome,
@@ -118,27 +174,27 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
             telefone: telefone,
             valortotal: valorTotal,
             valorhora: valorHora,
-            horainicio: definirHoraIni(),
-            horafim: definirHoraFim(),
-            datahoracadastro: new Date(),
+            horainicio: definirHoraInicio(),
+            horafim: ajustarDataHoraFim(),
             local: localSelecionadoFiltro
         }
 
         toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
             toast.success("Evento Salvo com sucesso!");
+            limparDadosEFechar();
         }).catch((error) => {
             toast.error(
                 error.response.data
-                  .join(';\n\n'),
+                    .join(';\n\n'),
                 {
-                  style: {
-                    whiteSpace: 'pre-line',
-                    padding: '10px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                  },
+                    style: {
+                        whiteSpace: 'pre-line',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                    },
                 }
-              );
+            );
         }), {
             loading: "Salvando...",
         });
@@ -158,8 +214,12 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
     return (
         <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[60%] h-[75%]">
+            <DialogClose onClick={limparDadosEFechar} className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                <Cross2Icon className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+            </DialogClose>
             <ResizablePanelGroup direction="horizontal">
-                <ResizablePanel className='p-5 w-max max-w-[75%] min-w-[45%]'>
+                <ResizablePanel className='p-5 w-max max-w-[75%] min-w-[50%]'>
                     <DialogHeader>
                         <DialogTitle>Cadastro</DialogTitle>
                         <DialogDescription>
@@ -238,12 +298,12 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                             <div className='flex justify-between'>
                                 <div>
                                     <Label>Data</Label>
-                                    <Form {...form} >
+                                    <Form {...form}>
                                         <form className="flex ">
                                             <FormField
                                                 control={form.control}
                                                 name="dob"
-                                                defaultValue={data}
+                                                defaultValue={diaEvento}
                                                 render={({ field }) => (
                                                     <FormItem className="flex flex-col">
                                                         <Popover>
@@ -328,10 +388,10 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                 </div>
                             </div>
                             <div className='flex gap-2'>
-                                <DialogClose>
-                                    <Button variant="outline" onClick={() => onClose()}>Voltar</Button>
+                                <DialogClose onClick={limparDadosEFechar}>
+                                    <Button variant="outline">Voltar</Button>
                                 </DialogClose>
-                                <Button type="submit" onClick={salvarEvento}>
+                                <Button type="submit">
                                     Reservar
                                 </Button>
                             </div>

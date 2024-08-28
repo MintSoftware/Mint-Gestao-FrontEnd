@@ -1,14 +1,14 @@
-import * as React from "react";
-import { TimePickerInput } from "./time-picker-input";
-import { cn } from "@/style/lib/utils";
-import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/style/lib/utils";
+import { Clock } from "lucide-react";
+import * as React from "react";
+import { TimePickerInput } from "./time-picker-input";
 
 interface TimePickerDemoProps {
   date: Date | undefined;
-  setDate: (date: Date | undefined) => void;
+  setDate: (date: Date) => void;
   className?: string;
   listaHoras?: Date[];
 }
@@ -53,6 +53,7 @@ export function TimePicker({ date, setDate, className, listaHoras }: TimePickerD
               <div className="flex flex-col">
                 {listaHoras?.map((hora, index) => (
                 <Button variant={"ghost"} key={index} onClick={() => {
+                  debugger
                   setDate(hora)
                   setOpen(false)
                 }}>{hora.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Button>

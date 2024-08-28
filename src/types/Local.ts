@@ -10,4 +10,5 @@ export type Local = {
     horaAbertura: Date
     horaFechamento: Date
     diasFuncionamento: string
+    valorHora: number
 }

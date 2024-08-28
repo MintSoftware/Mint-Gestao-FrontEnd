@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -8,7 +7,7 @@ import { cn } from "@/style/lib/utils"
 import { Evento } from "@/types/Evento"
 import { Local } from "@/types/Local"
 import Holidays from 'date-holidays'
-import { CalendarDaysIcon, CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "lucide-react"
+import { CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
@@ -188,23 +187,6 @@ export default function Calendario() {
                                     </Button>
                                 </div>
                                 <div className="flex gap-2">
-                                    <div className="flex items-center gap-4">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="flex items-center gap-2">
-                                                    <CalendarDaysIcon className="h-5 w-5" />
-                                                    <span>Mês</span>
-                                                    <ChevronDownIcon className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>Dia</DropdownMenuItem>
-                                                <DropdownMenuItem>Semana</DropdownMenuItem>
-                                                <DropdownMenuItem>Mês</DropdownMenuItem>
-                                                <DropdownMenuItem>Ano</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
                                     <DialogTrigger asChild>
                                         <Button variant="ghost">Novo Evento</Button>
                                     </DialogTrigger>
@@ -313,7 +295,7 @@ export default function Calendario() {
                                             </Tooltip>
                                         </TooltipProvider>
                                     ))}
-                                    {<CadastroEvento data={selectedDate} onClose={() => setSelectedDate(undefined)} eventos={eventosDia} />}
+                                    {<CadastroEvento data={selectedDate} onClose={() => setSelectedDate(undefined)} eventos={eventosDia}/>}
                                 </div>
                             </ScrollArea>
                             <div className="flex h-[1.5rem]">
