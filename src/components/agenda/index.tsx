@@ -15,6 +15,7 @@ import { Dialog, DialogTrigger } from "../ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Skeleton } from "../ui/skeleton"
 import { CadastroEvento } from "./cadastro/cadastroevento"
+import { CadastroEventoTeste } from "./cadastro/cadastroevento-teste"
 
 export default function Calendario() {
     const [currentDate, setCurrentDate] = useState(new Date())
@@ -296,6 +297,7 @@ export default function Calendario() {
                                         </TooltipProvider>
                                     ))}
                                     {<CadastroEvento data={selectedDate} onClose={() => setSelectedDate(undefined)} eventos={eventosDia}/>}
+                                    {/* {<CadastroEventoTeste/>} */}
                                 </div>
                             </ScrollArea>
                             <div className="flex h-[1.5rem]">
