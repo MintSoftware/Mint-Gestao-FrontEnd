@@ -16,9 +16,8 @@ import { cn } from '@/style/lib/utils';
 import { Evento } from '@/types/Evento';
 import { Local } from '@/types/Local';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Cross2Icon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
-import { de, pt } from 'date-fns/locale';
+import { pt } from 'date-fns/locale';
 import { CalendarIcon, CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
@@ -33,62 +32,54 @@ interface EventoProps {
 
 export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
 
-    const [nome, setNome] = useState('');
-    const [sobrenome, setSobrenome] = useState('');
-    const [telefone, setTelefone] = useState('');
-    const [email, setEmail] = useState('');
-    const [valorTotal, setValorTotal] = useState(0);
-    const [valorHora, setValorHora] = useState(0);
-    const [diaEvento, setDiaEvento] = useState<Date>();
-    const [horainicio, setHoraInicio] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
-    const [horafim, setHoraFim] = useState<Date>(new Date(0, 0, 0, 0, 0, 0));
-
     const [loadingLocais, setLoadingLocais] = useState(false);
     const [locais, setLocais] = useState<Local[]>();
     const [localSelecionadoFiltro, setLocalSelecionadoFiltro] = useState<Local>();
     const [openFiltroLocal, setOpenFiltroLocal] = useState(false);
+    const [valorHora, setValorHora] = useState(0);
+    const [valorTotal, setValorTotal] = useState(0);
 
 
     const FormSchema = z.object({
-     /*    local: z.object({
-            id: z.number(),
-            nome: z.string(),
-            valorHora: z.number()
+        local: z.string().refine(value => value.length > 0, {
+            message: 'Local é obrigatório',
         }),
-        diaEvento: z.date().refine(value => value >= new Date(), {
-            message: 'A data deve ser maior ou igual a data atual',
+        diaEvento: z.date().nullable().refine(value => value !== null, {
+            message: 'Data é obrigatória',
+        }).refine(value => value > new Date(), {
+            message: 'Data deve ser maior que a data atual',
         }),
-        horainicio: z.date().refine(value => value >= new Date(0, 0, 0, 0, 0, 0), {
-            message: 'A hora de início deve ser maior que 00:00',
-        }),
-        horafim: z.date().refine(value => value > horainicio, {
-            message: 'A hora de fim deve ser maior que a hora de início',
-        }), */
-        nome: z.string()/* .refine(value => value.length > 0, {
+        nome: z.string().refine(value => value.length > 0, {
             message: 'Nome é obrigatório',
-        }) */,
-       /*  sobrenome: z.string().refine(value => value.length > 0, {
+        }),
+        sobrenome: z.string().refine(value => value.length > 0, {
             message: 'Sobrenome é obrigatório',
         }),
         telefone: z.string().refine(value => value.length === 11, {
             message: 'Telefone deve conter 11 dígitos',
         }),
         email: z.string().email(),
-        valorTotal: z.number().refine(value => value > 0, {
-            message: 'Valor total deve ser maior que 0',
+        horainicio: z.date().refine(value => value.getHours() > 0, {
+            message: 'Hora de início inválida',
         }),
-        valorHora: z.number().refine(value => value > 0, {
-            message: 'Valor hora deve ser maior que 0',
-        }) */
+        horafim: z.date().refine(value => value.getHours() > 0, {
+            message: 'Hora de fim inválida',
+        })
     })
 
     const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema)
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            local: '',
+            diaEvento: undefined,
+            nome: '',
+            sobrenome: '',
+            telefone: '',
+            email: '',
+            horainicio: new Date(0, 0, 0, 0, 0, 0),
+            horafim: new Date(0, 0, 0, 0, 0, 0),
+        }
     })
-
-    if (!data || data < new Date()) {
-        data = new Date();
-    }
 
     const hours = Array.from({ length: 24 }, (_, i) => i)
 
@@ -109,16 +100,17 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     };
 
     const limparDados = () => {
-        setNome('');
-        setSobrenome('');
-        setTelefone('');
-        setEmail('');
-        setValorTotal(0);
-        setValorHora(0);
-        setDiaEvento(undefined);
-        setHoraInicio(new Date(0, 0, 0, 0, 0, 0));
-        setHoraFim(new Date(0, 0, 0, 0, 0, 0));
+        form.setValue('local', '');
+        form.setValue('nome', '');
+        form.setValue('sobrenome', '');
+        form.setValue('telefone', '');
+        form.setValue('email', '');
+        form.setValue('horainicio', new Date(0, 0, 0, 0, 0, 0));
+        form.setValue('horafim', new Date(0, 0, 0, 0, 0, 0));
+        form.reset();
+
         setLocalSelecionadoFiltro(undefined);
+        form.clearErrors();
     }
 
     const limparDadosEFechar = () => {
@@ -143,33 +135,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         setOpenFiltroLocal(false);
     }
 
-    const definirHoraInicio = () => {
-        if (diaEvento) {
-            horainicio.setDate(diaEvento.getDate());
-            horainicio.setMonth(diaEvento.getMonth());
-            horainicio.setFullYear(diaEvento.getFullYear());
-        }
-        return horainicio;
-    }
-
-    const ajustarDataHoraFim = () => {
-        if (diaEvento) {
-            horafim.setDate(diaEvento.getDate());
-            horafim.setMonth(diaEvento.getMonth());
-            horafim.setFullYear(diaEvento.getFullYear());
-        }
-        return horafim;
-    }
-
     useEffect(() => {
         calcularValorHora();
     }, [localSelecionadoFiltro]);
 
     useEffect(() => {
         calcularValorTotal();
-    }, [horainicio, horafim]);
+    }, [form.getFieldState('horainicio'), form.getFieldState('horafim')]);
 
     const calcularValorHora = () => {
+        const horainicio = form.getValues('horainicio'),
+            horafim = form.getValues('horafim');
+
         setValorHora(localSelecionadoFiltro?.valorHora || 0);
 
         if (!horainicio || !horafim || horafim.getHours() <= horainicio.getHours()) return;
@@ -179,22 +156,35 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     }
 
     const calcularValorTotal = () => {
+        const horainicio = form.getValues('horainicio'),
+            horafim = form.getValues('horafim');
+
         if (horafim.getHours() <= horainicio.getHours()) return;
 
         const quantidadeHoras = new Date(horafim).getHours() - new Date(horainicio).getHours();
         setValorTotal((localSelecionadoFiltro?.valorHora || 0) * quantidadeHoras);
     }
 
+    const ajustarDataHoraInicio = () => {
+        const horainicio = form.getValues('horainicio');
+        return new Date(form.getValues('diaEvento').setHours(horainicio.getHours(), horainicio.getMinutes(), horainicio.getSeconds()));
+    }
+
+    const ajustarDataHoraFim = () => {
+        const horafim = form.getValues('horafim');
+        return new Date(form.getValues('diaEvento').setHours(horafim.getHours(), horafim.getMinutes(), horafim.getSeconds()));
+    }
+
     const salvarEvento = (values: z.infer<typeof FormSchema>) => {
         debugger
         const evento = {
-            nome: nome,
-            sobrenome: sobrenome,
-            email: email,
-            telefone: telefone,
+            nome: values.nome,
+            sobrenome: values.sobrenome,
+            email: values.email,
+            telefone: values.telefone,
             valortotal: valorTotal,
             valorhora: valorHora,
-            horainicio: definirHoraInicio(),
+            horainicio: ajustarDataHoraInicio(),
             horafim: ajustarDataHoraFim(),
             local: localSelecionadoFiltro
         }
@@ -246,15 +236,15 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                             </DialogHeader>
                             <div className="flex flex-col gap-4 align-middle py-5 mt-5">
                                 <div className="flex flex-col gap-4">
-                                    <div>
-                                        <FormField
-                                            control={form.control}
-                                            name="local"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Local*</FormLabel>
-                                                    <FormControl>
-                                                        <Popover open={openFiltroLocal} onOpenChange={setOpenFiltroLocal}>
+                                    <FormField
+                                        control={form.control}
+                                        name="local"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Local*</FormLabel>
+                                                <FormControl>
+                                                    <div>
+                                                        <Popover open={openFiltroLocal} onOpenChange={setOpenFiltroLocal} modal>
                                                             <PopoverTrigger asChild>
                                                                 <Button
                                                                     variant="ghost"
@@ -273,7 +263,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                     }} />
                                                                 </Button>
                                                             </PopoverTrigger>
-                                                            <PopoverContent className="p-0 popover-content-width-full z-20 border">
+                                                            <PopoverContent className="p-0 popover-content-width-full z-50 border">
                                                                 <Command>
                                                                     {(loadingLocais) ? <></> :
                                                                         <div>
@@ -298,7 +288,11 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                             locais?.map((local) => (
                                                                                 <CommandList
                                                                                     key={local.id}
-                                                                                    onClick={() => handleLocalSelecionadoFiltro(local)}
+                                                                                    onClick={() => {
+                                                                                        handleLocalSelecionadoFiltro(local)
+                                                                                        form.setValue('local', local.id);
+                                                                                    }}
+                                                                                    {...form.register("local")}
                                                                                     className="flex cursor-pointer w-full max-w-full hover:bg-muted/50"
                                                                                 >
                                                                                     <CommandItem>
@@ -316,11 +310,11 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                 </Command>
                                                             </PopoverContent>
                                                         </Popover>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )} />
-                                    </div>
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )} />
                                     <div className='flex justify-between'>
                                         <div className='flex mr-3'>
                                             <FormField
@@ -340,7 +334,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                             !field.value && "text-muted-foreground"
                                                                         )}
                                                                     >
-                                                                        {field.value ? (
+                                                                        {field.value !== undefined ? (
                                                                             format(field.value, "PPP", { locale: pt })
                                                                         ) : (
                                                                             <span>Selecione a data</span>
@@ -352,13 +346,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                             <PopoverContent className="flex" align="start">
                                                                 <Calendar
                                                                     mode="single"
-                                                                    selected={diaEvento}
+                                                                    selected={form.getValues('diaEvento')}
                                                                     onSelect={(date) => {
-                                                                        setDiaEvento(date)
+                                                                        form.setValue('diaEvento', date as Date);
                                                                         field.onChange(date)
                                                                     }}
                                                                     initialFocus
-                                                                    className='bg-background border rounded'
+                                                                    className='bg-background rounded'
                                                                 />
                                                             </PopoverContent>
                                                         </Popover>
@@ -376,7 +370,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem >
                                                             <FormLabel className='pl-5'>Início*</FormLabel>
                                                             <FormControl>
-                                                                <TimePicker date={horainicio} setDate={(date) => date && setHoraInicio(date)} listaHoras={listaHora} {...field} />
+                                                                <TimePicker date={form.getValues('horainicio')} setDate={(date) => form.setValue('horainicio', date)} listaHoras={listaHora} {...form.register("horainicio")} />
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
@@ -390,7 +384,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem>
                                                             <FormLabel className='pl-5'>Fim*</FormLabel>
                                                             <FormControl>
-                                                                <TimePicker date={horafim} setDate={(date) => date && setHoraFim(date)} listaHoras={listaHora} {...field} />
+                                                                <TimePicker date={form.getValues('horafim')} setDate={(date) => form.setValue('horafim', date)} listaHoras={listaHora} {...form.register("horafim")} />
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
@@ -407,9 +401,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                     <FormItem>
                                                         <FormLabel>Nome*</FormLabel>
                                                         <FormControl>
-                                                            <Input id="cliente" defaultValue={""} {...form.register("nome", {
-                                                                shouldUnregister: true
-                                                            })} placeholder="Inseira o nome" {...field} />
+                                                            <Input id="cliente" placeholder="Inseira o nome" {...form.register("nome")} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -423,7 +415,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                     <FormItem>
                                                         <FormLabel>Sobrenome*</FormLabel>
                                                         <FormControl>
-                                                            <Input id="cliente" placeholder="Inseira o sobrenome" className="col-span-3" {...field} />
+                                                            <Input id="cliente" placeholder="Inseira o sobrenome" className="col-span-3" {...form.register("sobrenome")} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -439,7 +431,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                     <FormItem>
                                                         <FormLabel>Telefone*</FormLabel>
                                                         <FormControl>
-                                                            <Input id="telefone" placeholder="Inseira o telefone" className="col-span-3" {...field} />
+                                                            <Input id="telefone" placeholder="Inseira o telefone" className="col-span-3" {...form.register("telefone")} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -453,7 +445,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                     <FormItem>
                                                         <FormLabel>Email*</FormLabel>
                                                         <FormControl>
-                                                            <Input id="cliente" placeholder="Inseira o email" className="col-span-3" {...field} />
+                                                            <Input id="cliente" placeholder="Inseira o email" className="col-span-3" {...form.register("email")} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -514,13 +506,16 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         className="z-20 cursor-pointer bg-secondary relative left-0 right-0 rounded-md p-2 text-xs flex flex-col justify-between hover:bg-muted/50 transition-colors duration-200"
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
-                                                                            setDiaEvento(new Date(evento.diaevento));
-                                                                            setHoraInicio(new Date(evento.horainicio));
-                                                                            setHoraFim(new Date(evento.horafim));
-                                                                            setNome(evento.nome);
-                                                                            setSobrenome(evento.sobrenome);
-                                                                            setTelefone(evento.telefone);
-                                                                            setEmail(evento.email);
+                                                                            form.setValue('local', evento.local.nome);
+                                                                            form.setValue('diaEvento', new Date(evento.horainicio));
+                                                                            form.setValue('nome', evento.nome);
+                                                                            form.setValue('sobrenome', evento.sobrenome);
+                                                                            form.setValue('telefone', evento.telefone);
+                                                                            form.setValue('email', evento.email);
+                                                                            form.setValue('horainicio', new Date(evento.horainicio));
+                                                                            form.setValue('horafim', new Date(evento.horafim));
+                                                                            setLocalSelecionadoFiltro(evento.local);
+                                                                            setOpenFiltroLocal(false);
                                                                         }
                                                                         }
                                                                     >
