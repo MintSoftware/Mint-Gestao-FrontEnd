@@ -10,6 +10,7 @@ import Locais from "./view/local";
 import Login from "./view/login";
 import PaginaNaoEncontrada from "./view/paginanaoencontrada";
 import RecuperarSenha from "./view/recuperarsenha";
+import { Financeiro } from "./view/financeiro";
 
 function MainRoutes() {
 
@@ -47,6 +48,7 @@ function MainRoutes() {
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
         <Route path="/filial" element={<Filial />} />
+        <Route path="/financeiro" element={<Financeiro />} />
       </Routes>
     </Layout>
   )
