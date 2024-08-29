@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Api from "@/infra/api"
-import { cn } from "@/style/lib/utils"
+import { cn } from "@/lib/utils"
 import { Evento } from "@/types/Evento"
 import { Local } from "@/types/Local"
 import Holidays from 'date-holidays'
@@ -15,7 +15,6 @@ import { Dialog, DialogTrigger } from "../ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Skeleton } from "../ui/skeleton"
 import { CadastroEvento } from "./cadastro/cadastroevento"
-import { CadastroEventoTeste } from "./cadastro/cadastroevento-teste"
 
 export default function Calendario() {
     const [currentDate, setCurrentDate] = useState(new Date())

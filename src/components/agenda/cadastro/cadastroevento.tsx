@@ -12,7 +12,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import Api from '@/infra/api';
-import { cn } from '@/style/lib/utils';
+import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';
 import { Local } from '@/types/Local';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -239,7 +239,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                     <FormField
                                         control={form.control}
                                         name="local"
-                                        render={({ field }) => (
+                                        render={() => (
                                             <FormItem>
                                                 <FormLabel>Local*</FormLabel>
                                                 <FormControl>
@@ -351,7 +351,6 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         form.setValue('diaEvento', date as Date);
                                                                         field.onChange(date)
                                                                     }}
-                                                                    initialFocus
                                                                     className='bg-background rounded'
                                                                 />
                                                             </PopoverContent>
@@ -366,7 +365,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                 <FormField
                                                     control={form.control}
                                                     name="horainicio"
-                                                    render={({ field }) => (
+                                                    render={() => (
                                                         <FormItem >
                                                             <FormLabel className='pl-5'>Início*</FormLabel>
                                                             <FormControl>
@@ -380,7 +379,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                 <FormField
                                                     control={form.control}
                                                     name="horafim"
-                                                    render={({ field }) => (
+                                                    render={() => (
                                                         <FormItem>
                                                             <FormLabel className='pl-5'>Fim*</FormLabel>
                                                             <FormControl>
@@ -397,7 +396,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             <FormField
                                                 control={form.control}
                                                 name="nome"
-                                                render={({ field }) => (
+                                                render={() => (
                                                     <FormItem>
                                                         <FormLabel>Nome*</FormLabel>
                                                         <FormControl>
@@ -411,7 +410,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             <FormField
                                                 control={form.control}
                                                 name="sobrenome"
-                                                render={({ field }) => (
+                                                render={() => (
                                                     <FormItem>
                                                         <FormLabel>Sobrenome*</FormLabel>
                                                         <FormControl>
@@ -427,7 +426,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             <FormField
                                                 control={form.control}
                                                 name="telefone"
-                                                render={({ field }) => (
+                                                render={() => (
                                                     <FormItem>
                                                         <FormLabel>Telefone*</FormLabel>
                                                         <FormControl>
@@ -441,7 +440,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             <FormField
                                                 control={form.control}
                                                 name="email"
-                                                render={({ field }) => (
+                                                render={() => (
                                                     <FormItem>
                                                         <FormLabel>Email*</FormLabel>
                                                         <FormControl>

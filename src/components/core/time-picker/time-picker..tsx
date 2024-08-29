@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/style/lib/utils";
+import { cn } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import * as React from "react";
 import { TimePickerInput } from "./time-picker-input";

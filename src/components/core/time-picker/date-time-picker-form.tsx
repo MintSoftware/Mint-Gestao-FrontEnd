@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { toast } from "@/components/ui/use-toast";
-import { cn } from "@/style/lib/utils";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   dateTime: z.date(),
@@ -80,7 +80,6 @@ export function DateTimePickerForm() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    initialFocus
                   />
                   <div className="p-3 border-t border-border">
                     <TimePickerDemo

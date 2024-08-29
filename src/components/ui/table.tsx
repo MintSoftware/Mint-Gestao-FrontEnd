@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/style/lib/utils"
+import { cn } from "@/lib/utils"
 import { ScrollArea } from "./scroll-area"
 
 const Table = React.forwardRef<
