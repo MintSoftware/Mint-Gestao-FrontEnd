@@ -15,35 +15,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 0 0% 98%; /* Fundo levemente suavizado */
+    --foreground: 0 0% 15%; /* Texto com bom contraste */
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 0 0% 100%; /* Cartões brancos */
+    --card-foreground: 240 10% 15%; /* Texto do cartão escurecido para contraste */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%; /* Popovers brancos */
+    --popover-foreground: 240 10% 15%; /* Texto do popover escurecido */
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 160 96% 50%; /* Ajuste para se aproximar do #03bb85 */
+    --primary-foreground: 0 0% 98%; /* Texto branco para bom contraste com o primário */
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 0 0% 85%; /* Secundário mais suave para complementar o primário */
+    --secondary-foreground: 161 96% 20%; /* Texto escurecido para melhor legibilidade */
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 0 0% 70%; /* Fundo muted levemente esverdeado */
+    --muted-foreground: 0 0% 35%; /* Texto muted com contraste adequado */
 
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 160 70% 45%; /* Acento ajustado para combinar com o primário */
+    --accent-foreground: 0 0% 98%; /* Texto branco para contraste com o accent */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%; /* Cor de destruição mantida */
+    --destructive-foreground: 0 0% 98%; /* Texto branco para contraste com a destruição */
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+    --border: 0 0% 88%; /* Bordas com leve tom esverdeado */
+    --input: 0 0% 88%; /* Inputs combinando com as bordas */
+    --ring: 0 10% 35%; /* Anel com mais contraste para destaque */
 
-    --radius: 0.5rem;
+    --radius: 0.5rem; /* Manter o radius padrão */
   }
 
   .dark {
