@@ -10,7 +10,7 @@ import Locais from "./view/local";
 import Login from "./view/login";
 import PaginaNaoEncontrada from "./view/paginanaoencontrada";
 import RecuperarSenha from "./view/recuperarsenha";
-import { Financeiro } from "./view/financeiro";
+import Financeiro from "./view/financeiro";
 
 function MainRoutes() {
 

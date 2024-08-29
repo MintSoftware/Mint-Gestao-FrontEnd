@@ -1,151 +1,334 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, BarChart, Bar } from "recharts"
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Label } from "@/components/ui/label"
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, Legend } from "recharts"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-export function Financeiro() {
+interface Movimentacao {
+    id: number
+    data: string
+    descricao: string
+    tipo: string
+    valor: number
+    local: string
+    hora: number
+}
 
-    const incomeData = [
-        { date: 'Jun 1', value: 1000 },
-        { date: 'Jun 3', value: 1200 },
-        { date: 'Jun 5', value: 1100 },
-        { date: 'Jun 7', value: 1300 },
-        { date: 'Jun 9', value: 1150 },
-        { date: 'Jun 11', value: 1250 },
-        { date: 'Jun 13', value: 1180 },
-        { date: 'Jun 15', value: 1220 },
-        { date: 'Jun 17', value: 1300 },
-        { date: 'Jun 19', value: 1150 },
-        { date: 'Jun 21', value: 1400 },
-        { date: 'Jun 23', value: 1350 },
-        { date: 'Jun 25', value: 1200 },
-        { date: 'Jun 27', value: 1250 },
+const initialMovimentacoes = [
+    { id: 1, data: "2023-05-01", descricao: "Venda de produtos", tipo: "Entrada", valor: 5000, local: "Loja Física", hora: 14 },
+    { id: 2, data: "2023-05-02", descricao: "Venda de serviços", tipo: "Entrada", valor: 3000, local: "Online", hora: 10 },
+    { id: 3, data: "2023-05-03", descricao: "Venda de produtos", tipo: "Entrada", valor: 4000, local: "Shopping", hora: 18 },
+    { id: 4, data: "2023-05-04", descricao: "Venda de serviços", tipo: "Entrada", valor: 2000, local: "Online", hora: 22 },
+    { id: 5, data: "2023-05-05", descricao: "Venda de produtos", tipo: "Entrada", valor: 6000, local: "Loja Física", hora: 16 },
+    { id: 6, data: "2023-05-01", descricao: "Pagamento de fornecedor", tipo: "Saída", valor: -2000, local: "Loja Física", hora: 9 },
+    { id: 7, data: "2023-05-03", descricao: "Pagamento de aluguel", tipo: "Saída", valor: -3000, local: "Shopping", hora: 11 },
+    { id: 8, data: "2023-05-05", descricao: "Pagamento de salários", tipo: "Saída", valor: -5000, local: "Loja Física", hora: 17 },
+]
+
+const CORES = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
+
+const gerarDadosHorarios = (movimentacoes: Movimentacao[], local: any) => {
+    const horasBase = Array.from({ length: 24 }, (_, i) => ({ hora: i, valor: 0 }))
+    const dadosFiltrados = movimentacoes.filter(mov => local === "Todos" || mov.local === local)
+
+    dadosFiltrados.forEach(mov => {
+        if (mov.tipo === "Entrada") {
+            horasBase[mov.hora].valor += mov.valor
+        }
+    })
+
+    return horasBase.map(({ hora, valor }) => ({
+        hora: `${hora.toString().padStart(2, '0')}:00`,
+        valor
+    }))
+}
+
+const gerarDadosLocais = (movimentacoes: Movimentacao[]) => {
+    const locais: { [key: string]: number } = {};
+    movimentacoes.forEach(mov => {
+        if (mov.tipo === "Entrada") {
+            locais[mov.local] = (locais[mov.local] || 0) + mov.valor
+        }
+    })
+    return Object.entries(locais).map(([nome, valor]) => ({ nome, valor }))
+}
+
+const gerarDadosTipoMovimentacao = (movimentacoes: Movimentacao[]) => {
+    const entradas = movimentacoes.filter(mov => mov.tipo === "Entrada").reduce((acc, mov) => acc + mov.valor, 0)
+    const saidas = Math.abs(movimentacoes.filter(mov => mov.tipo === "Saída").reduce((acc, mov) => acc + mov.valor, 0))
+    return [
+        { nome: "Entradas", valor: entradas },
+        { nome: "Saídas", valor: saidas }
     ]
+}
 
-    const revenueData = [
-        { day: 'Jun 1', value: 200 },
-        { day: 'Jun 2', value: 150 },
-        { day: 'Jun 3', value: 180 },
-        { day: 'Jun 4', value: 120 },
-        { day: 'Jun 5', value: 200 },
-        { day: 'Jun 6', value: 140 },
-        { day: 'Jun 7', value: 190 },
-    ]
+export default function Financeiro() {
+    const [movimentacoes, setMovimentacoes] = useState(initialMovimentacoes)
+    const [localSelecionado, setLocalSelecionado] = useState("Todos")
+    const [novoMovimento, setNovoMovimento] = useState({
+        data: "",
+        descricao: "",
+        tipo: "Entrada",
+        valor: "",
+        local: "",
+        hora: ""
+    })
+
+    const saldoTotal = movimentacoes.reduce((acc, mov) => acc + mov.valor, 0)
+    const totalEntradas = movimentacoes.filter(mov => mov.tipo === "Entrada").reduce((acc, mov) => acc + mov.valor, 0)
+    const totalSaidas = movimentacoes.filter(mov => mov.tipo === "Saída").reduce((acc, mov) => acc + Math.abs(mov.valor), 0)
+
+    const dadosHorarios = gerarDadosHorarios(movimentacoes, localSelecionado)
+    const dadosLocais = gerarDadosLocais(movimentacoes)
+    const dadosTipoMovimentacao = gerarDadosTipoMovimentacao(movimentacoes)
+
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target
+        setNovoMovimento(prev => ({ ...prev, [name]: value }))
+    }
+
+    const handleSelectChange = (name: any, value: any) => {
+        setNovoMovimento(prev => ({ ...prev, [name]: value }))
+    }
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        const novoId = movimentacoes.length + 1
+        const novaMovimentacao = {
+            ...novoMovimento,
+            id: novoId,
+            valor: novoMovimento.tipo === "Entrada" ? Number(novoMovimento.valor) : -Number(novoMovimento.valor),
+            hora: Number(novoMovimento.hora.split(':')[0])
+        }
+        setMovimentacoes(prev => [...prev, novaMovimentacao])
+        setNovoMovimento({
+            data: "",
+            descricao: "",
+            tipo: "Entrada",
+            valor: "",
+            local: "",
+            hora: ""
+        })
+    }
+
+    const locaisUnicos = [...new Set(movimentacoes.map(mov => mov.local))]
 
     return (
-        <div className="flex flex-col">
-            <h1 className="text-3xl font-bold mb-6 text-white">Escritório Privativo</h1>
-            <ScrollArea className="flex flex-col w-[113rem] h-[50rem] p-4">
-                {/* Distribuição de Reservas */}
-                <Card className="mb-6 bg-background border">
-                    <CardHeader>
-                        <CardTitle className="text-white">Distribuição de Reservas</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex space-x-2">
-                        {["Escritório 1", "Escritório 2", "Escritório 3", "Escritório 4", "Escritório 5"].map((office) => (
-                            <Button key={office} variant="outline" size="sm" className="text-gray-300 border-gray-600 hover:bg hover:text-white">
-                                {office}
-                            </Button>
-                        ))}
-                    </CardContent>
-                </Card>
+        <div className="relative w-full p-4">
+            <ScrollArea className="h-[52rem] px-4">
+                <h1 className="text-2xl font-bold mb-4">Fluxo de Caixa</h1>
 
-                {/* Horas Reservadas */}
-                <Card className="mb-6 bg-background border">
-                    <CardHeader>
-                        <CardTitle className="text-white">Horas Reservadas</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-2">
-                            {["8h", "9h", "10h", "11h", "12h", "13h", "14h", "15h", "16h"].map((time) => (
-                                <div key={time} className="flex items-center">
-                                    <span className="w-12 text-sm text-gray-400">{time}</span>
-                                    <div className="flex-1 h-6 bg rounded-full overflow-hidden">
-                                        <div className="h-full bg-primary rounded-full" style={{ width: `${Math.random() * 100}%` }}></div>
+                <div className="grid grid-cols-12 gap-4 mb-8">
+                    {/* Cards de resumo */}
+                    <Card className="col-span-4 flex flex-col justify-center items-center">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Saldo Total</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold">{saldoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="col-span-4 flex flex-col justify-center items-center">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Total de Entradas</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold text-primary">{totalEntradas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className="col-span-4 flex flex-col justify-center items-center">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Total de Saídas</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-2xl font-bold text-red-600">{totalSaidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Formulário para adicionar novo movimento */}
+                    <div className="flex w-full gap-10">
+                        <Card className="flex flex-col min-w-[55rem]">
+                            <CardHeader>
+                                <CardTitle>Registrar Novo Movimento</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="data">Data</Label>
+                                        <Input id="data" name="data" type="date" value={novoMovimento.data} onChange={handleInputChange} required />
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="descricao">Descrição</Label>
+                                        <Input id="descricao" name="descricao" value={novoMovimento.descricao} onChange={handleInputChange} required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="tipo">Tipo</Label>
+                                        <Select name="tipo" value={novoMovimento.tipo} onValueChange={(value) => handleSelectChange("tipo", value)}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione o tipo" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Entrada">Entrada</SelectItem>
+                                                <SelectItem value="Saída">Saída</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="valor">Valor</Label>
+                                        <Input id="valor" name="valor" type="number" value={novoMovimento.valor} onChange={handleInputChange} required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="local">Local</Label>
+                                        <Select name="local" value={novoMovimento.local} onValueChange={(value) => handleSelectChange("local", value)}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecione o local" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {locaisUnicos.map(local => (
+                                                    <SelectItem key={local} value={local}>{local}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="hora">Hora</Label>
+                                        <Input id="hora" name="hora" type="time" value={novoMovimento.hora} onChange={handleInputChange} required />
+                                    </div>
+                                    <Button type="submit" className="col-span-2">Registrar Movimento</Button>
+                                </form>
+                            </CardContent>
+                        </Card>
 
-                {/* Renda ao longo do mês */}
-                <Card className="mb-6 bg-background border">
-                    <CardHeader>
-                        <CardTitle className="text-white">Renda ao longo do mês</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <h3 className="text-2xl font-bold mb-4 text-white">Renda Diária</h3>
-                        <p className="text-4xl font-bold mb-4 text-green-400">R$ 1.200</p>
-                        <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={incomeData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                    <XAxis dataKey="date" stroke="#9CA3AF" />
-                                    <YAxis stroke="#9CA3AF" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#1F2937', border: 'none' }}
-                                        itemStyle={{ color: '#D1D5DB' }}
-                                    />
-                                    <Line type="monotone" dataKey="value" stroke="#03bb85" strokeWidth={2} dot={false} />
+                        {/* Tabela de movimentações */}
+                        <Card className="flex flex-col min-w-[55rem]">
+                            <CardHeader className="py-2">
+                                <CardTitle className="text-sm font-medium">Movimentações Recentes</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="text-xs">Data</TableHead>
+                                            <TableHead className="text-xs">Descrição</TableHead>
+                                            <TableHead className="text-xs">Local</TableHead>
+                                            <TableHead className="text-xs text-right">Valor</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {movimentacoes.slice(-5).map((mov) => (
+                                            <TableRow key={mov.id}>
+                                                <TableCell className="text-xs py-1">{mov.data}</TableCell>
+                                                <TableCell className="text-xs py-1">{mov.descricao}</TableCell>
+                                                <TableCell className="text-xs py-1">{mov.local}</TableCell>
+                                                <TableCell className={`text-xs py-1 text-right ${mov.tipo === "Entrada" ? "text-primary" : "text-red-600"}`}>
+                                                    {mov.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Gráfico de Horários que Mais Faturaram (Largura Máxima) */}
+                    <Card className="col-span-12">
+                        <CardHeader className="py-2 flex flex-row items-center justify-between">
+                            <CardTitle className="text-sm font-medium">Horários que Mais Faturaram</CardTitle>
+                            <Select value={localSelecionado} onValueChange={setLocalSelecionado}>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Selecione o local" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="Todos">Todos os locais</SelectItem>
+                                    {dadosLocais.map(local => (
+                                        <SelectItem key={local.nome} value={local.nome}>{local.nome}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </CardHeader>
+                        <CardContent>
+                            <ResponsiveContainer width="100%" height={400}>
+                                <LineChart data={dadosHorarios}>
+                                    <XAxis dataKey="hora" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Line type="monotone" dataKey="valor" name="Faturamento" stroke="#03bb85" />
                                 </LineChart>
                             </ResponsiveContainer>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
+                    
+                    {/* Gráfico de Evolução do Saldo (Largura Máxima) */}
+                    <Card className="col-span-12">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Evolução do Saldo</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ResponsiveContainer width="100%" height={400}>
+                                <LineChart data={movimentacoes}>
+                                    <XAxis dataKey="data" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Line type="monotone" dataKey="valor" name="Saldo" stroke="#03bb85" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
 
-                {/* Detalhamento da Receita Diária */}
-                <Card className="mb-6 bg-background border">
-                    <CardHeader>
-                        <CardTitle className="text-white">Detalhamento da Receita Diária</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <h3 className="text-2xl font-bold mb-4 text-white">Receita Diária</h3>
-                        <p className="text-4xl font-bold mb-4 text-green-400">R$ 200</p>
-                        <div className="h-64">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={revenueData}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                    <XAxis dataKey="day" stroke="#9CA3AF" />
-                                    <YAxis stroke="#9CA3AF" />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#1F2937', border: 'none' }}
-                                        itemStyle={{ color: '#D1D5DB' }}
-                                    />
-                                    <Bar dataKey="value" fill="#03bb85" />
+                    {/* Gráficos de Largura Parcial */}
+                    <Card className="col-span-6">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Locais que Mais Faturaram</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart data={dadosLocais}>
+                                    <XAxis dataKey="nome" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Legend />
+                                    <Bar dataKey="valor" fill="#03bb85" name="Faturamento" />
                                 </BarChart>
                             </ResponsiveContainer>
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
 
-                {/* Solicitações de Reserva */}
-                <Card className="bg-background border">
-                    <CardHeader>
-                        <CardTitle className="text-white">Solicitações de Reserva</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <ul className="space-y-4">
-                            {[
-                                { time: "8:00 - 10:00", date: "15/06/2023" },
-                                { time: "10:00 - 12:00", date: "15/06/2023" },
-                                { time: "12:00 - 14:00", date: "15/06/2023" },
-                                { time: "14:00 - 16:00", date: "15/06/2023" },
-                                { time: "16:00 - 18:00", date: "15/06/2023" },
-                            ].map((request, index) => (
-                                <li key={index} className="flex items-center space-x-4">
-                                    <div className="w-12 h-12 bg rounded-lg"></div>
-                                    <div>
-                                        <p className="font-medium text-white">{request.time}</p>
-                                        <p className="text-sm text-gray-400">{request.date}</p>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <Button className="w-full mt-4" variant="outline">Gerenciar Solicitações de Reserva</Button>
-                    </CardContent>
-                </Card>
+                    <Card className="col-span-6">
+                        <CardHeader className="py-2">
+                            <CardTitle className="text-sm font-medium">Distribuição de Entradas e Saídas</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={dadosTipoMovimentacao}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        dataKey="valor"
+                                        label={({ nome, percent }) => `${nome} ${(percent * 100).toFixed(0)}%`}
+                                    >
+                                        {dadosTipoMovimentacao.map((index : any) => (
+                                            <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+                </div>
             </ScrollArea>
         </div>
-    );
+    )
 }
