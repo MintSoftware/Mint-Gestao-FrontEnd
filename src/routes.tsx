@@ -11,6 +11,7 @@ import Login from "./view/login";
 import PaginaNaoEncontrada from "./view/paginanaoencontrada";
 import RecuperarSenha from "./view/recuperarsenha";
 import Financeiro from "./view/financeiro";
+import DashboardPage from "./view/dashboard/page";
 
 function MainRoutes() {
 
@@ -49,6 +50,7 @@ function MainRoutes() {
         <Route path="/configuracoes/*" element={<Configuracoes />} />
         <Route path="/filial" element={<Filial />} />
         <Route path="/financeiro" element={<Financeiro />} />
+        <Route path="/" element={<DashboardPage />} />
       </Routes>
     </Layout>
   )
