@@ -4,8 +4,7 @@ import { realizaRefresh } from "./infra/helpers/refreshToken";
 import { useAuth } from "./infra/hooks/useAuth";
 import Configuracoes from "./modules/configuracoes";
 import DashboardPage from "./modules/dashboard/page";
-import { Filial } from "./modules/filial";
-import Financeiro from "./modules/financeiro";
+import Financeiro from "./modules/financeiro/page";
 import Locais from "./modules/local";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
@@ -72,7 +71,6 @@ function MainRoutes() {
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
-        <Route path="/filial" element={<Filial />} />
         <Route path="/financeiro" element={<Financeiro />} />
         <Route path="/" element={<DashboardPage />} />
       </Routes>
