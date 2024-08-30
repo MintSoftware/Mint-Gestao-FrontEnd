@@ -5,21 +5,35 @@ import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { useEffect, useState } from "react";
 
 const TopBar = () => {
     const { limparUsuarioLogado } = useAuth();
     const navigate = useNavigate();
+    interface Usuario {
+      empresa: {
+        nomefantasia: string;
+      };
+      nome: string;
+      email: string;
+    }
+    
+    const [usuario, setUsuario] = useState<Usuario | undefined>();
 
-    const recuperarEmpresa = () => {
+
+    const recuperarUsuario = () => {
         const usuarioLogado = localStorage.getItem('usuario');
         if (usuarioLogado) {
-            const usuario = JSON.parse(usuarioLogado);
-            return usuario.empresa.nomefantasia;
+            setUsuario(JSON.parse(usuarioLogado));
         }
     }
+
+    useEffect(() => {
+        recuperarUsuario();
+    }, []);
 
     const sair = () => {
         limparUsuarioLogado();
@@ -70,7 +84,7 @@ const TopBar = () => {
                     </SheetContent>
                 </Sheet>
                 <div className="absolute w-[95vw] flex justify-center z-[-1]">
-                    <Label className="text-lg">{recuperarEmpresa()}</Label>
+                    <Label className="text-lg">{usuario?.empresa.nomefantasia}</Label>
                 </div>
                 <div className="flex w-full justify-end">
                     <div className="relative flex h-9 w-9 justify-center items-center mr-3 cursor-pointer">
@@ -81,35 +95,43 @@ const TopBar = () => {
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="overflow-hidden rounded-full" size="icon" variant="outline">
-                                <Avatar className='cursor-pointer'>
+                            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                                <Avatar className="h-8 w-8">
                                     <AvatarImage src="https://github.com/shadcn.png" />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>SC</AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                                <Link to="/perfil">
-                                    Minha conta
-                                </Link>
-                            </DropdownMenuItem>
+                        <DropdownMenuContent className="w-56" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal">
+                                <div className="flex flex-col space-y-1">
+                                    <p className="text-sm font-medium leading-none">{usuario?.nome}</p>
+                                    <p className="text-xs leading-none text-muted-foreground">
+                                        {usuario?.email}
+                                    </p>
+                                </div>
+                            </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <Link to="/configuracoes">
-                                    Configurações
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link to="/ajuda">
-                                    Ajuda
-                                </Link>
-                            </DropdownMenuItem>
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <Link to="/perfil">Perfil</Link>
+                                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link to="/suporte">Suporte</Link>
+                                    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Link to="/configuracoes">Configurações</Link>
+                                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                                 <AlertDialogTrigger className="w-full text-left">
                                     Sair
                                 </AlertDialogTrigger>
+                                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -124,7 +146,7 @@ const TopBar = () => {
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
                         <AlertDialogAction onClick={() => sair()}>
-                                Sair
+                            Sair
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
