@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
-import { ToggleTheme } from "../ToggleTheme";
 
 const MenuLateral = () => {
 
@@ -76,7 +75,6 @@ const MenuLateral = () => {
         </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <ToggleTheme />
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

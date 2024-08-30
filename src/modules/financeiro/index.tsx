@@ -29,8 +29,6 @@ const initialMovimentacoes = [
     { id: 8, data: "2023-05-05", descricao: "Pagamento de salários", tipo: "Saída", valor: -5000, local: "Loja Física", hora: 17 },
 ]
 
-const CORES = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
-
 const gerarDadosHorarios = (movimentacoes: Movimentacao[], local: any) => {
     const horasBase = Array.from({ length: 24 }, (_, i) => ({ hora: i, valor: 0 }))
     const dadosFiltrados = movimentacoes.filter(mov => local === "Todos" || mov.local === local)
@@ -137,7 +135,7 @@ export default function Financeiro() {
                             <CardTitle className="text-sm font-medium">Total de Entradas</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-primary">{totalEntradas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                            <div className="text-2xl font-bold text-green-500">{totalEntradas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                         </CardContent>
                     </Card>
                     <Card className="col-span-4 flex flex-col justify-center items-center">
@@ -145,7 +143,7 @@ export default function Financeiro() {
                             <CardTitle className="text-sm font-medium">Total de Saídas</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-2xl font-bold text-red-600">{totalSaidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+                            <div className="text-2xl font-bold text-red-500">{totalSaidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
                         </CardContent>
                     </Card>
 
@@ -224,7 +222,7 @@ export default function Financeiro() {
                                                 <TableCell className="text-xs py-1">{mov.data}</TableCell>
                                                 <TableCell className="text-xs py-1">{mov.descricao}</TableCell>
                                                 <TableCell className="text-xs py-1">{mov.local}</TableCell>
-                                                <TableCell className={`text-xs py-1 text-right ${mov.tipo === "Entrada" ? "text-primary" : "text-red-600"}`}>
+                                                <TableCell className={`text-xs py-1 text-right ${mov.tipo === "Entrada" ? "text-green-500" : "text-red-500"}`}>
                                                     {mov.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                                 </TableCell>
                                             </TableRow>
@@ -258,7 +256,7 @@ export default function Financeiro() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Line type="monotone" dataKey="valor" name="Faturamento" stroke="#03bb85" />
+                                    <Line type="monotone" dataKey="valor" name="Faturamento" stroke={`var(--primary)`} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -276,7 +274,7 @@ export default function Financeiro() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Line type="monotone" dataKey="valor" name="Saldo" stroke="#03bb85" />
+                                    <Line type="monotone" dataKey="valor" name="Saldo" stroke={`var(--primary)`} />
                                 </LineChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -294,7 +292,7 @@ export default function Financeiro() {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey="valor" fill="#03bb85" name="Faturamento" />
+                                    <Bar dataKey="valor" fill={`var(--primary)`} name="Faturamento" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </CardContent>
@@ -313,12 +311,12 @@ export default function Financeiro() {
                                         cy="50%"
                                         labelLine={false}
                                         outerRadius={80}
-                                        fill="#8884d8"
+                                        fill={`var(--primary)`}
                                         dataKey="valor"
                                         label={({ nome, percent }) => `${nome} ${(percent * 100).toFixed(0)}%`}
                                     >
                                         {dadosTipoMovimentacao.map((index : any) => (
-                                            <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
+                                            <Cell key={`cell-${index}`} fill={`var(--primary)`[index % `var(--primary)`.length]} />
                                         ))}
                                     </Pie>
                                     <Tooltip />

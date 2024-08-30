@@ -9,7 +9,7 @@ interface AuthContextProps {
     // filialSelecionada?: Filial,
     limparUsuarioLogado: () => Promise<void>;
     salvarUsuarioLogado: (dados: any) => Promise<void>;
-    recuperarUsuarioLogado: () => Promise<{ user: Usuario, auth: Auth }>;
+    recuperarUsuarioLogado: () => Promise<any>;
     // alterarFilialSelecionada: (Filial: Filial) => Promise<void>;
 }
 
@@ -22,8 +22,11 @@ export function AuthProvider({ children }: any) {
     const [auth, setAuth] = useState<Auth>();
 
     async function recuperarUsuarioLogado() {
-        const usuarioLogadoJSON = localStorage.getItem('usuario'),
-            usuarioLogado: Usuario = JSON.parse(usuarioLogadoJSON == null ? 'undefined' : usuarioLogadoJSON),
+        const usuarioLogadoJSON = localStorage.getItem('usuario');
+
+            if(!usuarioLogadoJSON) return;
+
+            const usuarioLogado = JSON.parse(usuarioLogadoJSON),
             token = localStorage.getItem('token'),
             refreshToken = localStorage.getItem('refreshToken');
             // filial = JSON.parse(localStorage.getItem('filial') as string);

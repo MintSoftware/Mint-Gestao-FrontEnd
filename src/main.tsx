@@ -1,10 +1,9 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy} from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner.tsx';
 import { AuthProvider } from "./infra/contexts/AuthContext.tsx";
 import './style/global.css';
-import { ThemeProvider } from './style/theme/theme-provider.tsx';
 import Loading from './modules/loading/Loading.tsx';
 
 const MainRoutesLazy = lazy(() => import('./routes.tsx'));
@@ -12,7 +11,6 @@ const MainRoutesLazy = lazy(() => import('./routes.tsx'));
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvider>
     <BrowserRouter>
-      <ThemeProvider defaultTheme="dark" storageKey='vite-ui-theme'>
         <Suspense fallback={<Loading />}>
           <MainRoutesLazy />
         </Suspense>
@@ -25,7 +23,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             error: 'bg-red-500 text-black font-bold flex',
           }
         }} />
-      </ThemeProvider>
     </BrowserRouter>
   </AuthProvider>
 );

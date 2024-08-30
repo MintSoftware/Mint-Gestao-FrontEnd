@@ -1,8 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Link, useLocation } from "react-router-dom";
-import ConfigAparencia from "./modulos/aparencia";
 import ConfigGeral from "./modulos/geral";
 import ConfigSeguranca from "./modulos/seguranca";
+import PageAparencia from "./modulos/aparencia/page";
 
 export default function Configuracoes() {
 
@@ -26,10 +26,9 @@ export default function Configuracoes() {
                     <div className="flex flex-col gap-6 w-full justify-center">
                         {pathname === "/configuracoes/geral" && <ConfigGeral />}
                         {pathname === "/configuracoes/seguranca" && <ConfigSeguranca />}
-                        {pathname === "/configuracoes/aparencia" && <ConfigAparencia />}
+                        {pathname === "/configuracoes/aparencia" && <PageAparencia />}
                         {pathname === "/configuracoes/apoio" && <></>}
                         {pathname === "/configuracoes/organizacoes" && <></>}
-                        {pathname === "/configuracoes/avancado" && <></>}
                     </div>
                 </div>
             </main>

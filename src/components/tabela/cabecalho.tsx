@@ -7,7 +7,6 @@ import {
 import { Column } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
-import { Button } from "../ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 
 interface DataTableColumnHeaderProps<TData, TValue>
@@ -26,23 +25,22 @@ export default function Cabecalho<TData, TValue>({
   }
 
   return (
-    <div style={{ width: column.getSize() }} className={cn("flex items-center", className)}>
+    <div style={{ width: column.getSize() }} className={cn(`flex`, className)}>
       <DropdownMenu>
-        <Button
-          variant="ghost"
-          className="-ml-3 h-8 data-[state=open]:bg-accent"
+        <div
+          className={`h-8 data-[state=open] hover:bg-accent-hover w-full items-center justify-between flex`}
         >
           <span>{title}</span>
           <DropdownMenuTrigger asChild>
             {column.getIsSorted() === "desc" ? (
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
+              <ArrowDownIcon className="ml-2 h-4 w-4 cursor-pointer" />
             ) : column.getIsSorted() === "asc" ? (
-              <ArrowUpIcon className="ml-2 h-4 w-4" />
+              <ArrowUpIcon className="ml-2 h-4 w-4 cursor-pointer" />
             ) : (
-              <CaretSortIcon className="ml-2 h-4 w-4" />
+              <CaretSortIcon className="ml-2 h-4 w-4 cursor-pointer" />
             )}
           </DropdownMenuTrigger>
-        </Button>
+        </div>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />

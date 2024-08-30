@@ -6,6 +6,31 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 export default function Loading() {
     const [progress, setProgress] = useState(0);
 
+
+    const [isDarkMode, setIsDarkMode] = useState(false)
+    const [primaryColor, setPrimaryColor] = useState("#03bb85")
+    const [secondaryColor, setSecondaryColor] = useState("#818cf8")
+    const [borderRadius, setBorderRadius] = useState(8)
+
+    useEffect(() => {
+        // Carregar as configurações salvas ao inicializar o componente
+        const savedConfig = localStorage.getItem("themeConfig")
+        if (savedConfig) {
+            const config = JSON.parse(savedConfig)
+            setIsDarkMode(config.isDarkMode)
+            setPrimaryColor(config.primaryColor)
+            setSecondaryColor(config.secondaryColor)
+            setBorderRadius(config.borderRadius)
+        }
+    }, [])
+
+    useEffect(() => {
+        document.documentElement.style.setProperty('--primary', primaryColor)
+        document.documentElement.style.setProperty('--secondary', secondaryColor)
+        document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
+        document.documentElement.classList.toggle('dark', isDarkMode)
+    }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
+
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress((prev) => (prev < 90 ? prev + 10 : 90));
@@ -15,7 +40,7 @@ export default function Loading() {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-[#09090B]">
+        <div className="flex flex-col items-center justify-center h-screen bg-background">
             <div className="max-w-md w-full space-y-6">
                 <div className="text-center space-y-2">
                     <h1 className="text-3xl font-bold text-primary">Carregando...</h1>
@@ -73,7 +98,7 @@ function LinechartChart(props: any) {
                         tickFormatter={(value) => value.slice(0, 3)}
                     />
                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                    <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+                    <Line dataKey="desktop" type="natural" stroke="var(--primary)" strokeWidth={2} dot={false} />
                 </LineChart>
             </ChartContainer>
         </div>

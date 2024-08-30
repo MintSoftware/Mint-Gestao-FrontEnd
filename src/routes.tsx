@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, } from "react-router-dom";
 import { realizaRefresh } from "./infra/helpers/refreshToken";
 import { useAuth } from "./infra/hooks/useAuth";
@@ -18,6 +18,31 @@ function MainRoutes() {
   const { usuarioLogado, recuperarUsuarioLogado } = useAuth();
 
 
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [primaryColor, setPrimaryColor] = useState("#03bb85")
+  const [secondaryColor, setSecondaryColor] = useState("#818cf8")
+  const [borderRadius, setBorderRadius] = useState(8)
+
+  useEffect(() => {
+    // Carregar as configurações salvas ao inicializar o componente
+    const savedConfig = localStorage.getItem("themeConfig")
+    if (savedConfig) {
+      const config = JSON.parse(savedConfig)
+      setIsDarkMode(config.isDarkMode)
+      setPrimaryColor(config.primaryColor)
+      setSecondaryColor(config.secondaryColor)
+      setBorderRadius(config.borderRadius)
+    }
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--primary', primaryColor)
+    document.documentElement.style.setProperty('--secondary', secondaryColor)
+    document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
+
+
   useEffect(() => {
     handleLoadStorageData()
   }, [])
@@ -25,17 +50,16 @@ function MainRoutes() {
   async function handleLoadStorageData() {
     try {
       await recuperarUsuarioLogado();
-      realizaRefresh();
+      if(usuarioLogado) realizaRefresh();
     } catch (error) {
       console.log(error)
-    } finally {
     }
   }
 
   if (!usuarioLogado) {
     return (
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/*" element={<Login />} />
         <Route path="/recuperar" element={<RecuperarSenha />} />
       </Routes>
     )
