@@ -2,12 +2,12 @@ import Tabela from "@/components/tabela/tabela";
 import { Label } from "@/components/ui/label";
 import Api from "@/infra/api";
 import { Local } from "@/types/Local";
-import CadastroLocal from "@/view/local/cadastro";
 import { useEffect, useState } from "react";
 import colunas from "./colunas";
 import ExportarLocal from "./exportar";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import CadastroLocal from "./cadastro";
 
 export default function Locais() {
     const [locais, setLocais] = useState<Local[]>([]);
