@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react"
-import { Moon, Sun, Palette, Sliders, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Api from "@/infra/api"
+import { Check, Moon, Palette, Sliders, Sun } from "lucide-react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 const colorPresets = [
@@ -31,14 +32,37 @@ export default function PageAparencia() {
     }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
 
     const handleSave = () => {
+        const usuario = JSON.parse(localStorage.getItem('usuario') as string);
+
         const config = {
             isDarkMode,
             primaryColor,
             secondaryColor,
             borderRadius,
+            usuario: {
+                id: usuario.id,
+            }
         }
-        localStorage.setItem("themeConfig", JSON.stringify(config))
-        toast.success("Configurações salvas com sucesso!")
+        localStorage.setItem("themeConfig", JSON.stringify(config));
+
+        toast.promise(Api.post("configuracao/tema", config, {}).then(async () => {
+            toast.success("Tema alterado com sucesso!");
+        }).catch((error) => {
+            toast.error(
+                error.response.data
+                    .join(';\n\n'),
+                {
+                    style: {
+                        whiteSpace: 'pre-line',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                    },
+                }
+            );
+        }), {
+            loading: "Salvando...",
+        });
     }
 
     const PreviewCard = () => (

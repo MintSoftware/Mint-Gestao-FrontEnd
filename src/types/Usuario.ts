@@ -3,5 +3,6 @@ export type Usuario = {
     email: string,
     senha: string,
     role: string,
+    id: string,
     // filiais: Array<Filial>
 }

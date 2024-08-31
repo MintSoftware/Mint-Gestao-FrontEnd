@@ -4,15 +4,38 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Api from "@/infra/api"
 import { useAuth } from "@/infra/hooks/useAuth"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [primaryColor, setPrimaryColor] = useState("#03bb85")
+  const [secondaryColor, setSecondaryColor] = useState("#818cf8")
+  const [borderRadius, setBorderRadius] = useState(8)
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--primary', primaryColor)
+    document.documentElement.style.setProperty('--secondary', secondaryColor)
+    document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
 
   const { salvarUsuarioLogado } = useAuth();
+
+  async function buscarTema(id: string) {
+    const { data } = await Api.get(`configuracao/tema/buscarporusuario/${id}`);
+    if (!data) return;
+    setIsDarkMode(data.isDarkMode)
+    setPrimaryColor(data.primaryColor)
+    setSecondaryColor(data.secondaryColor)
+    setBorderRadius(data.borderRadius)
+
+    localStorage.setItem("themeConfig", JSON.stringify(data));
+  }
+
 
   const logar = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,6 +48,9 @@ export default function Login() {
     toast.promise(Api.post("autenticacao/entrar", dto, {}).then(async (response) => {
       toast.success("Login realizado com sucesso!");
       await salvarUsuarioLogado(response.data);
+      if (response.data.usuario) {
+        await buscarTema(response.data.usuario.id);
+      }
     }).catch(() => {
       toast.error("Erro ao entrar, verifique suas credenciais!");
     }), {
