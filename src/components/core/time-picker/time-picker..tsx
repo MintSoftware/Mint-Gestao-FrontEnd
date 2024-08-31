@@ -53,7 +53,6 @@ export function TimePicker({ date, setDate, className, listaHoras }: TimePickerD
               <div className="flex flex-col">
                 {listaHoras?.map((hora, index) => (
                 <Button variant={"ghost"} key={index} onClick={() => {
-                  debugger
                   setDate(hora)
                   setOpen(false)
                 }}>{hora.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Button>

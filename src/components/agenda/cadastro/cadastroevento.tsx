@@ -114,7 +114,6 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     }
 
     const limparDadosEFechar = () => {
-        debugger;
         limparDados();
         fechar();
     }
@@ -176,7 +175,6 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
     }
 
     const salvarEvento = (values: z.infer<typeof FormSchema>) => {
-        debugger
         const evento = {
             nome: values.nome,
             sobrenome: values.sobrenome,

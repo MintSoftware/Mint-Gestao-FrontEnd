@@ -13,23 +13,25 @@ const CadastroLocal = () => {
     const [endereco, setEndereco] = useState("");
     const [diasFuncionamento, setDiasFuncionamento] = useState("");
     const [complemento, setComplemento] = useState("");
-    const [horarioAbertura, setHorarioAbertura] = useState("");
-    const [horarioFechamento, setHorarioFechamento] = useState("");
+    const [horarioAbertura, setHorarioAbertura] = useState<Date>();
+    const [horarioFechamento, setHorarioFechamento] = useState<Date>();
     const [observacao, setObservacao] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-    const dto = {
-        nome,
-        status: 1,
-        endereco,
-        diasFuncionamento,
-        complemento,
-        horarioAbertura,
-        horarioFechamento,
-        observacao
-    }
+    const [valorHora, setValorHora] = useState(0);
 
     const salvar = async () => {
+        const dto = {
+            nome,
+            endereco,
+            diasFuncionamento,
+            complemento,
+            horaAbertura: horarioAbertura,
+            horaFechamento: horarioFechamento,
+            observacao,
+            valorHora,
+            status: 0,
+        }
+
         toast.promise(Api.post("gestao/local", dto).then(() => {
             toast.success("Local cadastrado com sucesso!");
             setIsDialogOpen(false);
@@ -39,7 +41,17 @@ const CadastroLocal = () => {
             loading: "Cadastrando...",
         });
     }
-    
+
+    const transformaHorario = (hora: any) => {
+        const [horaStr, minutoStr] = hora.split(":");
+        const horaInt = Number(horaStr);
+        const minutoInt = Number(minutoStr);
+        const data = new Date();
+        data.setHours(horaInt);
+        data.setMinutes(minutoInt);
+        return data;
+    }
+
     return (
         <div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -75,11 +87,17 @@ const CadastroLocal = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="dob">Horario de Abertura</Label>
-                                <Input onChange={(e) => setHorarioAbertura(e.target.value)} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
+                                <Input onChange={(e) => setHorarioAbertura(transformaHorario(e.target.value))} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="dob">Horario de Fechamento</Label>
-                                <Input onChange={(e) => setHorarioFechamento(e.target.value)} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
+                                <Input onChange={(e) => setHorarioFechamento(transformaHorario(e.target.value))} className="w-[300px] fill-white stroke-white" id="dob" type="time" />
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="valorHora">Valor da hora</Label>
+                                <Input className="w-[300px]" id="valorHora" type="number" placeholder="Digite o valor da hora" onChange={(e) => setValorHora(Number(e.target.value))} />
                             </div>
                         </div>
                         <div className="space-y-2">

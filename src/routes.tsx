@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { Route, Routes, } from "react-router-dom";
 import { realizaRefresh } from "./infra/helpers/refreshToken";
 import { useAuth } from "./infra/hooks/useAuth";
+import Agenda from "./modules/agenda";
 import Configuracoes from "./modules/configuracoes";
 import DashboardPage from "./modules/dashboard/page";
 import Financeiro from "./modules/financeiro/page";
+import { Layout } from "./modules/layout";
 import Locais from "./modules/local";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
 import RecuperarSenha from "./modules/recuperarsenha";
-import { Layout } from "./modules/layout";
-import Agenda from "./modules/agenda";
 
 function MainRoutes() {
 
