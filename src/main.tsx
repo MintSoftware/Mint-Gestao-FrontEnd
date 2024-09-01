@@ -2,14 +2,12 @@ import { Suspense, lazy} from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner.tsx';
-import { AuthProvider } from "./infra/contexts/AuthContext.tsx";
 import './style/global.css';
 import Loading from './modules/loading/Loading.tsx';
 
 const MainRoutesLazy = lazy(() => import('./routes.tsx'));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <AuthProvider>
     <BrowserRouter>
         <Suspense fallback={<Loading />}>
           <MainRoutesLazy />
@@ -24,5 +22,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           }
         }} />
     </BrowserRouter>
-  </AuthProvider>
 );

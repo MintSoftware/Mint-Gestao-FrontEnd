@@ -1,37 +1,18 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Progress } from "@/components/ui/progress";
+import useAutenticacao from "@/infra/hooks/useAutenticacao";
+import useTema from "@/infra/hooks/useTema";
 import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 export default function Loading() {
     const [progress, setProgress] = useState(0);
-
-
-    const [isDarkMode, setIsDarkMode] = useState(false)
-    const [primaryColor, setPrimaryColor] = useState("#03bb85")
-    const [secondaryColor, setSecondaryColor] = useState("#818cf8")
-    const [borderRadius, setBorderRadius] = useState(8)
+    const { atualizarToken } = useAutenticacao();
+    const { alterarTema } = useTema();
 
     useEffect(() => {
-        // Carregar as configurações salvas ao inicializar o componente
-        const savedConfig = localStorage.getItem("themeConfig")
-        if (savedConfig) {
-            const config = JSON.parse(savedConfig)
-            setIsDarkMode(config.isDarkMode)
-            setPrimaryColor(config.primaryColor)
-            setSecondaryColor(config.secondaryColor)
-            setBorderRadius(config.borderRadius)
-        }
-    }, [])
-
-    useEffect(() => {
-        document.documentElement.style.setProperty('--primary', primaryColor)
-        document.documentElement.style.setProperty('--secondary', secondaryColor)
-        document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
-        document.documentElement.classList.toggle('dark', isDarkMode)
-    }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
-
-    useEffect(() => {
+        atualizarToken();
+        alterarTema();
         const interval = setInterval(() => {
             setProgress((prev) => (prev < 90 ? prev + 10 : 90));
         }, 500);

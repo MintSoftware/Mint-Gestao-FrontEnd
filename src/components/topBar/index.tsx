@@ -1,4 +1,3 @@
-import { useAuth } from "@/infra/hooks/useAuth";
 import { BellIcon, HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -9,9 +8,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useEffect, useState } from "react";
+import useAutenticacao from "@/infra/hooks/useAutenticacao";
 
 const TopBar = () => {
-    const { limparUsuarioLogado } = useAuth();
+    const { deslogar } = useAutenticacao();
     const navigate = useNavigate();
     interface Usuario {
       empresa: {
@@ -36,7 +36,7 @@ const TopBar = () => {
     }, []);
 
     const sair = () => {
-        limparUsuarioLogado();
+        deslogar();
         toast.success("Saiu com sucesso!");
         navigate('/');
     }

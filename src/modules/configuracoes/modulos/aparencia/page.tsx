@@ -17,7 +17,7 @@ const colorPresets = [
 ]
 
 export default function PageAparencia() {
-    const savedConfig = localStorage.getItem("themeConfig")
+    const savedConfig = localStorage.getItem("tema")
     const config = JSON.parse(savedConfig || "{}")
     const [isDarkMode, setIsDarkMode] = useState(config.isDarkMode || false)
     const [primaryColor, setPrimaryColor] = useState(config.primaryColor || "#03bb85")
@@ -43,7 +43,7 @@ export default function PageAparencia() {
                 id: usuario.id,
             }
         }
-        localStorage.setItem("themeConfig", JSON.stringify(config));
+        localStorage.setItem("tema", JSON.stringify(config));
 
         toast.promise(Api.post("configuracao/tema", config, {}).then(async () => {
             toast.success("Tema alterado com sucesso!");
