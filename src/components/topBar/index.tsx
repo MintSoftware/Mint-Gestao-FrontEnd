@@ -1,4 +1,6 @@
+import { useAutenticacaoContext } from "@/providers/AutenticacaoProvider";
 import { BellIcon, HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeftIcon, ShoppingCartIcon, Users2Icon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
@@ -7,8 +9,6 @@ import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { useEffect, useState } from "react";
-import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider";
 
 const TopBar = () => {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import { Progress } from "@/components/ui/progress";
-import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider";
-import { useTemaContext } from "@/infra/providers/TemaProvider";
+import { useAutenticacaoContext } from "@/providers/AutenticacaoProvider";
+import { useTemaContext } from "@/providers/TemaProvider";
 import { useEffect, useState } from "react";
 
 export default function Loading() {

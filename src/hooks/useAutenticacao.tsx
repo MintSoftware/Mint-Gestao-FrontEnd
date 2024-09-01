@@ -1,6 +1,6 @@
+import Api from '@/infra/api';
 import { Usuario } from '@/types/Usuario';
 import { useCallback, useState } from 'react';
-import Api from '../api';
 
 const useAutenticacao = () => {
 

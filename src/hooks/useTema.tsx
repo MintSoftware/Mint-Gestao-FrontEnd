@@ -21,7 +21,7 @@ const useTema = () => {
         
         document.documentElement.style.setProperty('--primary', tema?.primaryColor || primaryColorDefault)
         document.documentElement.style.setProperty('--secondary', tema?.secondaryColor || secondaryColorDefault)
-        document.documentElement.style.setProperty('--radius', `${tema?.borderRadius}px` || borderRadiusDefault)
+        document.documentElement.style.setProperty('--radius', `${tema?.borderRadius}px` || `${borderRadiusDefault}px`)
         document.documentElement.classList.toggle('dark', tema?.darkMode || darkModeDefault)
     }, []);
 

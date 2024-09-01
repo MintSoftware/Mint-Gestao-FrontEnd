@@ -8,7 +8,7 @@ import Locais from "./modules/local";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
 import RecuperarSenha from "./modules/recuperarsenha";
-import { useAutenticacaoContext } from "./infra/providers/AutenticacaoProvider";
+import { useAutenticacaoContext } from "./providers/AutenticacaoProvider";
 
 function MainRoutes() {
   const { usuarioLogado, atualizarToken } = useAutenticacaoContext();

@@ -1,4 +1,3 @@
-import { TimePicker } from '@/components/core/time-picker/time-picker.';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -11,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TimePicker } from '@/core/time-picker/time-picker.';
 import Api from '@/infra/api';
 import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';

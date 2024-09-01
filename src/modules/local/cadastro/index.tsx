@@ -4,6 +4,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { InputBase } from "@/core/input";
 import Api from "@/infra/api";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ const CadastroLocal = () => {
             valorHora,
             status: 0,
         }
+        debugger
 
         toast.promise(Api.post("gestao/local", dto).then(() => {
             toast.success("Local cadastrado com sucesso!");
@@ -97,7 +99,7 @@ const CadastroLocal = () => {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="valorHora">Valor da hora</Label>
-                                <Input className="w-[300px]" id="valorHora" type="number" placeholder="Digite o valor da hora" onChange={(e) => setValorHora(Number(e.target.value))} />
+                                <InputBase type="valores" value={valorHora} onChange={setValorHora}/>
                             </div>
                         </div>
                         <div className="space-y-2">
