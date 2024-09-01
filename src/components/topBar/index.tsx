@@ -90,7 +90,7 @@ const TopBar = () => {
                 <div className="flex w-full justify-end">
                     <div className="relative flex h-9 w-9 justify-center items-center mr-3 cursor-pointer">
                         <BellIcon className="flex" />
-                        <div className="bg-red-500 w-4 h-4 absolute items-center justify-center flex rounded-full left-5 bottom-4 text-black">
+                        <div className="bg-primary w-4 h-4 absolute items-center justify-center flex rounded-full left-5 bottom-4 text-black">
                             1
                         </div>
                     </div>

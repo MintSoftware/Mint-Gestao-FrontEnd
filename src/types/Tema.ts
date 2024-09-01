@@ -1,5 +1,5 @@
 export type Tema = {
-    isDarkMode: boolean;
+    darkMode: boolean;
     primaryColor: string;
     secondaryColor: string;
     borderRadius: number;

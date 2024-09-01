@@ -8,7 +8,6 @@ import Locais from "./modules/local";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
 import RecuperarSenha from "./modules/recuperarsenha";
-import { useContext } from "react";
 import { useAutenticacaoContext } from "./infra/providers/AutenticacaoProvider";
 
 function MainRoutes() {

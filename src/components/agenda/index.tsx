@@ -229,7 +229,7 @@ export default function Calendario() {
                                                                 {new Date().getDate() === i + 1 &&
                                                                     new Date().getMonth() === currentDate.getMonth() &&
                                                                     new Date().getFullYear() === currentDate.getFullYear() &&
-                                                                    <div className=" w-3 h-3 rounded-full bg-primary" />
+                                                                    <div className=" w-3 h-3 rounded-full bg-green-500" />
                                                                 }
                                                                 {feriados.isHoliday(new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)) &&
                                                                     <div className="w-3 h-3 rounded-full bg-purple-500" />
@@ -305,7 +305,7 @@ export default function Calendario() {
                                         <TooltipTrigger asChild>
                                             <div className=" cursor-pointer ml-4 flex w-[7rem] justify-start items-center h-full gap-2">
                                                 <Label className="cursor-pointer text-xs items-center flex text-muted-foreground">Legenda:</Label>
-                                                <div className="w-3 h-3 rounded-full bg-primary border" />
+                                                <div className="w-3 h-3 rounded-full bg-green-500 border" />
                                                 <div className="w-3 h-3 rounded-full bg-purple-500 border" />
                                                 <div className="w-3 h-3 rounded-full bg-red-500 border" />
                                             </div>
@@ -313,7 +313,7 @@ export default function Calendario() {
                                         <TooltipContent className="bg-muted">
                                             <div className="text-sm text-muted-foreground">
                                                 <div className="flex items-center gap-1">
-                                                    <div className="w-3 h-3 rounded-full bg-primary" />
+                                                    <div className="w-3 h-3 rounded-full bg-green-500" />
                                                     <div>Hoje</div>
                                                 </div>
                                                 <div className="flex items-center gap-1">

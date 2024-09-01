@@ -5,39 +5,38 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Api from "@/infra/api"
-import { useTemaContext } from "@/infra/providers/temaProvider"
+import { useTemaContext } from "@/infra/providers/TemaProvider"
 import { Check, Moon, Palette, Sliders, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 const colorPresets = [
-    { name: "Indigo", primary: "#4f46e5", secondary: "#5c5c5c" },
-    { name: "Rose", primary: "#e11d48", secondary: "#5c5c5c" },
-    { name: "Amber", primary: "#d97706", secondary: "#5c5c5c" },
-    { name: "Mint", primary: "#03bb85", secondary: "#5c5c5c" },
+    { name: "Indigo", primary: "#4f46e5", secondary: "#303030" },
+    { name: "Rose", primary: "#e11d48", secondary: "#303030" },
+    { name: "Amber", primary: "#d97706", secondary: "#303030" },
+    { name: "Mint", primary: "#03bb85", secondary: "#303030" },
 ]
 
 export default function PageAparencia() {
     const { recuperarTema } = useTemaContext();
     const tema = recuperarTema();
-    debugger
-    const [isDarkMode, setIsDarkMode] = useState(tema?.isDarkMode || false)
+    const [darkMode, setDarkMode] = useState(tema?.darkMode || false)
     const [primaryColor, setPrimaryColor] = useState(tema?.primaryColor || "#03bb85")
-    const [secondaryColor, setSecondaryColor] = useState(tema?.secondaryColor || "#5c5c5c")
+    const [secondaryColor, setSecondaryColor] = useState(tema?.secondaryColor || "#303030")
     const [borderRadius, setBorderRadius] = useState(tema?.borderRadius || 8)
 
     useEffect(() => {
         document.documentElement.style.setProperty('--primary', primaryColor)
         document.documentElement.style.setProperty('--secondary', secondaryColor)
         document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
-        document.documentElement.classList.toggle('dark', isDarkMode)
-    }, [primaryColor, secondaryColor, borderRadius, isDarkMode])
+        document.documentElement.classList.toggle('dark', darkMode)
+    }, [primaryColor, secondaryColor, borderRadius, darkMode])
 
     const handleSave = () => {
         const usuario = JSON.parse(localStorage.getItem('usuario') as string);
 
         const config = {
-            isDarkMode,
+            darkMode,
             primaryColor,
             secondaryColor,
             borderRadius,
@@ -83,8 +82,8 @@ export default function PageAparencia() {
                 <div className="flex items-center space-x-2">
                     <Sun className="h-5 w-5" />
                     <Switch
-                        checked={isDarkMode}
-                        onCheckedChange={(checked) => setIsDarkMode(checked)}
+                        checked={darkMode}
+                        onCheckedChange={(checked) => setDarkMode(checked)}
                     />
                     <Moon className="h-5 w-5" />
                 </div>

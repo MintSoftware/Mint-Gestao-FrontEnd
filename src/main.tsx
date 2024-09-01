@@ -5,7 +5,7 @@ import { Toaster } from './components/ui/sonner.tsx';
 import './style/global.css';
 import Loading from './modules/loading/Loading.tsx';
 import { AutenticacaoProvider } from './infra/providers/AutenticacaoProvider.tsx';
-import { TemaProvider } from './infra/providers/temaProvider.tsx';
+import { TemaProvider } from './infra/providers/TemaProvider.tsx';
 
 const MainRoutesLazy = lazy(() => import('./routes.tsx'));
 

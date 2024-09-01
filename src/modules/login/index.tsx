@@ -3,8 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Api from "@/infra/api"
-import useTema from "@/infra/hooks/useTema"
 import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider"
+import { useTemaContext } from "@/infra/providers/TemaProvider"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
@@ -13,8 +13,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const { salvarUsuario, salvarToken, salvarRefreshToken } = useAutenticacaoContext();
-  const { salvarTema, alterarTema} = useTema();
+  const { salvarUsuario, salvarToken, salvarRefreshToken, inserirTokenHeader } = useAutenticacaoContext();
+  const { salvarTema, alterarTema} = useTemaContext();
 
 
   const logar = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,6 +29,7 @@ export default function Login() {
       salvarUsuario(response.data.usuario);
       salvarToken(response.data.token);
       salvarRefreshToken(response.data.refreshToken);
+      inserirTokenHeader();
       if (response.data.tema) {
         salvarTema(response.data.tema);
         alterarTema();
