@@ -3,8 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Api from "@/infra/api"
-import useAutenticacao from "@/infra/hooks/useAutenticacao"
 import useTema from "@/infra/hooks/useTema"
+import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from "sonner"
@@ -13,8 +13,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const { salvarUsuario, salvarToken, salvarRefreshToken } = useAutenticacao();
-  const { salvarTema } = useTema();
+  const { salvarUsuario, salvarToken, salvarRefreshToken } = useAutenticacaoContext();
+  const { salvarTema, alterarTema} = useTema();
 
 
   const logar = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,7 +29,10 @@ export default function Login() {
       salvarUsuario(response.data.usuario);
       salvarToken(response.data.token);
       salvarRefreshToken(response.data.refreshToken);
-      if (response.data.tema) salvarTema(response.data.tema);
+      if (response.data.tema) {
+        salvarTema(response.data.tema);
+        alterarTema();
+      }
       toast.success("Login realizado com sucesso!");
     }).catch(() => {
       toast.error("Erro ao entrar, verifique suas credenciais!");

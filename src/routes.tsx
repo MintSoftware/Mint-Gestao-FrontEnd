@@ -8,11 +8,11 @@ import Locais from "./modules/local";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
 import RecuperarSenha from "./modules/recuperarsenha";
-import useAutenticacao from "./infra/hooks/useAutenticacao";
+import { useContext } from "react";
+import { useAutenticacaoContext } from "./infra/providers/AutenticacaoProvider";
 
 function MainRoutes() {
-
-  const { usuarioLogado, atualizarToken } = useAutenticacao();
+  const { usuarioLogado, atualizarToken } = useAutenticacaoContext();
 
   setInterval(() => atualizarToken(), 10 * 60 * 1000);
 

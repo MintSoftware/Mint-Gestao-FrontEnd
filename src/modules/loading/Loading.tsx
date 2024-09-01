@@ -1,14 +1,15 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Progress } from "@/components/ui/progress";
-import useAutenticacao from "@/infra/hooks/useAutenticacao";
 import useTema from "@/infra/hooks/useTema";
+import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider";
 import { useEffect, useState } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 export default function Loading() {
     const [progress, setProgress] = useState(0);
-    const { atualizarToken } = useAutenticacao();
     const { alterarTema } = useTema();
+
+    const { atualizarToken } = useAutenticacaoContext();
 
     useEffect(() => {
         atualizarToken();

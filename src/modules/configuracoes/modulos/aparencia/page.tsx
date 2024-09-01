@@ -5,6 +5,7 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Api from "@/infra/api"
+import { useTemaContext } from "@/infra/providers/temaProvider"
 import { Check, Moon, Palette, Sliders, Sun } from "lucide-react"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -17,12 +18,13 @@ const colorPresets = [
 ]
 
 export default function PageAparencia() {
-    const savedConfig = localStorage.getItem("tema")
-    const config = JSON.parse(savedConfig || "{}")
-    const [isDarkMode, setIsDarkMode] = useState(config.isDarkMode || false)
-    const [primaryColor, setPrimaryColor] = useState(config.primaryColor || "#03bb85")
-    const [secondaryColor, setSecondaryColor] = useState(config.secondaryColor || "#5c5c5c")
-    const [borderRadius, setBorderRadius] = useState(config.borderRadius || 8)
+    const { recuperarTema } = useTemaContext();
+    const tema = recuperarTema();
+    debugger
+    const [isDarkMode, setIsDarkMode] = useState(tema?.isDarkMode || false)
+    const [primaryColor, setPrimaryColor] = useState(tema?.primaryColor || "#03bb85")
+    const [secondaryColor, setSecondaryColor] = useState(tema?.secondaryColor || "#5c5c5c")
+    const [borderRadius, setBorderRadius] = useState(tema?.borderRadius || 8)
 
     useEffect(() => {
         document.documentElement.style.setProperty('--primary', primaryColor)

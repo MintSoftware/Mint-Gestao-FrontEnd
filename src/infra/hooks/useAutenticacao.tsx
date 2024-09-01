@@ -99,6 +99,6 @@ const useAutenticacao = () => {
         deslogar,
         atualizarToken
     };
-};
+}
 
 export default useAutenticacao;

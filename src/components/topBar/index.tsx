@@ -8,11 +8,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Label } from "../ui/label";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { useEffect, useState } from "react";
-import useAutenticacao from "@/infra/hooks/useAutenticacao";
+import { useAutenticacaoContext } from "@/infra/providers/AutenticacaoProvider";
 
 const TopBar = () => {
-    const { deslogar } = useAutenticacao();
     const navigate = useNavigate();
+
+    const { deslogar } = useAutenticacaoContext();
     interface Usuario {
       empresa: {
         nomefantasia: string;
