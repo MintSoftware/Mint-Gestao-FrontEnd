@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           info: 'bg-blue-500 text-secondary font-bold dark:text-black',
           warning: 'bg-yellow-500 text-secondary font-bold dark:text-black',
           error: 'bg-red-500 text-secondary font-bold flex dark:text-black',
-          loading: 'bg-background font-bold text-secondary border border-secondary dark:text-white dark:border-background',
+          loading: 'bg-background font-bold text-secondary border border-secondary dark:text-white dark:border-muted',
         }
       }} />
     </BrowserRouter>

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import CadastroLocal from "./cadastro";
 import colunas from "./colunas";
 import ExportarLocal from "./exportar";
+import RegistrarLocal from "./cadastroNovo/page";
 
 export default function Locais() {
     const [locais, setLocais] = useState<Local[]>([]);
@@ -41,7 +42,7 @@ export default function Locais() {
             <Tabela
                 colunas={colunas()}
                 dados={locais}
-                modal={<CadastroLocal/>}
+                modal={<RegistrarLocal />}
                 exportar={ExportarLocal(locais)}
                 functionSearch={buscarLocais}
                 loading={loading}

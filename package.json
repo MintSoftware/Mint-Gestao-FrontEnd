@@ -8,8 +8,8 @@
     "dev": "vite",
     "start": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx,ext}\" --quiet",
-    "preview": "vite preview"
+    "lint": "npx eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
+    "format": "npx prettier --write 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
