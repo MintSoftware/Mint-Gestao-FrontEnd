@@ -1,12 +1,11 @@
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { toast } from "sonner";
 import { DadosGerais } from "./components/dadosgerais";
 import { Endereco } from "./components/endereco";
 import { Imagens } from "./components/imagens";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function RegistrarLocal() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
