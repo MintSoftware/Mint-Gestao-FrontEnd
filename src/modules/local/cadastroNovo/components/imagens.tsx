@@ -3,8 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { useCadastroLocalViewModel } from "../pageViewModel";
 
-export function Imagens({ images, currentImageIndex, handleImageUpload, setCurrentImageIndex }: any) {
+export function Imagens() {
+
+  const {
+    handleImageUpload,
+    images,
+    currentImageIndex,
+    setCurrentImageIndex,
+  } = useCadastroLocalViewModel();
+
   return (
     <TabsContent value="imagens" className="space-y-4">
       <div className="flex justify-center">

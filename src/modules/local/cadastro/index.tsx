@@ -4,7 +4,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { InputBase } from "@/core/input";
+import { InputBase } from "@/core/input/base";
 import Api from "@/infra/api";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import CpfCnpj from "./cpfcnpj";
 import Valores from "./valores";
 
@@ -12,9 +13,10 @@ interface InputBaseProps {
   type: keyof typeof inputComponents; // Garante que o tipo esteja no mapa
   value?: any;
   onChange?: (value: any) => void;
+  className?: string;
 }
 
-export function InputBase({ type, value, onChange, ...props }: InputBaseProps) {
+export function InputBase({ type, value, onChange, className, ...props }: InputBaseProps) {
   const Component = inputComponents[type]; // Seleciona o componente baseado no tipo
 
   if (!Component) {
@@ -22,7 +24,9 @@ export function InputBase({ type, value, onChange, ...props }: InputBaseProps) {
   }
 
   return (
-    <div className="input-base">
+    <div className={cn(
+      "",
+      className)}>
       <Component value={value} onChange={onChange} {...props} />
     </div>
   );

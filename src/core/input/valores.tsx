@@ -36,14 +36,14 @@ export default function Valores({ value = 0, onChange }: CurrencyInputProps) {
   }
 
   return (
-    <div className="w-full max-w-sm space-y-2">
+    <div className="w-full space-y-2">
       <Input
         id="money-input"
         type="text"
         placeholder="R$ 0,00"
         value={formatCurrency(value)}
         onChange={handleChange}
-        className="text-right"
+        className="text-right w-full"
       />
     </div>
   )
