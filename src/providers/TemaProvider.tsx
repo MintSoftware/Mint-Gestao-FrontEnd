@@ -1,11 +1,12 @@
-import React, { createContext, useContext, ReactNode } from 'react';
 import { Tema } from '@/types/Tema';
+import React, { createContext, ReactNode, useContext } from 'react';
 import useTema from '../hooks/useTema';
 
 interface TemaContextType {
   salvarTema: (tema: Tema) => void;
   recuperarTema: () => Tema | null;
   alterarTema: () => void;
+  redefinirTema: () => void;
 }
 
 const TemaContext = createContext<TemaContextType | undefined>(undefined);

@@ -1,8 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Link, useLocation } from "react-router-dom";
+import PageAparencia from "./modulos/aparencia/page";
 import ConfigGeral from "./modulos/geral";
 import ConfigSeguranca from "./modulos/seguranca";
-import PageAparencia from "./modulos/aparencia/page";
 
 export default function Configuracoes() {
 

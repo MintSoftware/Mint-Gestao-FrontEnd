@@ -1,4 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface MovimentosFinancProps {
@@ -20,26 +22,28 @@ export function CardMovimentosFinanc({ movimentacoes }: MovimentosFinancProps) {
             </CardHeader>
             <CardContent className="p-0">
                 <Table>
+                    <ScrollArea className="h-[21rem] p-4">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="text-xs">Data</TableHead>
-                            <TableHead className="text-xs">Descrição</TableHead>
-                            <TableHead className="text-xs">Local</TableHead>
-                            <TableHead className="text-xs text-right">Valor</TableHead>
+                                <TableHead>Data</TableHead>
+                                <TableHead>Descrição</TableHead>
+                                <TableHead>Local</TableHead>
+                                <TableHead className="text-right">Valor</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {movimentacoes.slice(-5).map((mov) => (
                             <TableRow key={mov.id}>
-                                <TableCell className="text-xs py-1">{mov.data}</TableCell>
-                                <TableCell className="text-xs py-1">{mov.descricao}</TableCell>
-                                <TableCell className="text-xs py-1">{mov.local}</TableCell>
-                                <TableCell className={`text-xs py-1 text-right ${mov.tipo === "Entrada" ? "text-green-500" : "text-red-500"}`}>
-                                    {mov.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                <TableCell><Label>{mov.data}</Label></TableCell>
+                                <TableCell><Label>{mov.descricao}</Label></TableCell>
+                                <TableCell><Label>{mov.local}</Label></TableCell>
+                                <TableCell className={`text-right ${mov.tipo === "Entrada" ? "text-green-500" : "text-red-500"}`}>
+                                    <Label>{mov.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Label>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
+                    </ScrollArea>
                 </Table>
             </CardContent>
         </Card>
