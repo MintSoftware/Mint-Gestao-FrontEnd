@@ -3,7 +3,7 @@ import {
   DollarSignIcon,
   HomeIcon,
   MapPinIcon,
-  Package2Icon,
+  NotebookTextIcon,
   SettingsIcon
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
@@ -18,10 +18,10 @@ const MenuLateral = () => {
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Link
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
             to="/filial"
           >
-            <Package2Icon className="h-4 w-4 transition-all group-hover:scale-110" />
+            <img className="scale-120 transition-all group-hover:scale-[135%]" src="./logomint.png" alt="Mint Software" />
             <span className="sr-only">Mint Software</span>
           </Link>
           <Tooltip>
@@ -74,21 +74,37 @@ const MenuLateral = () => {
           </Tooltip>
         </TooltipProvider>
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                className={pathname === ('/configuracoes' || '/configuracoes/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
-                to="/configuracoes"
-              >
-                <SettingsIcon className="h-5 w-5" />
-                <span className="sr-only">Configurações</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Configurações</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <nav className="mt-auto flex flex-col items-center px-2 sm:py-5">
+        <div className="flex flex-col gap-3">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  className={pathname === ('/releases' || '/releases/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                  to="/releases"
+                >
+                  <NotebookTextIcon className="h-5 w-5" />
+                  <span className="sr-only">Configurações</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Configurações</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  className={pathname === ('/configuracoes' || '/configuracoes/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                  to="/configuracoes"
+                >
+                  <SettingsIcon className="h-5 w-5" />
+                  <span className="sr-only">Configurações</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Configurações</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </nav>
     </aside>
   )

@@ -30,27 +30,47 @@ export function useCadastroLocalViewModel() {
     };
 
     const adicionarDia = (dia: string) => {
-        diasFuncionamento.push(dia);
-        setDiasFuncionamento(diasFuncionamento);
-    }
+        setDiasFuncionamento(prevDias =>
+            prevDias.includes(dia)
+                ? prevDias.filter(d => d !== dia) // Remove o dia se já estiver selecionado
+                : [...prevDias, dia] // Adiciona o dia se não estiver selecionado
+        );
+    };
 
     const removerDia = (dia: string) => {
-        const index = diasFuncionamento.indexOf(dia);
-        diasFuncionamento.splice(index, 1);
-        setDiasFuncionamento(diasFuncionamento);
-    }
+        setDiasFuncionamento(prevDias => prevDias.filter(d => d !== dia));
+    };
 
-    const diaSelecionado = (dia: string) => {
-        return diasFuncionamento.includes(dia);
-    }
+    const diaSelecionado = (dia: string) => diasFuncionamento.includes(dia);
 
-    const salvarLocal = (e : any) => {
+    const salvarLocal = (e: any) => {
         e.preventDefault();
+
         console.log('Form data submitted:', { images });
         toast.success('Local registrado com sucesso!');
     };
 
+    const diasDaSemana = [
+        'Dom',
+        'Seg',
+        'Ter',
+        'Qua',
+        'Qui',
+        'Sex',
+        'Sab',
+    ]
+
+    const handleModificarDia = (day: string) => {
+        setDiasFuncionamento(prev =>
+            prev.includes(day)
+                ? prev.filter(d => d !== day)
+                : [...prev, day]
+        )
+    }
+
     return {
+        handleModificarDia,
+        diasDaSemana,
         isDialogOpen,
         setIsDialogOpen,
         nome,
@@ -66,7 +86,8 @@ export function useCadastroLocalViewModel() {
         rua,
         setRua,
         diasFuncionamento,
-        setDiasFuncionamento,
+        adicionarDia,
+        removerDia,
         complemento,
         setComplemento,
         horarioAbertura,
@@ -82,8 +103,6 @@ export function useCadastroLocalViewModel() {
         currentImageIndex,
         setCurrentImageIndex,
         handleImageUpload,
-        adicionarDia,
-        removerDia,
         diaSelecionado,
         salvarLocal
     };

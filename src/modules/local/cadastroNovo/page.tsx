@@ -19,7 +19,7 @@ export default function RegistrarLocal() {
             <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
                 <Button variant="default" className="">Novo local</Button>
             </DialogTrigger>
-            <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[34rem] sm:h-[44rem]">
+            <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[30rem] sm:h-[44rem]">
                 <div className=" bg-background rounded-lg shadow-lg">
                     <h1 className="text-2xl font-bold mb-6 text-center">Registrar Novo Local</h1>
                     <Tabs defaultValue="dados-gerais" className="space-y-4 h-[36rem]">
