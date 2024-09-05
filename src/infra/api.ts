@@ -11,6 +11,7 @@ const Api = axios.create({
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
         'Access-Control-Allow-Credentials': 'true',
+        'Allow': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
     }
 });
 
