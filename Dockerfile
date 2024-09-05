@@ -1,29 +1,25 @@
-# Etapa 1: Construir a aplicação
-FROM node:18-alpine AS builder
+# Imagem base
+FROM node:18-alpine as build
 
-# Definir o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copiar package.json e package-lock.json para instalar as dependências
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
-# Instalar dependências
 RUN npm install
 
-# Copiar o restante do código para o contêiner
 COPY . .
 
-# Executar o build da aplicação
 RUN npm run build
 
-# Etapa 2: Servir a aplicação com um servidor HTTP estático
+# Usa Nginx para servir os arquivos
 FROM nginx:alpine
 
-# Copiar o build gerado na etapa anterior para a pasta padrão do nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copia o build para o diretório de arquivos estáticos do Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expor a porta em que o Nginx está servindo
+# Copia a configuração personalizada do Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 
-# Comando padrão para rodar o Nginx
 CMD ["nginx", "-g", "daemon off;"]
