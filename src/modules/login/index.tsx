@@ -24,7 +24,9 @@ export default function Login() {
       senha
     }
 
-    toast.promise(Api.post("autenticacao/entrar", dto, {}).then(async (response) => {
+    toast.promise(Api.get("autenticacao/entrar", {
+      params: dto
+    }).then(async (response) => {
       salvarUsuario(response.data.usuario);
       salvarToken(response.data.token);
       salvarRefreshToken(response.data.refreshToken);
