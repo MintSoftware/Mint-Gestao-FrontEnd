@@ -16,7 +16,11 @@ export function DadosGerais() {
         setObservacao,
         valorHora,
         setValorHora,
-        handleModificarDia
+        handleModificarDia,
+        horarioAbertura,
+        setHorarioAbertura,
+        horarioFechamento,
+        setHorarioFechamento,
     } = useCadastroLocalViewModel();
 
     return (
@@ -45,11 +49,11 @@ export function DadosGerais() {
             <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                     <Label htmlFor="horarioAbertura">Hora Abertura</Label>
-                    <Input placeholder="Horário de Abertura" id="horarioAbertura" name="horarioAbertura" type="time" />
+                    <InputBase type="time" placeholder="Horário de Abertura" id="horarioAbertura" name="horarioAbertura" value={horarioAbertura} onChange={setHorarioAbertura} />
                 </div>
                 <div className="flex flex-col gap-2">
                     <Label htmlFor="horarioFechamento">Hora Fechamento</Label>
-                    <Input placeholder="Horário de Fechamento" id="horarioFechamento" name="horarioFechamento" type="time" />
+                    <InputBase type="time" placeholder="Horário de Fechamento" id="horarioFechamento" name="horarioFechamento" value={horarioFechamento} onChange={setHorarioFechamento} />
                 </div>
             </div>
             <div className="flex flex-col w-full gap-2">

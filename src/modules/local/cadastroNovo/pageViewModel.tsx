@@ -46,6 +46,24 @@ export function useCadastroLocalViewModel() {
     const salvarLocal = (e: any) => {
         e.preventDefault();
 
+        const dto = {
+            nome,
+            cep,
+            estado,
+            cidade,
+            bairro,
+            rua,
+            diasFuncionamento,
+            complemento,
+            horarioAbertura,
+            horarioFechamento,
+            observacao,
+            valorHora,
+            images
+        };
+
+        debugger
+
         console.log('Form data submitted:', { images });
         toast.success('Local registrado com sucesso!');
     };

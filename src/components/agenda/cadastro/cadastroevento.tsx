@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TimePicker } from '@/core/time-picker/time-picker.';
+import { InputBase } from '@/core/input/base';
 import Api from '@/infra/api';
 import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';
@@ -367,7 +367,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem >
                                                             <FormLabel className='pl-5'>Início*</FormLabel>
                                                             <FormControl>
-                                                                <TimePicker date={form.getValues('horainicio')} setDate={(date) => form.setValue('horainicio', date)} listaHoras={listaHora} {...form.register("horainicio")} />
+                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horainicio')} onChange={(date) => form.setValue('horainicio', date)} />
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
@@ -381,7 +381,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem>
                                                             <FormLabel className='pl-5'>Fim*</FormLabel>
                                                             <FormControl>
-                                                                <TimePicker date={form.getValues('horafim')} setDate={(date) => form.setValue('horafim', date)} listaHoras={listaHora} {...form.register("horafim")} />
+                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horafim')} onChange={(date) => form.setValue('horafim', date)} />
+                                                                {/* <TimePicker date={form.getValues('horafim')} setDate={(date) => form.setValue('horafim', date)} listaHoras={listaHora} {...form.register("horafim")} /> */}
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
