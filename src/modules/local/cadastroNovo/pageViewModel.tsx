@@ -89,11 +89,11 @@ export function useCadastroLocalViewModel() {
             rua: formData.rua,
             diasFuncionamento: formData.diasFuncionamento.join(","),
             complemento: formData.complemento,
-            horarioAbertura: formData.horarioAbertura.toISOString(),
-            horarioFechamento: formData.horarioFechamento.toISOString(),
+            horarioAbertura: formData.horarioAbertura,
+            horarioFechamento: formData.horarioFechamento,
             observacao: formData.observacao,
             valorHora: formData.valorHora,
-            images: formData.images,
+            //images: formData.images,
             status: 1
         }
 
