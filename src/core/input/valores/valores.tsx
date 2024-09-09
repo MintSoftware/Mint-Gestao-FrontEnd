@@ -25,7 +25,6 @@ export default function Valores({ value = 0, onChange }: CurrencyInputProps) {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debugger
     const inputValue = e.target.value
     //crime aqui, quem ver isso favor me lembrar de arrumar
     const numericValue = parseFloat(inputValue.replace(/\D/g, '')) / (verificaComecaComNumero(e.target.value) ? 100000 : 100)

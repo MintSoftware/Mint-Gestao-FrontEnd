@@ -2,24 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { useCadastroLocalViewModel } from "../pageViewModel";
+import { ChevronLeft, ChevronRight, PlusIcon } from "lucide-react";
 
-export function Imagens() {
+interface ImagensProps {
+  formData: any;
+  setFormData: (data: any) => void;
+  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  currentImageIndex: number;
+  setCurrentImageIndex: (index: number | ((prev: number) => number)) => void;
+}
 
-  const {
-    handleImageUpload,
-    images,
-    currentImageIndex,
-    setCurrentImageIndex,
-  } = useCadastroLocalViewModel();
-
+export function Imagens({ formData, handleImageUpload, currentImageIndex, setCurrentImageIndex }: ImagensProps) {
   return (
     <TabsContent value="imagens" className="space-y-4">
       <div className="flex justify-center">
         <Label htmlFor="image-upload" className="cursor-pointer">
           <div className="flex items-center justify-center w-32 h-32 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
-            <Plus className="w-8 h-8 text-muted-foreground" />
+            <PlusIcon className="w-8 h-8 text-muted-foreground" />
           </div>
           <Input
             id="image-upload"
@@ -31,11 +30,12 @@ export function Imagens() {
           />
         </Label>
       </div>
-      {images.length > 0 && (
+
+      {formData.images.length > 0 && (
         <div className="relative">
           <div className="overflow-hidden rounded-lg aspect-video">
             <img
-              src={images[currentImageIndex]}
+              src={formData.images[currentImageIndex]}
               alt={`Imagem ${currentImageIndex + 1}`}
               className="w-full h-full object-cover"
             />
@@ -45,7 +45,12 @@ export function Imagens() {
               variant="outline"
               size="icon"
               className="rounded-full"
-              onClick={() => setCurrentImageIndex((prev: number) => (prev === 0 ? images.length - 1 : prev - 1))}
+              onClick={() =>
+                setCurrentImageIndex(
+                  (prev: number) =>
+                    prev === 0 ? formData.images.length - 1 : prev - 1
+                )
+              }
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -53,13 +58,17 @@ export function Imagens() {
               variant="outline"
               size="icon"
               className="rounded-full"
-              onClick={() => setCurrentImageIndex((prev: number) => (prev === images.length - 1 ? 0 : prev + 1))}
+              onClick={() =>
+                setCurrentImageIndex(
+                  (prev: number) =>
+                    prev === formData.images.length - 1 ? 0 : prev + 1
+                )
+              }
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-        </div>
-      )}
+        </div>)}
     </TabsContent>
   );
 }

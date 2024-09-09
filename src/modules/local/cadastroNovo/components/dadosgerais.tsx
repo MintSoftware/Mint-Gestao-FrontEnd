@@ -4,65 +4,101 @@ import { Label } from "@/components/ui/label";
 import { TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { InputBase } from "@/core/input/base";
-import { useCadastroLocalViewModel } from "../pageViewModel";
 
-export function DadosGerais() {
-    const {
-        diasDaSemana,
-        diasFuncionamento,
-        nome,
-        setNome,
-        observacao,
-        setObservacao,
-        valorHora,
-        setValorHora,
-        handleModificarDia,
-        horarioAbertura,
-        setHorarioAbertura,
-        horarioFechamento,
-        setHorarioFechamento,
-    } = useCadastroLocalViewModel();
+interface DadosGeraisProps {
+    formData: any;
+    setFormData: (data: any) => void;
+    errors: any;
+    diasDaSemana: string[];
+    handleModificarDia: (day: string) => void;
+}
 
+export function DadosGerais({ formData, setFormData, errors, diasDaSemana, handleModificarDia }: DadosGeraisProps) {
     return (
         <TabsContent value="dados-gerais" className="space-y-4">
-            <div className="flex flex-col gap-2">
-                <Label htmlFor="nome">Nome do Local</Label>
-                <Input placeholder="Nome do Local" id="nome" name="nome" value={nome} onChange={(event) => setNome(event.target.value)} required />
-            </div>
             <div className="space-y-2">
                 <Label>Dias de Funcionamento</Label>
                 <div className="flex flex-wrap gap-4">
-                        <div className="flex items-center w-full gap-2 justify-center">
-                            {diasDaSemana.map((day) => (
-                                <div key={day} className="flex items-center space-x-2">
-                                    <Checkbox
-                                        id={day}
-                                        checked={diasFuncionamento.includes(day)}
-                                        onCheckedChange={() => handleModificarDia(day)}
-                                    />
-                                    <Label htmlFor={day}>{day}</Label>
-                                </div>
-                            ))}
-                    </div>
+                    {diasDaSemana.map((day) => (
+                        <div key={day} className="flex items-center space-x-2">
+                            <Checkbox
+                                id={day}
+                                checked={formData.diasFuncionamento.includes(day)}
+                                onCheckedChange={() => handleModificarDia(day)}
+                            />
+                            <Label htmlFor={day}>{day}</Label>
+                        </div>
+                    ))}
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="nome">Nome do Local</Label>
+                <Input
+                    placeholder="Nome do Local"
+                    id="nome"
+                    name="nome"
+                    value={formData.nome}
+                    onChange={(event) =>
+                        setFormData({ ...formData, nome: event.target.value })
+                    }
+                    required
+                />
+                {errors.nome && <Label className="text-red-500">{errors.nome._errors[0]}</Label>}
+            </div>
+
+            <div className="flex gap-4">
                 <div className="flex flex-col gap-2">
-                    <Label htmlFor="horarioAbertura">Hora Abertura</Label>
-                    <InputBase type="time" placeholder="Horário de Abertura" id="horarioAbertura" name="horarioAbertura" value={horarioAbertura} onChange={setHorarioAbertura} />
+                    <Label htmlFor="horarioAbertura">Abertura</Label>
+                    <InputBase
+                        type="time"
+                        placeholder="Horário de Abertura"
+                        id="horarioAbertura"
+                        name="horarioAbertura"
+                        value={formData.horarioAbertura}
+                        onChange={(value) => setFormData({ ...formData, horarioAbertura: value })}
+                    />
+                    {errors.horarioAbertura && <Label className="text-red-500">{errors.horarioAbertura._errors[0]}</Label>}
                 </div>
+
                 <div className="flex flex-col gap-2">
-                    <Label htmlFor="horarioFechamento">Hora Fechamento</Label>
-                    <InputBase type="time" placeholder="Horário de Fechamento" id="horarioFechamento" name="horarioFechamento" value={horarioFechamento} onChange={setHorarioFechamento} />
+                    <Label htmlFor="horarioFechamento">Fechamento</Label>
+                    <InputBase
+                        type="time"
+                        placeholder="Horário de Fechamento"
+                        id="horarioFechamento"
+                        name="horarioFechamento"
+                        value={formData.horarioFechamento}
+                        onChange={(value) => setFormData({ ...formData, horarioFechamento: value })}
+                    />
+                    {errors.horarioFechamento && <Label className="text-red-500">{errors.horarioFechamento._errors[0]}</Label>}
+                </div>
+
+                <div className="flex flex-col w-full gap-2">
+                    <Label htmlFor="valorHora">Valor da Hora</Label>
+                    <InputBase
+                        type="valores"
+                        className="w-full"
+                        value={formData.valorHora}
+                        onChange={(value) => setFormData({ ...formData, valorHora: value })}
+                    />
+                    {errors.valorHora && <Label className="text-red-500">{errors.valorHora._errors[0]}</Label>}
                 </div>
             </div>
-            <div className="flex flex-col w-full gap-2">
-                <Label htmlFor="valorHora">Valor da Hora</Label>
-                <InputBase type="valores" className="w-full" value={valorHora} onChange={setValorHora} />
-            </div>
-            <div className="flex flex-col w-full gap-2">
+
+            <div className="flex flex-col w-full gap-2 h-[8rem]">
                 <Label htmlFor="observacao">Observação</Label>
-                <Textarea className="h-[13rem]" placeholder="Observação" id="observacao" name="observacao" value={observacao} onChange={(event) => setObservacao(event.target.value)} />
+                <Textarea
+                    className="h-full"
+                    placeholder="Observação"
+                    id="observacao"
+                    name="observacao"
+                    value={formData.observacao}
+                    onChange={(event) =>
+                        setFormData({ ...formData, observacao: event.target.value })
+                    }
+                />
+                {errors.observacao && <Label className="text-red-500">{errors.observacao._errors[0]}</Label>}
             </div>
         </TabsContent>
     );

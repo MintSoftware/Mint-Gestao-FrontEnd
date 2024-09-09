@@ -1,127 +1,157 @@
+import Api from "@/infra/api";
 import { useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const schema = z.object({
+    nome: z.string().min(1, "Nome é obrigatório"),
+    cep: z.string().min(8, "CEP deve ter 8 dígitos"),
+    estado: z.string().min(2, "Estado é obrigatório"),
+    cidade: z.string().min(1, "Cidade é obrigatória"),
+    bairro: z.string().min(1, "Bairro é obrigatório"),
+    rua: z.string().min(1, "Rua é obrigatória"),
+    diasFuncionamento: z.array(z.string()).min(1, "Selecione pelo menos um dia de funcionamento"),
+    complemento: z.string().optional(),
+    horarioAbertura: z.date({ required_error: "Horário de abertura é obrigatório" }).refine(data => data > new Date(0, 0, 0, 0, 0, 0), "Horário de abertura é obrigatório"),
+    horarioFechamento: z.date({ required_error: "Horário de fechamento é obrigatório" }).refine(data => data > new Date(0, 0, 0, 0, 0, 0), "Horário de fechamento deve ser maior que o horário de abertura"),
+    observacao: z.string().optional(),
+    valorHora: z.number().min(1, "Valor por hora deve ser maior que zero"),
+    images: z.array(z.string())
+});
 
 export function useCadastroLocalViewModel() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [nome, setNome] = useState("");
-    const [cep, setCep] = useState("");
-    const [estado, setEstado] = useState("");
-    const [cidade, setCidade] = useState("");
-    const [bairro, setBairro] = useState("");
-    const [rua, setRua] = useState("");
-    const [diasFuncionamento, setDiasFuncionamento] = useState<string[]>([]);
-    const [complemento, setComplemento] = useState("");
-    const [horarioAbertura, setHorarioAbertura] = useState<Date>();
-    const [horarioFechamento, setHorarioFechamento] = useState<Date>();
-    const [observacao, setObservacao] = useState("");
-    const [valorHora, setValorHora] = useState(0);
 
+    const [formData, setFormData] = useState({
+        nome: "",
+        cep: "",
+        estado: "",
+        cidade: "",
+        bairro: "",
+        rua: "",
+        diasFuncionamento: [] as string[],
+        complemento: "",
+        horarioAbertura: new Date(0, 0, 0, 0, 0, 0),
+        horarioFechamento: new Date(0, 0, 0, 0, 0, 0),
+        observacao: "",
+        valorHora: 0,
+        images: [] as string[]
+    });
 
-    const [images, setImages] = useState<string[]>([]);
+    const [errors, setErrors] = useState<z.infer<typeof schema>>({} as any);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files) {
             const newImages = Array.from(files).map(file => URL.createObjectURL(file));
-            setImages(prevImages => [...prevImages, ...newImages]);
+            setFormData(prevData => ({
+                ...prevData,
+                images: [...prevData.images, ...newImages]
+            }));
         }
     };
 
     const adicionarDia = (dia: string) => {
-        setDiasFuncionamento(prevDias =>
-            prevDias.includes(dia)
-                ? prevDias.filter(d => d !== dia) // Remove o dia se já estiver selecionado
-                : [...prevDias, dia] // Adiciona o dia se não estiver selecionado
-        );
+        setFormData(prevData => ({
+            ...prevData,
+            diasFuncionamento: prevData.diasFuncionamento.includes(dia)
+                ? prevData.diasFuncionamento.filter(d => d !== dia)
+                : [...prevData.diasFuncionamento, dia]
+        }));
     };
 
     const removerDia = (dia: string) => {
-        setDiasFuncionamento(prevDias => prevDias.filter(d => d !== dia));
+        setFormData(prevData => ({
+            ...prevData,
+            diasFuncionamento: prevData.diasFuncionamento.filter(d => d !== dia)
+        }));
     };
 
-    const diaSelecionado = (dia: string) => diasFuncionamento.includes(dia);
+    const diaSelecionado = (dia: string) => formData.diasFuncionamento.includes(dia);
 
-    const salvarLocal = (e: any) => {
-        e.preventDefault();
+    const salvarLocal = async () => {
+        const result = schema.safeParse(formData);
+
+        if (!result.success) {
+            const errorMessages = result.error.format();
+            setErrors(errorMessages as any);
+            toast.error("Verifique os erros no formulário.");
+            return;
+        }
 
         const dto = {
-            nome,
-            cep,
-            estado,
-            cidade,
-            bairro,
-            rua,
-            diasFuncionamento,
-            complemento,
-            horarioAbertura,
-            horarioFechamento,
-            observacao,
-            valorHora,
-            images
-        };
+            nome: formData.nome,
+            cep: formData.cep,
+            estado: formData.estado,
+            cidade: formData.cidade,
+            bairro: formData.bairro,
+            rua: formData.rua,
+            diasFuncionamento: formData.diasFuncionamento.join(","),
+            complemento: formData.complemento,
+            horarioAbertura: formData.horarioAbertura.toISOString(),
+            horarioFechamento: formData.horarioFechamento.toISOString(),
+            observacao: formData.observacao,
+            valorHora: formData.valorHora,
+            images: formData.images,
+            status: 1
+        }
 
-        debugger
-
-        console.log('Form data submitted:', { images });
-        toast.success('Local registrado com sucesso!');
+        toast.promise(Api.post("gestao/local", dto).then(() => {
+            toast.success("Local cadastrado com sucesso!");
+            setIsDialogOpen(false);
+            resetForm();
+        }).catch(() => {
+            toast.error("Erro ao cadastrar local.");
+        }), {
+            loading: "Cadastrando local..."
+        });
     };
 
-    const diasDaSemana = [
-        'Dom',
-        'Seg',
-        'Ter',
-        'Qua',
-        'Qui',
-        'Sex',
-        'Sab',
-    ]
+    const resetForm = () => {
+        setFormData({
+            nome: "",
+            cep: "",
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: "",
+            diasFuncionamento: [],
+            complemento: "",
+            horarioAbertura: new Date(),
+            horarioFechamento: new Date(),
+            observacao: "",
+            valorHora: 0,
+            images: []
+        });
+        setErrors({} as any);
+    };
+
+    const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
     const handleModificarDia = (day: string) => {
-        setDiasFuncionamento(prev =>
-            prev.includes(day)
-                ? prev.filter(d => d !== day)
-                : [...prev, day]
-        )
-    }
+        setFormData(prev =>
+            prev.diasFuncionamento.includes(day)
+                ? { ...prev, diasFuncionamento: prev.diasFuncionamento.filter(d => d !== day) }
+                : { ...prev, diasFuncionamento: [...prev.diasFuncionamento, day] }
+        );
+    };
 
     return {
+        formData,
+        setFormData,
+        errors,
         handleModificarDia,
+        resetForm,
         diasDaSemana,
         isDialogOpen,
         setIsDialogOpen,
-        nome,
-        setNome,
-        cep,
-        setCep,
-        estado,
-        setEstado,
-        cidade,
-        setCidade,
-        bairro,
-        setBairro,
-        rua,
-        setRua,
-        diasFuncionamento,
         adicionarDia,
         removerDia,
-        complemento,
-        setComplemento,
-        horarioAbertura,
-        setHorarioAbertura,
-        horarioFechamento,
-        setHorarioFechamento,
-        observacao,
-        setObservacao,
-        valorHora,
-        setValorHora,
-        images,
-        setImages,
-        currentImageIndex,
-        setCurrentImageIndex,
-        handleImageUpload,
         diaSelecionado,
-        salvarLocal
+        salvarLocal,
+        handleImageUpload,
+        currentImageIndex,
+        setCurrentImageIndex
     };
 }
