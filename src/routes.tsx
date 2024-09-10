@@ -4,7 +4,7 @@ import Configuracoes from "./modules/configuracoes";
 import DashboardPage from "./modules/dashboard/page";
 import Financeiro from "./modules/financeiro/page";
 import { Layout } from "./modules/layout";
-import Locais from "./modules/local";
+import Locais from "./modules/local/page";
 import Login from "./modules/login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
 import RecuperarSenha from "./modules/recuperarsenha";

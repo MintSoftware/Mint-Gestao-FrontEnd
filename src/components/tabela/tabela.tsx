@@ -42,8 +42,14 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
         },
         initialState: {
             columnVisibility: {
-                horaAbertura: false,
-                horaFechamento: false,
+                cep: false,
+                estado: false,
+                cidade: false,
+                bairro: false,
+                rua: false,
+                complemento: false,
+                images: false,
+
             }
         },
         enableColumnResizing: true,

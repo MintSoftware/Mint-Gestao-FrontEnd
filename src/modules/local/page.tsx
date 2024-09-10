@@ -5,9 +5,9 @@ import { useToast } from "@/components/ui/use-toast";
 import Api from "@/infra/api";
 import { Local } from "@/types/Local";
 import { useEffect, useState } from "react";
-import RegistrarLocal from "./cadastroNovo/page";
 import colunas from "./colunas";
-import ExportarLocal from "./exportar";
+import RegistrarLocal from "./components/cadastro/page";
+import ExportarLocal from "./components/exportar/page";
 
 export default function Locais() {
     const [locais, setLocais] = useState<Local[]>([]);

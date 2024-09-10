@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DadosGerais } from "./components/dadosgerais";
 import { Endereco } from "./components/endereco";
 import { Imagens } from "./components/imagens";
-import { useCadastroLocalViewModel } from "./pageViewModel";
+import { useCadastroLocalViewModel } from "./pageController.tsx";
 
 export default function RegistrarLocal() {
 
