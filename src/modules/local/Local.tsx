@@ -1,12 +1,17 @@
 import Tabela from "@/components/tabela/tabela";
 import { Label } from "@/components/ui/label";
-import CadastroLocal from "./components/cadastro/CadastroLocal";
+import { useEffect } from "react";
+import CadastroLocal from "./CadastroLocal";
 import { colunas } from "./components/Colunas";
 import ExportarLocal from "./components/Exportar";
 import { useLocalController } from "./Localcontroller";
 
 export default function Locais() {
     const { locais, loading, buscarLocais } = useLocalController();
+
+    useEffect(() => {
+        buscarLocais();
+    }, []);
 
     return (
         <div className="w-[100%] px-5 pt-[50px] h-[100%]">

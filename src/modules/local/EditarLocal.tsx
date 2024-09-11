@@ -1,12 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCadastroLocalViewModel } from "./CadastroLocalController.tsx";
+import { Local } from "@/types/Local.ts";
+import { Row } from "@tanstack/react-table";
+import { PencilIcon } from "lucide-react";
+import { useLocalController } from "./Localcontroller.tsx";
 import { DadosGerais } from "./components/DadosGerais.tsx";
 import { Endereco } from "./components/Endereco.tsx";
 import { Imagens } from "./components/Imagens.tsx";
 
-export default function CadastroLocal() {
+interface EditarLocalProps {
+    local: Row<Local>;
+}
+
+export default function EditarLocal({ local }: EditarLocalProps) {
 
     const {
         isDialogOpen,
@@ -21,12 +28,23 @@ export default function CadastroLocal() {
         diasDaSemana,
         resetForm,
         handleModificarDia,
-    } = useCadastroLocalViewModel();
+    } = useLocalController();
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
-                <Button variant="default" className="">Novo local</Button>
+            <DialogTrigger asChild onClick={() => {
+                setIsDialogOpen(true)
+                setFormData({
+                    ...local.original,
+                    diasFuncionamento: local.original.diasFuncionamento.split(","),
+                    horarioAbertura: new Date(local.original.horarioAbertura),
+                    horarioFechamento: new Date(local.original.horarioFechamento),
+                    images: []
+                })
+            }}>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <PencilIcon className="h-4 w-4" />
+                </Button>
             </DialogTrigger>
             <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="flex items-center justify-center">
                 <div className=" bg-background rounded-lg shadow-lg">
@@ -38,7 +56,6 @@ export default function CadastroLocal() {
                             <TabsTrigger value="imagens">Imagens</TabsTrigger>
                         </TabsList>
 
-                        {/* Passando os dados e handlers para cada componente */}
                         <DadosGerais
                             formData={formData}
                             setFormData={setFormData}
@@ -67,7 +84,7 @@ export default function CadastroLocal() {
                                 resetForm()
                             }}>Cancelar</Button>
                         </DialogClose>
-                        <Button onClick={salvarLocal}>Registrar</Button>
+                        <Button onClick={salvarLocal}>Salvar</Button>
                     </div>
                 </div>
             </DialogContent>

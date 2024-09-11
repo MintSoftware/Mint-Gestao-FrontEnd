@@ -6,12 +6,32 @@ import { Label } from "@/components/ui/label"
 import { Local } from "@/types/Local"
 import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisVerticalIcon } from "lucide-react"
+import EditarLocal from "../EditarLocal"
 import { useLocalController } from "../Localcontroller"
+import VerLocal from "../VerLocal"
 
 export const colunas = (): ColumnDef<Local>[] => {
-    const { editar, inativar, ativar } = useLocalController();
+    const { inativar, ativar } = useLocalController();
 
     return [{
+        id: "ver",
+        size: 50,
+        maxSize: 50,
+        cell: ({ row }) => (
+            <VerLocal local={row} />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    }, {
+        id: "editar",
+        size: 50,
+        maxSize: 50,
+        cell: ({ row }) => (
+            <EditarLocal local={row} />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    }, {
         accessorKey: 'nome',
         size: 400,
         header: ({ column }) => (
@@ -87,7 +107,7 @@ export const colunas = (): ColumnDef<Local>[] => {
         ),
     }, {
         accessorKey: 'observacao',
-        size: 255,
+        size: 160,
         header: ({ column }) => (
             <Cabecalho column={column} title="Observação" />
         ),
@@ -101,7 +121,7 @@ export const colunas = (): ColumnDef<Local>[] => {
             <Cabecalho column={column} title="Hora Abertura" />
         ),
         cell: ({ row }) => (
-            <Label className="relative left-3">{row.original.horarioAbertura.toLocaleString()}</Label>
+            <Label className="relative left-3">{new Date(row.original.horarioAbertura).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
         ),
     }, {
         accessorKey: 'horarioFechamento',
@@ -109,8 +129,9 @@ export const colunas = (): ColumnDef<Local>[] => {
         header: ({ column }) => (
             <Cabecalho column={column} title="Hora Fechamento" />
         ),
+
         cell: ({ row }) => (
-            <Label className="relative left-3">{row.original.horarioFechamento.toLocaleString()}</Label>
+            <Label className="relative left-3">{new Date(row.original.horarioFechamento).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
         ),
     }, {
         accessorKey: 'diasFuncionamento',
@@ -146,7 +167,6 @@ export const colunas = (): ColumnDef<Local>[] => {
                     <DropdownMenuItem className="cursor-pointer">Historico financeiro</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuLabel className="font-bold">Ações</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={editar} className="cursor-pointer">Editar</DropdownMenuItem>
                     {row.original.status.toString() === "Ativo" ?
                         <DropdownMenuItem onClick={inativar(row.original)} className="cursor-pointer text-red-500">Inativar</DropdownMenuItem>
                         : <DropdownMenuItem onClick={ativar(row.original)} className="cursor-pointer text-green-500">Ativar</DropdownMenuItem>
