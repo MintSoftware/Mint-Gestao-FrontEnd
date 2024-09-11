@@ -1,4 +1,4 @@
-import Calendario from "@/components/agenda";
+import Calendario from "./components/calendario/Calendario";
 
 export default function Agenda() {
     return (

@@ -1,39 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import xlsx, { IJsonSheet } from 'json-as-xlsx';
 import { FileOutputIcon } from "lucide-react";
 import generatePDF from "react-to-pdf";
-
-const recuperarDadosParaPdf = () => document.getElementById('root');
-
-const baixarExcel = (dados : any) => {
-    const colunas: IJsonSheet[] = [
-        {
-            sheet: 'Locais',
-            columns: [ 
-                { label: 'ID', value: 'id' },
-                { label: 'Nome', value: 'nome' },
-                { label: "Status", value: "status"},
-                { label: 'Endereço', value: 'endereco' },
-                { label: 'Complemento', value: 'complemento' },
-                { label: 'Observação', value: 'observacao' },
-                { label: 'Hora de Abertura', value: 'horaAbertura' },
-                { label: 'Hora de Fechamento', value: 'horaFechamento' },
-                { label: 'Dias de Funcionamento', value: 'diasFuncionamento' },
-            ],
-            content: dados
-        }
-    ];
-    
-    const configuracao = {
-        fileName: "Locais"
-    }
-
-    xlsx(colunas, configuracao)
-}
+import { useLocalController } from "../Localcontroller";
 
 export default function ExportarLocal(dados: any) {
+    const { baixarExcel, recuperarDadosParaPdf } = useLocalController();
 
     return (
         <DropdownMenu>

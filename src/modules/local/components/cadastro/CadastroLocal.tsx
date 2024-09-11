@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DadosGerais } from "./components/dadosgerais";
-import { Endereco } from "./components/endereco";
-import { Imagens } from "./components/imagens";
-import { useCadastroLocalViewModel } from "./pageController.tsx";
+import { useCadastroLocalViewModel } from "./CadastroLocalController.tsx";
+import { DadosGerais } from "./components/DadosGerais.tsx";
+import { Endereco } from "./components/Endereco.tsx";
+import { Imagens } from "./components/Imagens.tsx";
 
-export default function RegistrarLocal() {
+export default function CadastroLocal() {
 
     const {
         isDialogOpen,

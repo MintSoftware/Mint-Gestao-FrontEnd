@@ -1,47 +1,12 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Api from "@/infra/api"
-import { useAutenticacaoContext } from "@/providers/AutenticacaoProvider"
-import { useTemaContext } from "@/providers/TemaProvider"
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
+import { useLoginController } from "./LoginController";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
 
-  const { salvarUsuario, salvarToken, salvarRefreshToken, inserirTokenHeader } = useAutenticacaoContext();
-  const { salvarTema, alterarTema} = useTemaContext();
-
-
-  const logar = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const dto = {
-      email,
-      senha
-    }
-
-    toast.promise(Api.post("autenticacao/entrar", dto, {
-      method: "POST",
-    }).then(async (response) => {
-      salvarUsuario(response.data.usuario);
-      salvarToken(response.data.token);
-      salvarRefreshToken(response.data.refreshToken);
-      inserirTokenHeader();
-      if (response.data.tema) {
-        salvarTema(response.data.tema);
-        alterarTema();
-      }
-      toast.success("Login realizado com sucesso!");
-    }).catch(() => {
-      toast.error("Erro ao entrar, verifique suas credenciais!");
-    }), {
-      loading: "Entrando...",
-    });
-  }
+  const { setEmail, setSenha, logar } = useLoginController();
 
   return (
     <div className="w-full lg:grid h-screen lg:grid-cols-2 overflow-hidden">
@@ -84,9 +49,9 @@ export default function Login() {
                   Esqueceu sua senha?
                 </Link>
               </div>
-              <Input id="password" type="password" required onChange={(e) => setSenha(e.target.value)}/>
+              <Input id="password" type="password" required onChange={(e) => setSenha(e.target.value)} />
             </div>
-            <Button onClick={(e : any) => logar(e)} className="w-full">
+            <Button onClick={(e: any) => logar(e)} className="w-full">
               Login
             </Button>
             <Button variant="outline" className="w-full">

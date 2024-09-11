@@ -5,85 +5,11 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Api from "@/infra/api"
-import { useTemaContext } from "@/providers/TemaProvider"
 import { Check, Moon, Palette, RotateCcwIcon, Sliders, Sun } from "lucide-react"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
-
-const colorPresets = [
-    { name: "Indigo", primary: "#4f46e5", secondary: "#303030" },
-    { name: "Rose", primary: "#e11d48", secondary: "#303030" },
-    { name: "Amber", primary: "#d97706", secondary: "#303030" },
-    { name: "Mint", primary: "#03bb85", secondary: "#303030" },
-]
+import { useConfiguracaoController } from "../ConfiguracaoController"
 
 export default function PageAparencia() {
-    const { recuperarTema, redefinirTema } = useTemaContext();
-    const tema = recuperarTema();
-    const [darkMode, setDarkMode] = useState(tema?.darkMode || false)
-    const [primaryColor, setPrimaryColor] = useState(tema?.primaryColor || "#03bb85")
-    const [secondaryColor, setSecondaryColor] = useState(tema?.secondaryColor || "#303030")
-    const [borderRadius, setBorderRadius] = useState(tema?.borderRadius || 8)
-
-    useEffect(() => {
-        document.documentElement.style.setProperty('--primary', primaryColor)
-        document.documentElement.style.setProperty('--secondary', secondaryColor)
-        document.documentElement.style.setProperty('--radius', `${borderRadius}px`)
-        document.documentElement.classList.toggle('dark', darkMode)
-    }, [primaryColor, secondaryColor, borderRadius, darkMode])
-
-    const handleRedefinirTema = () => {
-        setDarkMode(false);
-        setPrimaryColor("#03bb85");
-        setSecondaryColor("#303030");
-        setBorderRadius(8);
-        redefinirTema();
-        handleSave();
-    }
-
-    const handleSave = () => {
-        const usuario = JSON.parse(localStorage.getItem('usuario') as string);
-
-        const config = {
-            darkMode,
-            primaryColor,
-            secondaryColor,
-            borderRadius,
-            usuario: {
-                id: usuario.id,
-            }
-        }
-        localStorage.setItem("tema", JSON.stringify(config));
-
-        toast.promise(Api.post("configuracao/tema", config, {}).then(async () => {
-            toast.success("Tema alterado com sucesso!");
-        }).catch((error) => {
-            toast.error(
-                error.response.data
-                    .join(';\n\n'),
-                {
-                    style: {
-                        whiteSpace: 'pre-line',
-                        padding: '10px',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                    },
-                }
-            );
-        }), {
-            loading: "Salvando...",
-        });
-    }
-
-    const PreviewCard = () => (
-        <Card className="w-full p-4 transition-all duration-300 ease-in-out">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Prévia do Tema</h3>
-            <p className="text-sm mb-4">Esta é uma prévia das suas configurações atuais.</p>
-            <Button className="mr-2" style={{ backgroundColor: primaryColor }}>Botão Primário</Button>
-            <Button variant="outline" style={{ color: secondaryColor, borderColor: secondaryColor }}>Botão Secundário</Button>
-        </Card>
-    )
+    const { colorPresets, darkMode, setDarkMode, primaryColor, setPrimaryColor, secondaryColor, setSecondaryColor, borderRadius, setBorderRadius, handleSave, handleRedefinirTema } = useConfiguracaoController();
 
     return (
         <AlertDialog>
@@ -174,7 +100,12 @@ export default function PageAparencia() {
                     </div>
 
                     <div className="space-y-6">
-                        <PreviewCard />
+                        <Card className="w-full p-4 transition-all duration-300 ease-in-out">
+                            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Prévia do Tema</h3>
+                            <p className="text-sm mb-4">Esta é uma prévia das suas configurações atuais.</p>
+                            <Button className="mr-2" style={{ backgroundColor: primaryColor }}>Botão Primário</Button>
+                            <Button variant="outline" style={{ color: secondaryColor, borderColor: secondaryColor }}>Botão Secundário</Button>
+                        </Card>
                         <div className="flex gap-2">
                             <AlertDialogTrigger>
                                 <Button variant="outline" className="w-30%">

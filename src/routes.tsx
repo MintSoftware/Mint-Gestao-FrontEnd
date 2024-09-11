@@ -1,13 +1,13 @@
 import { Route, Routes, } from "react-router-dom";
-import Agenda from "./modules/agenda";
-import Configuracoes from "./modules/configuracoes";
-import DashboardPage from "./modules/dashboard/page";
-import Financeiro from "./modules/financeiro/page";
-import { Layout } from "./modules/layout";
-import Locais from "./modules/local/page";
-import Login from "./modules/login";
-import PaginaNaoEncontrada from "./modules/paginanaoencontrada";
-import RecuperarSenha from "./modules/recuperarsenha";
+import Agenda from "./modules/agenda/Agenda";
+import Configuracoes from "./modules/configuracoes/Configuracao";
+import DashboardPage from "./modules/dashboard/Dashboard";
+import Financeiro from "./modules/financeiro/Financeiro";
+import { Layout } from "./modules/layout/Layout";
+import Locais from "./modules/local/Local";
+import Login from "./modules/login/Login";
+import PaginaNaoEncontrada from "./modules/paginanaoencontrada/PaginaNaoEncontrada";
+import RecuperarSenha from "./modules/recuperarsenha/RecuperarSenha";
 import { useAutenticacaoContext } from "./providers/AutenticacaoProvider";
 
 function MainRoutes() {
