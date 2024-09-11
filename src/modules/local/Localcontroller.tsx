@@ -218,7 +218,6 @@ export function useLocalController() {
             toast.success("Local editado com sucesso!");
             setIsDialogOpen(false);
             resetForm();
-            atualizarTabela();
         }).catch(() => {
             toast.error("Erro ao editar o local.");
         }), {
@@ -237,10 +236,6 @@ export function useLocalController() {
             toast.error(`Ocorreu um erro ao buscar os locais: ${error}`);
         }
     };
-
-    const atualizarTabela = async () => {
-        await buscarLocais();
-    }
 
     return {
         buscarLocais,
