@@ -18,7 +18,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
     const {
         isDialogOpen,
         setIsDialogOpen,
-        salvarLocal,
+        editarLocal,
         formData,
         setFormData,
         errors,
@@ -84,7 +84,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
                                 resetForm()
                             }}>Cancelar</Button>
                         </DialogClose>
-                        <Button onClick={salvarLocal}>Salvar</Button>
+                        <Button onClick={editarLocal}>Salvar</Button>
                     </div>
                 </div>
             </DialogContent>

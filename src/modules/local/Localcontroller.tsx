@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const schema = z.object({
+    id: z.string().optional(),
     nome: z.string().min(1, "Nome é obrigatório"),
     cep: z.string().min(8, "CEP deve ter 8 dígitos"),
     estado: z.string().min(2, "Estado é obrigatório"),
@@ -25,6 +26,7 @@ export function useLocalController() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const [formData, setFormData] = useState({
+        id: "",
         nome: "",
         cep: "",
         estado: "",
@@ -103,6 +105,7 @@ export function useLocalController() {
             toast.success("Local cadastrado com sucesso!");
             setIsDialogOpen(false);
             resetForm();
+            buscarLocais();
         }).catch(() => {
             toast.error("Erro ao cadastrar local.");
         }), {
@@ -112,6 +115,7 @@ export function useLocalController() {
 
     const resetForm = () => {
         setFormData({
+            id: "",
             nome: "",
             cep: "",
             estado: "",
@@ -182,8 +186,44 @@ export function useLocalController() {
         await Api.put(`gestao/local/${local.id}/ativar`)
     }
 
-    const editar = () => {
-        console.log("Editar")
+    const editarLocal = async () => {
+        const result = schema.safeParse(formData);
+
+        if (!result.success) {
+            const errorMessages = result.error.format();
+            setErrors(errorMessages as any);
+            toast.error("Verifique os erros no formulário.");
+            return;
+        }
+
+        const dto = {
+            id: formData.id,
+            nome: formData.nome,
+            cep: formData.cep,
+            estado: formData.estado,
+            cidade: formData.cidade,
+            bairro: formData.bairro,
+            rua: formData.rua,
+            diasFuncionamento: formData.diasFuncionamento.join(","),
+            complemento: formData.complemento,
+            horarioAbertura: formData.horarioAbertura,
+            horarioFechamento: formData.horarioFechamento,
+            observacao: formData.observacao,
+            valorHora: formData.valorHora,
+            //images: formData.images,
+            status: 1
+        }
+
+        toast.promise(Api.put(`gestao/local/${formData.id}`, dto).then(() => {
+            toast.success("Local editado com sucesso!");
+            setIsDialogOpen(false);
+            resetForm();
+            atualizarTabela();
+        }).catch(() => {
+            toast.error("Erro ao editar o local.");
+        }), {
+            loading: "Salvando as mudanças..."
+        });
     }
 
     const buscarLocais = async () => {
@@ -197,6 +237,10 @@ export function useLocalController() {
             toast.error(`Ocorreu um erro ao buscar os locais: ${error}`);
         }
     };
+
+    const atualizarTabela = async () => {
+        await buscarLocais();
+    }
 
     return {
         buscarLocais,
@@ -220,8 +264,8 @@ export function useLocalController() {
         ver,
         inativar,
         ativar,
-        editar,
+        editarLocal,
         recuperarDadosParaPdf,
-        baixarExcel
+        baixarExcel,
     }
 }
