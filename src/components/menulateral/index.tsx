@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+a
 
 const MenuLateral = () => {
 
