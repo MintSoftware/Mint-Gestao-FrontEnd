@@ -1,12 +1,7 @@
 import { Route, Routes, } from "react-router-dom";
-import Agenda from "./modules/agenda/Agenda";
-import Configuracoes from "./modules/configuracoes/Configuracao";
+import { Layout } from "./layout/Layout";
 import DashboardPage from "./modules/dashboard/Dashboard";
-import Financeiro from "./modules/financeiro/Financeiro";
-import { Layout } from "./modules/layout/Layout";
-import Locais from "./modules/local/Local";
 import Login from "./modules/login/Login";
-import PaginaNaoEncontrada from "./modules/paginanaoencontrada/PaginaNaoEncontrada";
 import RecuperarSenha from "./modules/recuperarsenha/RecuperarSenha";
 import { useAutenticacaoContext } from "./providers/AutenticacaoProvider";
 
@@ -27,11 +22,11 @@ function MainRoutes() {
   return (
     <Layout>
       <Routes>
-        <Route path="*" element={<PaginaNaoEncontrada />} />
+        {/* <Route path="*" element={<PaginaNaoEncontrada />} />
         <Route path="/agenda" element={<Agenda />} />
         <Route path="/locais" element={<Locais />} />
         <Route path="/configuracoes/*" element={<Configuracoes />} />
-        <Route path="/financeiro" element={<Financeiro />} />
+        <Route path="/financeiro" element={<Financeiro />} /> */}
         <Route path="/" element={<DashboardPage />} />
       </Routes>
     </Layout>
