@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
-import { CalendarDateRangePicker } from "./components/date-range-picker"
-import { TabMenu } from "./components/menu"
+import { CalendarDateRangePicker } from "./components/Date-range-picker"
+import { TabMenu } from "./components/Menu"
 
 export default function DashboardPage() {
   return (

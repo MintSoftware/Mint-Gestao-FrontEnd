@@ -1,14 +1,14 @@
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CardDistribuicaoEntSai } from "./components/distribuicaoEntSai";
-import { CardEvolucaoSaldo } from "./components/evolucaoSaldo";
-import { CardHorarioMaisFat } from "./components/horariosMaisFat";
-import { CardLocaisMaisFat } from "./components/locaisMaisFat";
-import { CardMovimentosFinanc } from "./components/movimentosFinanc";
-import { CardCadastroMovtoFinanc } from "./components/registroMovtoFinanc";
-import { CardSaldoTotal } from "./components/saldoTotal";
-import { CardTotalEntradas } from "./components/totalEntradas";
-import { CardTotalSaidas } from "./components/totalSaidas";
+import { CardDistribuicaoEntSai } from "./components/DistribuicaoEntSai";
+import { CardEvolucaoSaldo } from "./components/EvolucaoSaldo";
+import { CardHorarioMaisFat } from "./components/HorariosMaisFat";
+import { CardLocaisMaisFat } from "./components/LocaisMaisFat";
+import { CardMovimentosFinanc } from "./components/MovimentosFinanc";
+import { CardCadastroMovtoFinanc } from "./components/RegistroMovtoFinanc";
+import { CardSaldoTotal } from "./components/SaldoTotal";
+import { CardTotalEntradas } from "./components/TotalEntradas";
+import { CardTotalSaidas } from "./components/TotalSaidas";
 
 // Importe o hook refatorado
 import { useFinanceiroViewModel } from "./FinanceiroController";

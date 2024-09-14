@@ -8,14 +8,15 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+a
 
 const MenuLateral = () => {
 
   const { pathname } = useLocation();
 
   return (
-    <aside className="sticky h-screen inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+    <div className="h-full w-14 flex-col border-r bg-background sm:flex justify-between">
+      <div className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Link
             className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
@@ -73,8 +74,8 @@ const MenuLateral = () => {
             <TooltipContent side="right">Locais</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </nav>
-      <nav className="mt-auto flex flex-col items-center px-2 sm:py-5">
+      </div>
+      <div className="flex flex-col items-center px-2 sm:py-5">
         <div className="flex flex-col gap-3">
           <TooltipProvider>
             <Tooltip>
@@ -105,8 +106,8 @@ const MenuLateral = () => {
             </Tooltip>
           </TooltipProvider>
         </div>
-      </nav>
-    </aside>
+      </div>
+    </div>
   )
 }
 

@@ -1,10 +1,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CardAssinaturas } from "./assinaturas";
-import { CardAtivo } from "./ativo";
-import { CardReceitaTotal } from "./receitaTotal";
-import { CardResumo } from "./resumo";
-import { CardVendas } from "./vendas";
-import { CardVendasRecentes } from "./vendasRecentes";
+import { CardAssinaturas } from "./Assinaturas";
+import { CardAtivo } from "./Ativo";
+import { CardReceitaTotal } from "./ReceitaTotal";
+import { CardResumo } from "./Resumo";
+import { CardVendas } from "./Vendas";
+import { CardVendasRecentes } from "./VendasRecentes";
 
 export function TabMenu() {
     return (
