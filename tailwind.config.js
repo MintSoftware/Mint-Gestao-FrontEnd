@@ -21,6 +21,14 @@ module.exports = {
       notebook: "1536px",
       desktop: "1920px",
     },
+    fontSize: {
+      sm: "0.875rem",
+      base: "1rem",
+      lg: "1.125rem",
+      xl: "1.25rem",
+      notebook: "0.5rem",
+      desktop: "1rem",
+    },
     extend: {
       spacing: {
         "1/2": "50%",
@@ -106,9 +114,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontSize: {
-        "2xs": "0.625rem",
-        "3xs": "0.5rem",
-        "4xs": "0.375rem",
+        base: '1rem', // Tamanho base padrão
       },
     },
   },

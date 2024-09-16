@@ -56,11 +56,11 @@ const data = [
 
 export function CardResumo() {
   return (
-    <Card className="col-span-4 notebook:h-[15rem] desktop:h-[30rem]">
+    <Card className="col-span-4 notebook:h-[20rem] desktop:h-[30rem]">
       <CardHeader>
         <CardTitle>Resumo</CardTitle>
       </CardHeader>
-      <CardContent className="pl-2 flex notebook:h-[10rem] desktop:h-[25rem]">
+      <CardContent className="pl-2 flex notebook:h-[16rem] desktop:h-[25rem]">
         <ResponsiveContainer width="100%">
           <BarChart data={data}>
             <XAxis

@@ -4,7 +4,7 @@ export function CardAtivo() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="desktop:text-xl font-medium">
                     Ativo Agora
                 </CardTitle>
                 <svg
@@ -21,7 +21,7 @@ export function CardAtivo() {
                 </svg>
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">+573</div>
+                <div className="desktop:text-xl font-bold">+573</div>
                 <p className="text-xs text-muted-foreground">
                     +201 deste a última hora
                 </p>

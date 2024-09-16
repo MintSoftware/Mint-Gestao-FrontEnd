@@ -7,10 +7,10 @@ const useZoomFix = () => {
             const scaleFactor = 100 / zoomLevel;
 
             // Aplica a escala ao body
-            document.body.style.transform = `scale(${scaleFactor})`;
+            // document.body.style.transform = `scale(${scaleFactor})`;
             document.body.style.transformOrigin = '0 0';
-            document.body.style.width = `${100 / scaleFactor}vw`;
-            document.body.style.height = `${100 / scaleFactor}vh`;
+            // document.body.style.width = `${100 / scaleFactor}vw`;
+            // document.body.style.height = `${100 / scaleFactor}vh`;
             document.body.style.overflow = 'hidden';
 
         };

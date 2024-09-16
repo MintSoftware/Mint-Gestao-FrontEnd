@@ -4,7 +4,7 @@ export function CardAssinaturas() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="desktop:text-xl font-medium">
                     Assinaturas
                 </CardTitle>
                 <svg
@@ -23,7 +23,7 @@ export function CardAssinaturas() {
                 </svg>
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">+2350</div>
+                <div className="desktop:text-xl font-bold">+2350</div>
                 <p className="text-xs text-muted-foreground">
                     +180.1% no último mês
                 </p>

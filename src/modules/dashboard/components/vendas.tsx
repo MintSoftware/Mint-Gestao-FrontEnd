@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function CardVendas() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Vendas</CardTitle>
+                <CardTitle className="desktop:text-xl font-medium">Vendas</CardTitle>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -20,7 +20,7 @@ export function CardVendas() {
                 </svg>
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">+12,234</div>
+                <div className="desktop:text-xl font-bold">+12,234</div>
                 <p className="text-xs text-muted-foreground">
                     +19% do último mês
                 </p>

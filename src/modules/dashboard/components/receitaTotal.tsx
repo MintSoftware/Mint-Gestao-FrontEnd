@@ -4,7 +4,7 @@ export function CardReceitaTotal() {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="desktop:text-xl font-medium">
                     Receita Total
                 </CardTitle>
                 <svg
@@ -21,7 +21,7 @@ export function CardReceitaTotal() {
                 </svg>
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">$45,231.89</div>
+                <div className="desktop:text-xl font-bold">$45,231.89</div>
                 <p className="text-xs text-muted-foreground">
                     +20.1% do último mês
                 </p>
