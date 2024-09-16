@@ -5,7 +5,7 @@ import { TabMenu } from "./components/Menu"
 export default function DashboardPage() {
   return (
     <>
-      <div className="hidden flex-col md:flex w-full h-full">
+      <div className="hidden flex-col md:flex w-full desktop:h-full notebook:h-screen">
         <div className="flex flex-col space-y-4 p-8 pt-6">
           <div className="flex w-full items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>

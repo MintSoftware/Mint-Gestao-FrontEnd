@@ -8,7 +8,7 @@ interface props {
 
 export function Layout({ children }: props) {
     return (
-        <div className="flex dark:bg-[#151518] bg-[#F5FFFA]">
+        <div className="flex w-screen h-screen dark:bg-[#151518] bg-[#F5FFFA]">
             <div className="flex flex-col ">
                 <MenuLateral />
             </div>
