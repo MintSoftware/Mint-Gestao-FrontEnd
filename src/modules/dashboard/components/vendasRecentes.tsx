@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function CardVendasRecentes() {
   return (
-    <Card className="col-span-3 notebook:h-[20rem] desktop:h-[30rem]">
+    <Card className="col-span-3 notebook:h-[20rem] desktop:h-[32rem]">
       <CardHeader>
         <CardTitle>Vendas Recentes</CardTitle>
         <CardDescription>
@@ -12,7 +12,7 @@ export function CardVendasRecentes() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="notebook:h-[12rem] desktop:h-[25rem]">
+        <ScrollArea className="notebook:h-[12rem] desktop:h-[28rem]">
           <div className="space-y-5 pr-5">
           <div className="flex items-center">
             <Avatar className="h-9 w-9">
