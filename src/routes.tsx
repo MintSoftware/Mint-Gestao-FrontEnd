@@ -1,9 +1,9 @@
 import { Route, Routes, } from "react-router-dom";
+import { Layout } from "./layout/Layout";
 import Agenda from "./modules/agenda/Agenda";
 import Configuracoes from "./modules/configuracoes/Configuracao";
 import DashboardPage from "./modules/dashboard/Dashboard";
 import Financeiro from "./modules/financeiro/Financeiro";
-import { Layout } from "./modules/layout/Layout";
 import Locais from "./modules/local/Local";
 import Login from "./modules/login/Login";
 import PaginaNaoEncontrada from "./modules/paginanaoencontrada/PaginaNaoEncontrada";

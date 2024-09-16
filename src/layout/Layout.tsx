@@ -14,7 +14,7 @@ export function Layout({ children }: props) {
             </div>
             <div className="flex flex-col w-full">
                 <TopBar />
-                <main className="flex justify-center items-center">
+                <main className="flex justify-center items-center max-w-full">
                     {children}
                 </main>
             </div>

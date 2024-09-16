@@ -18,8 +18,8 @@ module.exports = {
       md: "768px",
       lg: "1024px",
       xl: "1280px",
-      notebook: "1500px",
-      desktop: "1980px",
+      notebook: "1536px",
+      desktop: "1920px",
     },
     extend: {
       spacing: {
@@ -104,6 +104,11 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontSize: {
+        "2xs": "0.625rem",
+        "3xs": "0.5rem",
+        "4xs": "0.375rem",
       },
     },
   },

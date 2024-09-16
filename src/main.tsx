@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from './components/ui/sonner.tsx';
+import useZoomFix from './hooks/useZoomFix.tsx';
 import Loading from './modules/loading/Loading.tsx';
 import { AutenticacaoProvider } from './providers/AutenticacaoProvider.tsx';
 import { TemaProvider } from './providers/TemaProvider.tsx';
@@ -10,6 +11,7 @@ import './style/global.css';
 const MainRoutesLazy = lazy(() => import('./routes.tsx'));
 
 const App = () => {
+  useZoomFix();
 
   return (
     <AutenticacaoProvider>
