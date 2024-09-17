@@ -3,25 +3,25 @@ import { BellIcon, HomeIcon, LineChartIcon, Package2Icon, PackageIcon, PanelLeft
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Label } from "../ui/label";
-import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
+import { Button } from "../../components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "../../components/ui/dropdown-menu";
+import { Label } from "../../components/ui/label";
+import { Sheet, SheetContent, SheetTrigger } from "../../components/ui/sheet";
 
-const TopBar = () => {
+const MenuSuperior = () => {
     const navigate = useNavigate();
 
     const { deslogar } = useAutenticacaoContext();
     interface Usuario {
-      empresa: {
-        nomefantasia: string;
-      };
-      nome: string;
-      email: string;
+        empresa: {
+            nomefantasia: string;
+        };
+        nome: string;
+        email: string;
     }
-    
+
     const [usuario, setUsuario] = useState<Usuario | undefined>();
 
 
@@ -156,4 +156,4 @@ const TopBar = () => {
     );
 };
 
-export default TopBar;
+export default MenuSuperior;

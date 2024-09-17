@@ -199,7 +199,7 @@ export default function Calendario() {
                                                                             new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                                     )
                                                                     .map((evento, index) => (
-                                                                        <div key={index} className="flex text-sm text-muted-foreground bg-secondary rounded mt-1">
+                                                                        <div key={index} className="flex text-sm text-muted-foreground bg-gray-300 dark:bg-secondary rounded mt-1">
                                                                             <div className="flex w-full h-5 mx-2 overflow-hidden justify-center items-center">
                                                                                 <Label>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
                                                                             </div>

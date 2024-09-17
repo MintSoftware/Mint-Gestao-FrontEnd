@@ -326,7 +326,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                 return (
                                                                     <div
                                                                         key={evento.id}
-                                                                        className="z-20 cursor-pointer bg-secondary relative left-0 right-0 rounded-md p-2 text-xs flex flex-col justify-between hover:bg-muted/50 transition-colors duration-200"
+                                                                        className="z-20 cursor-pointer bg-gray-300 dark:bg-secondary relative left-0 right-0 rounded-md p-2 text-xs flex flex-col justify-between hover:bg-muted/50 transition-colors duration-200"
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
                                                                             form.setValue('local', evento.local.nome);

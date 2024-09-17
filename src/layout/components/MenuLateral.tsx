@@ -7,7 +7,7 @@ import {
   SettingsIcon
 } from "lucide-react";
 import { Link, useLocation } from 'react-router-dom';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components/ui/tooltip';
 
 const MenuLateral = () => {
 
@@ -18,16 +18,16 @@ const MenuLateral = () => {
       <div className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Link
-            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+            className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full text-lg font-semibold text-primary md:h-8 md:w-8 md:text-base"
             to="/filial"
           >
-            <img className="scale-120 transition-all group-hover:scale-[135%]" src="./logomint.png" alt="Mint Software" />
+            <img className="scale-120 transition-all group-hover:scale-[135%]" src="/logomint.png" alt="Mint Software" />
             <span className="sr-only">Mint Software</span>
           </Link>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                className={pathname === '/' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                 to="/"
               >
                 <HomeIcon className="h-5 w-5" />
@@ -39,7 +39,7 @@ const MenuLateral = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/agenda' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                className={pathname === '/agenda' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                 to="/agenda"
               >
                 <CalendarDaysIcon className="h-5 w-5" />
@@ -51,7 +51,7 @@ const MenuLateral = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/financeiro' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                className={pathname === '/financeiro' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                 to="/financeiro"
               >
                 <DollarSignIcon className="h-5 w-5" />
@@ -63,7 +63,7 @@ const MenuLateral = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                className={pathname === '/locais' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                className={pathname === '/locais' ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                 to="/locais"
               >
                 <MapPinIcon className="h-5 w-5" />
@@ -80,7 +80,7 @@ const MenuLateral = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  className={pathname === ('/releases/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                  className={(pathname === '/releases' && '/releases/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                   to="/releases"
                 >
                   <NotebookTextIcon className="h-5 w-5" />
@@ -94,7 +94,7 @@ const MenuLateral = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  className={pathname === ('/configuracoes/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'}
+                  className={(pathname === '/configuracoes' && '/configuracoes/*') ? 'flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-primary md:h-8 md:w-8' : 'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-primary md:h-8 md:w-8'}
                   to="/configuracoes"
                 >
                   <SettingsIcon className="h-5 w-5" />

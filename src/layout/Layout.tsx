@@ -1,6 +1,6 @@
-import MenuLateral from "@/components/menulateral"
-import TopBar from "@/components/topBar"
 import { ReactNode } from "react"
+import MenuLateral from "./components/MenuLateral"
+import MenuSuperior from "./components/MenuSuperior"
 
 interface props {
     children?: ReactNode
@@ -13,7 +13,7 @@ export function Layout({ children }: props) {
                 <MenuLateral />
             </div>
             <div className="flex flex-col w-full">
-                <TopBar />
+                <MenuSuperior />
                 <main className="flex justify-center items-center max-w-full">
                     {children}
                 </main>
