@@ -16,7 +16,7 @@ interface MovimentosFinancProps {
 
 export function CardMovimentosFinanc({ movimentacoes }: MovimentosFinancProps) {
     return (
-        <Card className="flex flex-col min-w-[55rem]">
+        <Card className="flex flex-col w-full notebook:w-[43.7rem] desktop:w-[55.7rem]">
             <CardHeader className="py-2">
                 <CardTitle className="text-sm font-medium">Movimentações Recentes</CardTitle>
             </CardHeader>

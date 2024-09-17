@@ -17,7 +17,7 @@ export default function Login() {
           className="h-full w-full object-cover dark:brightness-[0.6] dark:grayscale"
         />
       </div>
-      <div className="flex items-center justify-center py-12">
+      <div className="flex items-center justify-center">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <img src="/logomint.png" alt="Mint Software" className="w-20 mx-auto" />
@@ -54,15 +54,6 @@ export default function Login() {
             <Button onClick={(e: any) => logar(e)} className="w-full">
               Login
             </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
-            </Button>
-          </div>
-          <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link to="/" className="underline">
-              Sign up
-            </Link>
           </div>
         </div>
       </div>

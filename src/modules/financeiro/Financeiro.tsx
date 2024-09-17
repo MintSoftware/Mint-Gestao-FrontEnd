@@ -32,14 +32,14 @@ export default function Financeiro() {
     } = useFinanceiroViewModel(); // Use o hook refatorado aqui
 
     return (
-        <div className="relative w-full p-4">
-            <ScrollArea className="h-[52rem] px-4">
+        <div className="relative w-full px-4">
+            <ScrollArea className="desktop:h-[52rem] notebook:h-[40rem] px-4">
                 <Label className="text-2xl font-bold">Fluxo de Caixa</Label>
                 <div className="grid grid-cols-12 gap-4 mb-8 mt-3">
                     <CardSaldoTotal saldoTotal={saldoTotal} />
                     <CardTotalEntradas totalEntradas={totalEntradas} />
                     <CardTotalSaidas totalSaidas={totalSaidas} />
-                    <div className="flex w-full gap-10">
+                    <div className="flex w-screen gap-4">
                         <CardCadastroMovtoFinanc
                             handleSubmit={handleSubmit}
                             handleInputChange={handleInputChange}

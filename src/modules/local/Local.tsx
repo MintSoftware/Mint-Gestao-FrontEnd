@@ -14,7 +14,7 @@ export default function Locais() {
     }, []);
 
     return (
-        <div className="w-[100%] px-5 pt-[50px] h-[100%]">
+        <div className="flex flex-col w-full">
             <Label className="text-xl p-5">Locais</Label>
             <Tabela
                 colunas={colunas()}

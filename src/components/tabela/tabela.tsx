@@ -66,13 +66,13 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
 
     return (
         <Dialog>
-            <div className="p-5">
-                <div className="gap-3 flex items-center pt-[15px] pb-[20px]">
+            <div className="p-8">
+                <div className="gap-3 flex items-center mb-5">
                     <Input
                         value={tabela.getState().globalFilter}
                         onChange={(e) => setGlobalFilter(e.target.value)}
                         placeholder="Pesquisar..."
-                        className="w-[30%] bg-background"
+                        className="bg-background notebook:w-[25rem]"
                     />
                     <Button onClick={functionSearch} variant="outline"><SearchIcon className="w-4 h-4" /></Button>
                     {modal}
@@ -83,7 +83,7 @@ const Tabela = <TData, TValue>({ colunas, dados, modal, exportar, functionSearch
                 </div>
                 <div className="rounded-md border relative bg-background">
                     <DndProvider backend={HTML5Backend}>
-                        <ScrollArea className="h-[38rem] w-[111.4rem]">
+                        <ScrollArea className="notebook:h-[27rem] w-[88.4rem] desktop:h-[40rem] desktop:w-[111.4rem]">
                             <Table style={{ width: tabela.getTotalSize() }}>
                                 <TableHeader>
                                     {tabela.getHeaderGroups().map((headerGroup) => (

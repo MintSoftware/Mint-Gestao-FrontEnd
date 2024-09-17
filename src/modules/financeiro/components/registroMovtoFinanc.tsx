@@ -21,7 +21,7 @@ interface CardCadastroMovtoFinancProps {
 
 export function CardCadastroMovtoFinanc({ handleSubmit, handleInputChange, handleSelectChange, novoMovimento, locaisUnicos }: CardCadastroMovtoFinancProps) {
     return (
-        <Card className="flex flex-col min-w-[55rem]">
+        <Card className="col-span-2 notebook:w-[43.8rem] desktop:w-[55.7rem]">
             <CardHeader>
                 <CardTitle>Registrar Novo Movimento</CardTitle>
             </CardHeader>

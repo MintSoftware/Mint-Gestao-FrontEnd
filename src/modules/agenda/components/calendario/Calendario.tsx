@@ -145,7 +145,7 @@ export default function Calendario() {
                                     </div>
                                 ))}
                             </div>
-                            <ScrollArea className="h-[43rem] w-full">
+                            <ScrollArea className="desktop:h-[43rem] notebook:h-[29rem] w-full">
                                 <div className="grid grid-cols-7 gap-2 bg- p-3">
                                     {Array.from({ length: firstDayOfMonth }, (_, i) => (
                                         <div key={i} className="flex justify-center relative rounded-[15px] border cursor-not-allowed transition-colors hover:bg-muted/50 p-2 h-[8rem]">
@@ -158,7 +158,7 @@ export default function Calendario() {
                                                 <TooltipTrigger asChild>
                                                     <DialogTrigger>
                                                         <div
-                                                            className={`relative rounded-[15px] border cursor-pointer transition-colors bg-background hover:bg-muted/50 p-2 h-[8rem]`}
+                                                            className={`relative rounded-[15px] border cursor-pointer transition-colors bg-background hover:bg-muted/50 h-[8rem]`}
                                                             onClick={() =>
                                                                 handleDateClick(
                                                                     new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 2).toISOString().slice(0, 10),
@@ -166,8 +166,8 @@ export default function Calendario() {
                                                             }
                                                         >
                                                             <div className="flex items-center justify-end gap-1">
-                                                                <div></div>
-                                                                <div className={`absolute top-1 left-[7rem] text-sm font-medium ${new Date().getDate() === i + 1 &&
+                                                                <div className="w-3 h-3"></div>
+                                                                <div className={`absolute left-0 top-1 w-full items-center text-sm font-medium ${new Date().getDate() === i + 1 &&
                                                                     new Date().getMonth() === currentDate.getMonth() &&
                                                                     new Date().getFullYear() === currentDate.getFullYear() ? "text-foreground" : "text-foreground"
                                                                     }`}>{((i + 1) < 10) ? '0' + (i + 1) : i + 1}
@@ -175,10 +175,10 @@ export default function Calendario() {
                                                                 {new Date().getDate() === i + 1 &&
                                                                     new Date().getMonth() === currentDate.getMonth() &&
                                                                     new Date().getFullYear() === currentDate.getFullYear() &&
-                                                                    <div className=" w-3 h-3 rounded-full bg-green-500" />
+                                                                    <div className="absolute top-2 right-3 w-3 h-3 rounded-full bg-green-500" />
                                                                 }
                                                                 {feriados.isHoliday(new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)) &&
-                                                                    <div className="w-3 h-3 rounded-full bg-purple-500" />
+                                                                    <div className="absolute top-2 right-3 w-3 h-3 rounded-full bg-purple-500" />
                                                                 }
                                                                 {eventos.filter(
                                                                     (evento) =>
@@ -187,7 +187,7 @@ export default function Calendario() {
                                                                 ).length > 0}
                                                                 <div></div>
                                                             </div>
-                                                            <div className="flex absolute top-2 left-2 flex-col h-[7rem] w-[14rem] justify-end">
+                                                            <div className="flex flex-col h-[7rem] justify-end p-1">
                                                                 {!loadingEventos ? eventos
                                                                     .filter(
                                                                         (evento) =>
@@ -205,7 +205,7 @@ export default function Calendario() {
                                                                             </div>
                                                                         </div>
                                                                     )) : <div>
-                                                                    <Skeleton className="h-[6rem] w-[14rem]" />
+                                                                        <Skeleton className="h-[6rem] notebook:w-[11.2rem] desktop:w-[14.5rem]" />
                                                                 </div>}
                                                             </div>
                                                         </div>
@@ -242,18 +242,17 @@ export default function Calendario() {
                                         </TooltipProvider>
                                     ))}
                                     {<CadastroEvento data={selectedDate} onClose={() => setSelectedDate(undefined)} eventos={eventosDia} />}
-                                    {/* {<CadastroEventoTeste/>} */}
                                 </div>
                             </ScrollArea>
                             <div className="flex h-[1.5rem]">
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <div className=" cursor-pointer ml-4 flex w-[7rem] justify-start items-center h-full gap-2">
+                                            <div className=" cursor-pointer ml-4 flex w-auto justify-start items-center h-full gap-2">
                                                 <Label className="cursor-pointer text-xs items-center flex text-muted-foreground">Legenda:</Label>
-                                                <div className="w-3 h-3 rounded-full bg-green-500 border" />
-                                                <div className="w-3 h-3 rounded-full bg-purple-500 border" />
-                                                <div className="w-3 h-3 rounded-full bg-red-500 border" />
+                                                <div className="w-3 h-3 rounded-full bg-green-500 border mt-1" />
+                                                <div className="w-3 h-3 rounded-full bg-purple-500 border mt-1" />
+                                                <div className="w-3 h-3 rounded-full bg-red-500 border mt-1" />
                                             </div>
                                         </TooltipTrigger>
                                         <TooltipContent className="bg-muted">

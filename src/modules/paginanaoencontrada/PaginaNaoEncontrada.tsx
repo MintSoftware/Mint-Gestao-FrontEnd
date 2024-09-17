@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function PaginaNaoEncontrada() {
   return (
-    <div className="flex flex-col items-center justify-center p-10">
+    <div className="flex flex-col items-center justify-center desktop:p-10">
       <div className="max-w-md text-center space-y-4">
         <img
           alt="Perdido no espaço"
