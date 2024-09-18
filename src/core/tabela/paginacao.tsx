@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -6,8 +8,6 @@ import {
   ReloadIcon,
 } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { Button } from "../ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 
 interface PaginacaoProps<TData> {
@@ -27,7 +27,7 @@ export function Paginacao<TData>({
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <Button className="w-[8%] h-[20%]" variant={'ghost'} onClick={functionSearch}>
-          <ReloadIcon/>
+          <ReloadIcon />
         </Button>
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Linhas por pagina</p>

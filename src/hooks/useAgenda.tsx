@@ -5,7 +5,7 @@ import Holidays from "date-holidays"
 import { useState } from "react"
 import { toast } from "sonner"
 
-export function useCalendarioController() {
+export function useAgenda() {
     const [currentDate, setCurrentDate] = useState(new Date())
     const handlePreviousMonth = () => {
         setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))

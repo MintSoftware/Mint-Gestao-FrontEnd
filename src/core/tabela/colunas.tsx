@@ -1,6 +1,6 @@
-import { useDrag, useDrop, DragSourceMonitor } from 'react-dnd';
-import { Header, flexRender, Column, ColumnDef } from "@tanstack/react-table";
-import { TableHead, TableCell } from "../ui/table"; // Importações dos seus componentes de UI
+import { TableCell, TableHead } from '@/components/ui/table';
+import { Column, ColumnDef, Header, flexRender } from "@tanstack/react-table";
+import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { ColumnResizer } from './resizer';
 
 interface DraggableColProps<TData, TValue> {

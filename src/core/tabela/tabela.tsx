@@ -1,3 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import {
     ColumnDef, ColumnSizingState, SortingState, flexRender, getCoreRowModel,
     getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
@@ -6,12 +12,6 @@ import { SearchIcon } from "lucide-react";
 import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Button } from "../ui/button";
-import { Dialog } from "../ui/dialog";
-import { Input } from "../ui/input";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
-import { Skeleton } from "../ui/skeleton";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
 import { DraggableCol } from './colunas';
 import { EsconderColunas } from "./esconderColunas";
 import { Paginacao } from "./paginacao";

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useLocalContext } from "@/providers/LocalProvider";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { FileOutputIcon } from "lucide-react";
 import generatePDF from "react-to-pdf";
-import { useLocalController } from "../Localcontroller";
 
 export default function ExportarLocal(dados: any) {
-    const { baixarExcel, recuperarDadosParaPdf } = useLocalController();
+    const { baixarExcel, recuperarDadosParaPdf } = useLocalContext();
 
     return (
         <DropdownMenu>

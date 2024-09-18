@@ -22,8 +22,13 @@ const schema = z.object({
     images: z.array(z.string())
 });
 
-export function useLocalController() {
+export function useLocal() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [recarrecarLocais, setRecarrecarLocais] = useState(false);
+
+    const recarregarListaLocais = () => {
+        setRecarrecarLocais(!recarrecarLocais);
+    }
 
     const [formData, setFormData] = useState({
         id: "",
@@ -105,7 +110,7 @@ export function useLocalController() {
             toast.success("Local cadastrado com sucesso!");
             setIsDialogOpen(false);
             resetForm();
-            buscarLocais();
+            recarregarListaLocais();
         }).catch(() => {
             toast.error("Erro ao cadastrar local.");
         }), {
@@ -218,6 +223,7 @@ export function useLocalController() {
             toast.success("Local editado com sucesso!");
             setIsDialogOpen(false);
             resetForm();
+            recarregarListaLocais();
         }).catch(() => {
             toast.error("Erro ao editar o local.");
         }), {
@@ -262,5 +268,8 @@ export function useLocalController() {
         editarLocal,
         recuperarDadosParaPdf,
         baixarExcel,
+        recarregarListaLocais,
+        recarrecarLocais,
+        setRecarrecarLocais
     }
 }

@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useLocalController } from "./Localcontroller.tsx";
-import { DadosGerais } from "./components/DadosGerais.tsx";
-import { Endereco } from "./components/Endereco.tsx";
-import { Imagens } from "./components/Imagens.tsx";
+import { useLocalContext } from "@/providers/LocalProvider.tsx";
+import { DadosGerais } from "./DadosGerais.tsx";
+import { Endereco } from "./Endereco.tsx";
+import { Imagens } from "./Imagens.tsx";
 
 export default function CadastroLocal() {
 
@@ -21,7 +21,7 @@ export default function CadastroLocal() {
         diasDaSemana,
         resetForm,
         handleModificarDia,
-    } = useLocalController();
+    } = useLocalContext();
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

@@ -1,24 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLocalContext } from "@/providers/LocalProvider.tsx";
 import { Local } from "@/types/Local.ts";
 import { Row } from "@tanstack/react-table";
-import { PencilIcon } from "lucide-react";
-import { useLocalController } from "./Localcontroller.tsx";
-import { DadosGerais } from "./components/DadosGerais.tsx";
-import { Endereco } from "./components/Endereco.tsx";
-import { Imagens } from "./components/Imagens.tsx";
+import { SearchIcon } from "lucide-react";
+import { DadosGerais } from "./DadosGerais.tsx";
+import { Endereco } from "./Endereco.tsx";
+import { Imagens } from "./Imagens.tsx";
 
 interface EditarLocalProps {
     local: Row<Local>;
 }
 
-export default function EditarLocal({ local }: EditarLocalProps) {
+export default function VerLocal({ local }: EditarLocalProps) {
 
     const {
         isDialogOpen,
         setIsDialogOpen,
-        editarLocal,
         formData,
         setFormData,
         errors,
@@ -28,7 +27,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
         diasDaSemana,
         resetForm,
         handleModificarDia,
-    } = useLocalController();
+    } = useLocalContext();
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -43,7 +42,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
                 })
             }}>
                 <Button variant="ghost" className="h-8 w-8 p-0">
-                    <PencilIcon className="h-4 w-4" />
+                    <SearchIcon className="h-4 w-4" />
                 </Button>
             </DialogTrigger>
             <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="flex items-center justify-center">
@@ -82,9 +81,8 @@ export default function EditarLocal({ local }: EditarLocalProps) {
                             <Button variant="secondary" onClick={() => {
                                 setIsDialogOpen(false)
                                 resetForm()
-                            }}>Cancelar</Button>
+                            }}>voltar</Button>
                         </DialogClose>
-                        <Button onClick={editarLocal}>Salvar</Button>
                     </div>
                 </div>
             </DialogContent>

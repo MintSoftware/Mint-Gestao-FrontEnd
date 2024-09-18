@@ -84,10 +84,10 @@ const MenuLateral = () => {
                   to="/releases"
                 >
                   <NotebookTextIcon className="h-5 w-5" />
-                  <span className="sr-only">Configurações</span>
+                  <span className="sr-only">Releases</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Configurações</TooltipContent>
+              <TooltipContent side="right">Releases</TooltipContent>
             </Tooltip>
           </TooltipProvider>
           <TooltipProvider>

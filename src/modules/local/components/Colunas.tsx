@@ -1,17 +1,17 @@
-import Cabecalho from "@/components/tabela/cabecalho"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
+import Cabecalho from "@/core/tabela/cabecalho"
+import { useLocalContext } from "@/providers/LocalProvider"
 import { Local } from "@/types/Local"
 import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisVerticalIcon } from "lucide-react"
-import EditarLocal from "../EditarLocal"
-import { useLocalController } from "../Localcontroller"
-import VerLocal from "../VerLocal"
+import EditarLocal from "./EditarLocal"
+import VerLocal from "./VerLocal"
 
 export const colunas = (): ColumnDef<Local>[] => {
-    const { inativar, ativar } = useLocalController();
+    const { inativar, ativar } = useLocalContext();
 
     return [{
         id: "ver",
