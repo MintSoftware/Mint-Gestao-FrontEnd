@@ -1,4 +1,6 @@
+import { calcularHoras } from "@/core/horas/Horas";
 import Api from "@/infra/api";
+import { useAgendaContext } from "@/providers/AgendaProvider";
 import { Local } from "@/types/Local";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -9,10 +11,16 @@ import { z } from "zod";
 export function useCadastroEventoController(onClose: () => void) {
     const [loadingLocais, setLoadingLocais] = useState(false);
     const [locais, setLocais] = useState<Local[]>();
-    const [localSelecionadoFiltro, setLocalSelecionadoFiltro] = useState<Local>();
+    const [localSelecionado, setlocalSelecionado] = useState<Local>();
     const [openFiltroLocal, setOpenFiltroLocal] = useState(false);
     const [valorHora, setValorHora] = useState(0);
     const [valorTotal, setValorTotal] = useState(0);
+
+    const {
+        buscarEventos,
+        localSelecionadoFiltro,
+        handleLocalSelecionadoFiltro
+    } = useAgendaContext();
 
 
     const FormSchema = z.object({
@@ -21,7 +29,7 @@ export function useCadastroEventoController(onClose: () => void) {
         }),
         diaEvento: z.date().nullable().refine(value => value !== null, {
             message: 'Data é obrigatória',
-        }).refine(value => value > new Date(), {
+        }).refine(value => value > new Date(0, 0, 0, 0, 0), {
             message: 'Data deve ser maior que a data atual',
         }),
         nome: z.string().refine(value => value.length > 0, {
@@ -56,7 +64,14 @@ export function useCadastroEventoController(onClose: () => void) {
         }
     })
 
-    const hours = Array.from({ length: 24 }, (_, i) => i)
+    let horasTimeLine = Array.from({ length: 24 }, (_, i) => i)
+
+    if (localSelecionado || localSelecionadoFiltro) {
+        const localUtilizado = (localSelecionado) ? localSelecionado : localSelecionadoFiltro;
+        if (localUtilizado) {
+            horasTimeLine = calcularHoras(localUtilizado.horarioAbertura, localUtilizado.horarioFechamento);
+        }
+    }
 
     const calcularTamanhoPelaQuantHora = (quantidadeHoras: number) => {
         return quantidadeHoras * 3.4
@@ -84,7 +99,7 @@ export function useCadastroEventoController(onClose: () => void) {
         form.setValue('horafim', new Date(0, 0, 0, 0, 0, 0));
         form.reset();
 
-        setLocalSelecionadoFiltro(undefined);
+        setlocalSelecionado(undefined);
         form.clearErrors();
     }
 
@@ -97,21 +112,21 @@ export function useCadastroEventoController(onClose: () => void) {
         onClose();
     }
 
-    const handleLocalSelecionadoFiltro = (local: Local) => {
+    const handlelocalSelecionado = (local: Local) => {
 
-        if (localSelecionadoFiltro == local) {
-            setLocalSelecionadoFiltro(undefined);
+        if (localSelecionado == local) {
+            setlocalSelecionado(undefined);
             setOpenFiltroLocal(false);
             return;
         }
 
-        setLocalSelecionadoFiltro(local);
+        setlocalSelecionado(local);
         setOpenFiltroLocal(false);
     }
 
     useEffect(() => {
         calcularValorHora();
-    }, [localSelecionadoFiltro]);
+    }, [localSelecionado]);
 
     useEffect(() => {
         calcularValorTotal();
@@ -121,12 +136,12 @@ export function useCadastroEventoController(onClose: () => void) {
         const horainicio = form.getValues('horainicio'),
             horafim = form.getValues('horafim');
 
-        setValorHora(localSelecionadoFiltro?.valorHora || 0);
+        setValorHora(localSelecionado?.valorHora || 0);
 
         if (!horainicio || !horafim || horafim.getHours() <= horainicio.getHours()) return;
 
         const quantidadeHoras = horafim.getHours() - horainicio.getHours();
-        setValorTotal((localSelecionadoFiltro?.valorHora || 0) * quantidadeHoras);
+        setValorTotal((localSelecionado?.valorHora || 0) * quantidadeHoras);
     }
 
     const calcularValorTotal = () => {
@@ -136,7 +151,7 @@ export function useCadastroEventoController(onClose: () => void) {
         if (horafim.getHours() <= horainicio.getHours()) return;
 
         const quantidadeHoras = new Date(horafim).getHours() - new Date(horainicio).getHours();
-        setValorTotal((localSelecionadoFiltro?.valorHora || 0) * quantidadeHoras);
+        setValorTotal((localSelecionado?.valorHora || 0) * quantidadeHoras);
     }
 
     const ajustarDataHoraInicio = () => {
@@ -159,12 +174,31 @@ export function useCadastroEventoController(onClose: () => void) {
             valorhora: valorHora,
             horainicio: ajustarDataHoraInicio(),
             horafim: ajustarDataHoraFim(),
-            local: localSelecionadoFiltro
+            local: localSelecionado
         }
 
         toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
             toast.success("Evento Salvo com sucesso!");
             limparDadosEFechar();
+            if (localSelecionadoFiltro && localSelecionado) {
+                buscarEventos(localSelecionadoFiltro.id);
+                handleLocalSelecionadoFiltro(localSelecionado);
+            }
+        }).catch((error) => {
+            toast.error(error.response.data);
+        }), {
+            loading: "Salvando...",
+        });
+    }
+
+    const cancelarEvento = (id: string) => {
+        toast.promise(Api.delete(`gestao/evento/${id}`, {}).then(async () => {
+            toast.success("Evento cancelado com sucesso!");
+            limparDadosEFechar();
+            if (localSelecionadoFiltro && localSelecionado) {
+                buscarEventos(localSelecionadoFiltro.id);
+                handleLocalSelecionadoFiltro(localSelecionado);
+            }
         }).catch((error) => {
             toast.error(
                 error.response.data
@@ -179,7 +213,7 @@ export function useCadastroEventoController(onClose: () => void) {
                 }
             );
         }), {
-            loading: "Salvando...",
+            loading: "Cancelando...",
         });
     }
 
@@ -198,15 +232,15 @@ export function useCadastroEventoController(onClose: () => void) {
     return {
         loadingLocais,
         locais,
-        localSelecionadoFiltro,
+        localSelecionado,
         openFiltroLocal,
         valorHora,
         valorTotal,
         form,
-        hours,
+        horasTimeLine,
         listaHora,
         buscarLocais,
-        handleLocalSelecionadoFiltro,
+        handlelocalSelecionado,
         limparDados,
         limparDadosEFechar,
         fechar,
@@ -215,6 +249,7 @@ export function useCadastroEventoController(onClose: () => void) {
         calcularValorTotal,
         calcularTamanhoPelaQuantHora,
         setOpenFiltroLocal,
-        setLocalSelecionadoFiltro,
+        setlocalSelecionado,
+        cancelarEvento
     }
 }

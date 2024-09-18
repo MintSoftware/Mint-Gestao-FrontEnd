@@ -1,3 +1,4 @@
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -15,7 +16,7 @@ import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';
 import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
-import { CalendarIcon, CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon } from 'lucide-react';
+import { CalendarIcon, CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon, Trash2 } from 'lucide-react';
 import { useCadastroEventoController } from './CadastroEventoController';
 
 interface EventoProps {
@@ -32,17 +33,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         loadingLocais,
         valorHora,
         valorTotal,
-        localSelecionadoFiltro,
-        setLocalSelecionadoFiltro,
+        localSelecionado,
+        setlocalSelecionado,
         openFiltroLocal,
         setOpenFiltroLocal,
         buscarLocais,
         salvarEvento,
         limparDadosEFechar,
         calcularTamanhoPelaQuantHora,
-        hours,
-        handleLocalSelecionadoFiltro,
-        locais
+        horasTimeLine,
+        handlelocalSelecionado,
+        locais,
+        cancelarEvento
     } = useCadastroEventoController(onClose);
 
     return (
@@ -77,8 +79,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                     onClick={() => buscarLocais()}
                                                                 >
                                                                     <Label className="text-muted-foreground ">
-                                                                        {localSelecionadoFiltro?.nome
-                                                                            ? locais?.find((local) => local.id === localSelecionadoFiltro.id)?.nome
+                                                                        {localSelecionado?.nome
+                                                                            ? locais?.find((local) => local.id === localSelecionado.id)?.nome
                                                                             : "Selecione um local"}
                                                                     </Label>
                                                                     <ChevronDownIcon className='m-2 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200' style={{
@@ -112,7 +114,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                                 <CommandList
                                                                                     key={local.id}
                                                                                     onClick={() => {
-                                                                                        handleLocalSelecionadoFiltro(local)
+                                                                                        handlelocalSelecionado(local)
                                                                                         form.setValue('local', local.id);
                                                                                     }}
                                                                                     {...form.register("local")}
@@ -122,7 +124,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                                         <CheckIcon
                                                                                             className={cn(
                                                                                                 "mr-2 h-4 w-4",
-                                                                                                localSelecionadoFiltro?.id === local.id ? "opacity-100" : "opacity-0"
+                                                                                                localSelecionado?.id === local.id ? "opacity-100" : "opacity-0"
                                                                                             )}
                                                                                         />
                                                                                         {local.nome}
@@ -306,7 +308,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                     <div className="container mx-auto p-4 max-w-4xl">
                                         <div className="relative">
                                             <div className="absolute top-0 bottom-0 left-16 w-px bg-secondary"></div>
-                                            {hours.map((hour) => {
+                                            {horasTimeLine.map((hour) => {
                                                 const timeString = `${hour.toString().padStart(2, '0')}:00`
                                                 const hourEvents = eventos?.filter(evento =>
                                                     new Date(evento.horainicio).getHours() === hour
@@ -322,7 +324,6 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <div className="flex-grow ml-4 h-14 relative top-7">
                                                             {hourEvents?.map(evento => {
                                                                 const quantidadeHoras = new Date(evento.horafim).getHours() - new Date(evento.horainicio).getHours();
-
                                                                 return (
                                                                     <div
                                                                         key={evento.id}
@@ -337,29 +338,53 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                             form.setValue('email', evento.email);
                                                                             form.setValue('horainicio', new Date(evento.horainicio));
                                                                             form.setValue('horafim', new Date(evento.horafim));
-                                                                            setLocalSelecionadoFiltro(evento.local);
+                                                                            setlocalSelecionado(evento.local);
                                                                             setOpenFiltroLocal(false);
                                                                         }
                                                                         }
-                                                                    >
-                                                                        <div className="flex items-center gap-2 cursor-pointer">
-                                                                            <div className="flex gap-2 mt-0.5 mr-4 cursor-pointer">
-                                                                                <ClockIcon className="h-4 w-4 opacity-70 cursor-pointer" />
-                                                                                <Label className="cursor-pointer text-muted-foreground">{new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                    ><div className='flex h-full items-center gap-2'>
+                                                                            <div className='flex flex-col gap-2'>
+                                                                                <div className="flex items-center gap-2 cursor-pointer">
+                                                                                    <div className="flex gap-2 mt-0.5 mr-4 cursor-pointer">
+                                                                                        <ClockIcon className="h-4 w-4 opacity-70 cursor-pointer" />
+                                                                                        <Label className="cursor-pointer text-muted-foreground">{new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                                    </div>
+                                                                                    <Avatar className="h-4 w-4">
+                                                                                        <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${evento.nome} ${evento.sobrenome}`} />
+                                                                                        <AvatarFallback>{evento.nome}{evento.sobrenome}</AvatarFallback>
+                                                                                    </Avatar>
+                                                                                    <Label className="cursor-pointer text-muted-foreground truncate w-[10rem]">{evento.nome} {evento.sobrenome}</Label>
+                                                                                </div>
+                                                                                <div className="flex gap-2 cursor-pointer">
+                                                                                    <FlagIcon className="cursor-pointer h-4 w-4 opacity-70" />
+                                                                                    <Label className="cursor-pointer text-muted-foreground mr-4">{new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                                    <div className="flex gap-2 cursor-pointer">
+                                                                                        <PhoneCallIcon className="h-4 w-4 opacity-70" />
+                                                                                        <Label className="cursor-pointer text-muted-foreground">{evento.telefone}</Label>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                            <Avatar className="h-4 w-4">
-                                                                                <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${evento.nome} ${evento.sobrenome}`} />
-                                                                                <AvatarFallback>{evento.nome}{evento.sobrenome}</AvatarFallback>
-                                                                            </Avatar>
-                                                                            <Label className="cursor-pointer text-muted-foreground truncate w-[10rem]">{evento.nome} {evento.sobrenome}</Label>
-                                                                        </div>
-                                                                        <div className="flex gap-2 cursor-pointer">
-                                                                            <FlagIcon className="cursor-pointer h-4 w-4 opacity-70" />
-                                                                            <Label className="cursor-pointer text-muted-foreground mr-4">{new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
-                                                                            <div className="flex gap-2 cursor-pointer">
-                                                                                <PhoneCallIcon className="h-4 w-4 opacity-70" />
-                                                                                <Label className="cursor-pointer text-muted-foreground">{evento.telefone}</Label>
-                                                                            </div>
+                                                                            <AlertDialog>
+                                                                                <AlertDialogTrigger asChild>
+                                                                                    <Trash2 className="cursor-pointer h-4 w-4 text-red-500" />
+                                                                                </AlertDialogTrigger>
+                                                                                <AlertDialogContent>
+                                                                                    <AlertDialogTitle>
+                                                                                        Cancelar Reserva
+                                                                                    </AlertDialogTitle>
+                                                                                    <AlertDialogDescription>
+                                                                                        Deseja realmente cancelar a reserva?
+                                                                                    </AlertDialogDescription>
+                                                                                    <AlertDialogFooter>
+                                                                                        <AlertDialogCancel>
+                                                                                            Não
+                                                                                        </AlertDialogCancel>
+                                                                                        <AlertDialogAction onClick={() => cancelarEvento(evento.id)}>
+                                                                                            Sim
+                                                                                        </AlertDialogAction>
+                                                                                    </AlertDialogFooter>
+                                                                                </AlertDialogContent>
+                                                                            </AlertDialog>
                                                                         </div>
                                                                     </div>
                                                                 );

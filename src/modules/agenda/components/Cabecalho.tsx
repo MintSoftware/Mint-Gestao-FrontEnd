@@ -6,7 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useAgendaContext } from "@/providers/AgendaProvider";
-import { CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon } from "lucide-react";
+import { CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, FilterIcon, RefreshCwIcon } from "lucide-react";
 
 export function CabecalhoAgenda() {
 
@@ -22,6 +22,7 @@ export function CabecalhoAgenda() {
         locais,
         buscarLocais,
         loadingLocais,
+        buscarEventos
     } = useAgendaContext();
 
     return (
@@ -98,6 +99,11 @@ export function CabecalhoAgenda() {
                                 </Command>
                             </PopoverContent>
                         </Popover>
+                        <Button className="ml-2 items-center justify-center" variant="ghost" onClick={() => {
+                            if (localSelecionadoFiltro) buscarEventos(localSelecionadoFiltro.id)
+                        }}>
+                            <RefreshCwIcon className="h-4 w-4" />
+                        </Button>
                     </div>
                 </div>
             </div>
