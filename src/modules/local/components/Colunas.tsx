@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Dialog } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import Cabecalho from "@/core/tabela/cabecalho"
@@ -18,7 +19,9 @@ export const colunas = (): ColumnDef<Local>[] => {
         size: 50,
         maxSize: 50,
         cell: ({ row }) => (
-            <VerLocal local={row} />
+            <Dialog>
+                <VerLocal local={row} />
+            </Dialog>
         ),
         enableSorting: false,
         enableHiding: false,
@@ -27,7 +30,9 @@ export const colunas = (): ColumnDef<Local>[] => {
         size: 50,
         maxSize: 50,
         cell: ({ row }) => (
-            <EditarLocal local={row} />
+            <Dialog>
+                <EditarLocal local={row} />
+            </Dialog>
         ),
         enableSorting: false,
         enableHiding: false,

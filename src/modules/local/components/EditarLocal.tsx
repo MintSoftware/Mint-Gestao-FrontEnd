@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLocalContext } from "@/providers/LocalProvider.tsx";
 import { Local } from "@/types/Local.ts";
@@ -16,7 +16,6 @@ interface EditarLocalProps {
 export default function EditarLocal({ local }: EditarLocalProps) {
 
     const {
-        isDialogOpen,
         setIsDialogOpen,
         editarLocal,
         formData,
@@ -31,7 +30,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
     } = useLocalContext();
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <div>
             <DialogTrigger asChild onClick={() => {
                 setIsDialogOpen(true)
                 setFormData({
@@ -48,7 +47,7 @@ export default function EditarLocal({ local }: EditarLocalProps) {
             </DialogTrigger>
             <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="flex items-center justify-center">
                 <div className=" bg-background">
-                    <DialogTitle className="text-2xl font-bold mb-6 text-center">Registrar Novo Local</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold mb-6 text-center">Editar Local</DialogTitle>
                     <Tabs defaultValue="dados-gerais" className="flex flex-col h-[30rem] w-[27rem]">
                         <TabsList className="grid w-full grid-cols-3">
                             <TabsTrigger value="dados-gerais">Dados Gerais</TabsTrigger>
@@ -88,6 +87,6 @@ export default function EditarLocal({ local }: EditarLocalProps) {
                     </div>
                 </div>
             </DialogContent>
-        </Dialog>
+        </div>
     );
 }

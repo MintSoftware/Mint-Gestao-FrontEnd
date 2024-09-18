@@ -9,7 +9,6 @@ import { Imagens } from "./Imagens.tsx";
 export default function CadastroLocal() {
 
     const {
-        isDialogOpen,
         setIsDialogOpen,
         salvarLocal,
         formData,
@@ -24,7 +23,7 @@ export default function CadastroLocal() {
     } = useLocalContext();
 
     return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog>
             <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
                 <Button variant="default" className="">Novo local</Button>
             </DialogTrigger>
