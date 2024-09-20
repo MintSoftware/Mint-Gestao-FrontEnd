@@ -63,7 +63,6 @@ const useAutenticacao = () => {
         removerToken();
         removerRefreshToken();
         removerTokenHeader();
-        window.location.href = '/';
     }, []);
 
     const atualizarToken = useCallback(async () => {

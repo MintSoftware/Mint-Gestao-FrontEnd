@@ -11,8 +11,8 @@ export type Local = {
     rua: string
     diasFuncionamento: string
     complemento: string
-    horarioAbertura: Date
-    horarioFechamento: Date
+    horarioAbertura: string
+    horarioFechamento: string
     observacao: string
     valorHora: number
     images: string[]

@@ -33,14 +33,27 @@ export function useAgenda() {
         setSelectedDate(date);
         setEventosDia(eventos.filter(
             (evento) =>
-                new Date(evento.horainicio).getDate() ===
+                new Date(evento.dataevento).getDate() ===
                 new Date(date).getDate() &&
-                new Date(evento.horainicio).getMonth() ===
+                new Date(evento.dataevento).getMonth() ===
                 new Date(date).getMonth() &&
-                new Date(evento.horainicio).getFullYear() ===
+                new Date(evento.dataevento).getFullYear() ===
                 new Date(date).getFullYear()
         ));
     }
+
+    const refreshTimeLine = (date: Date) => {
+        setEventosDia(eventos.filter(
+            (evento) =>
+                new Date(evento.dataevento).getDate() ===
+                date.getDate() &&
+                new Date(evento.dataevento).getMonth() ===
+                date.getMonth() &&
+                new Date(evento.dataevento).getFullYear() ===
+                date.getFullYear()
+        ));
+    }
+
 
     const handleLocalSelecionadoFiltro = (local: Local) => {
 
@@ -102,6 +115,7 @@ export function useAgenda() {
         setOpenFiltroLocal,
         handleLocalSelecionadoFiltro,
         buscarEventos,
-        buscarLocais
+        buscarLocais,
+        refreshTimeLine
     }
 }

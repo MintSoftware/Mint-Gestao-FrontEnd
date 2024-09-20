@@ -126,7 +126,7 @@ export const colunas = (): ColumnDef<Local>[] => {
             <Cabecalho column={column} title="Hora Abertura" />
         ),
         cell: ({ row }) => (
-            <Label className="relative left-3">{new Date(row.original.horarioAbertura).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+            <Label className="relative left-3">{row.original.horarioAbertura.slice(0, 5)}</Label>
         ),
     }, {
         accessorKey: 'horarioFechamento',
@@ -136,7 +136,7 @@ export const colunas = (): ColumnDef<Local>[] => {
         ),
 
         cell: ({ row }) => (
-            <Label className="relative left-3">{new Date(row.original.horarioFechamento).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+            <Label className="relative left-3">{row.original.horarioFechamento.slice(0, 5)}</Label>
         ),
     }, {
         accessorKey: 'diasFuncionamento',

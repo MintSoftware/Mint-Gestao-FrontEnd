@@ -70,9 +70,10 @@ export default function Mensal() {
                                                                 <div className="absolute top-2 right-3 w-3 h-3 rounded-full bg-purple-500" />
                                                             }
                                                             {eventos.filter(
-                                                                (evento) =>
-                                                                    new Date(evento.horainicio) ===
-                                                                    new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)
+                                                                (evento) => {
+                                                                    new Date(evento.dataevento) ===
+                                                                        new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1)
+                                                                }
                                                             ).length > 0}
                                                             <div></div>
                                                         </div>
@@ -80,17 +81,17 @@ export default function Mensal() {
                                                             {!loadingEventos ? eventos
                                                                 .filter(
                                                                     (evento) =>
-                                                                        new Date(evento.horainicio).getDate() ===
+                                                                        new Date(evento.dataevento).getDate() ===
                                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
-                                                                        new Date(evento.horainicio).getMonth() ===
+                                                                        new Date(evento.dataevento).getMonth() ===
                                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
-                                                                        new Date(evento.horainicio).getFullYear() ===
+                                                                        new Date(evento.dataevento).getFullYear() ===
                                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                                 )
                                                                 .map((evento, index) => (
                                                                     <div key={index} className="flex text-sm text-muted-foreground bg-gray-300 dark:bg-secondary rounded mt-1">
                                                                         <div className="flex w-full h-5 mx-2 overflow-hidden justify-center items-center">
-                                                                            <Label>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                            <Label>{evento.nome} - {evento.horainicio.slice(0, 5)} - {evento.horafim.slice(0, 5)}</Label>
                                                                         </div>
                                                                     </div>
                                                                 )) : <div>
@@ -103,25 +104,25 @@ export default function Mensal() {
                                             <TooltipContent className="bg-muted">
                                                 {(eventos.filter(
                                                     (evento) =>
-                                                        new Date(evento.horainicio).getDate() ===
+                                                        new Date(evento.dataevento).getDate() ===
                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
-                                                        new Date(evento.horainicio).getMonth() ===
+                                                        new Date(evento.dataevento).getMonth() ===
                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
-                                                        new Date(evento.horainicio).getFullYear() ===
+                                                        new Date(evento.dataevento).getFullYear() ===
                                                         new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                 ).length > 0) ? eventos
                                                     .filter(
                                                         (evento) =>
-                                                            new Date(evento.horainicio).getDate() ===
+                                                            new Date(evento.dataevento).getDate() ===
                                                             new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getDate() &&
-                                                            new Date(evento.horainicio).getMonth() ===
+                                                            new Date(evento.dataevento).getMonth() ===
                                                             new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getMonth() &&
-                                                            new Date(evento.horainicio).getFullYear() ===
+                                                            new Date(evento.dataevento).getFullYear() ===
                                                             new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1).getFullYear()
                                                     )
                                                     .map((evento, index) => (
                                                         <div key={index} className="flex text-sm text-muted-foreground p-1 items-center justify-center">
-                                                            <Label>{evento.nome} - {new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} - {new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                            <Label>{evento.nome} - {evento.horainicio.slice(0, 5)} - {evento.horafim.slice(0, 5)}</Label>
                                                         </div>
                                                     )) : (
                                                     <div className="text-sm text-muted-foreground">Sem Eventos</div>

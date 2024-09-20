@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
+import { stringParaDate } from '@/core/horas/Horas';
 import { InputBase } from '@/core/input/base';
 import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';
@@ -311,9 +312,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             {horasTimeLine.map((hour) => {
                                                 const timeString = `${hour.toString().padStart(2, '0')}:00`
                                                 const hourEvents = eventos?.filter(evento =>
-                                                    new Date(evento.horainicio).getHours() === hour
+                                                    stringParaDate(evento.horainicio).getHours() === hour
                                                 )
-
                                                 return (
                                                     <div key={hour} className="flex">
                                                         <div className="flex items-center w-16">
@@ -323,7 +323,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         </div>
                                                         <div className="flex-grow ml-4 h-14 relative top-7">
                                                             {hourEvents?.map(evento => {
-                                                                const quantidadeHoras = new Date(evento.horafim).getHours() - new Date(evento.horainicio).getHours();
+                                                                const quantidadeHoras = stringParaDate(evento.horafim).getHours() - stringParaDate(evento.horainicio).getHours();
                                                                 return (
                                                                     <div
                                                                         key={evento.id}
@@ -331,13 +331,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
                                                                             form.setValue('local', evento.local.nome);
-                                                                            form.setValue('diaEvento', new Date(evento.horainicio));
+                                                                            form.setValue('diaEvento', new Date(evento.dataevento));
                                                                             form.setValue('nome', evento.nome);
                                                                             form.setValue('sobrenome', evento.sobrenome);
                                                                             form.setValue('telefone', evento.telefone);
                                                                             form.setValue('email', evento.email);
-                                                                            form.setValue('horainicio', new Date(evento.horainicio));
-                                                                            form.setValue('horafim', new Date(evento.horafim));
+                                                                            form.setValue('horainicio', stringParaDate(evento.horainicio));
+                                                                            form.setValue('horafim', stringParaDate(evento.horafim));
                                                                             setlocalSelecionado(evento.local);
                                                                             setOpenFiltroLocal(false);
                                                                         }
@@ -347,7 +347,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                                 <div className="flex items-center gap-2 cursor-pointer">
                                                                                     <div className="flex gap-2 mt-0.5 mr-4 cursor-pointer">
                                                                                         <ClockIcon className="h-4 w-4 opacity-70 cursor-pointer" />
-                                                                                        <Label className="cursor-pointer text-muted-foreground">{new Date(evento.horainicio).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                                        <Label className="cursor-pointer text-muted-foreground">{evento.horainicio.slice(0, 5)}</Label>
                                                                                     </div>
                                                                                     <Avatar className="h-4 w-4">
                                                                                         <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${evento.nome} ${evento.sobrenome}`} />
@@ -357,7 +357,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                                 </div>
                                                                                 <div className="flex gap-2 cursor-pointer">
                                                                                     <FlagIcon className="cursor-pointer h-4 w-4 opacity-70" />
-                                                                                    <Label className="cursor-pointer text-muted-foreground mr-4">{new Date(evento.horafim).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })}</Label>
+                                                                                    <Label className="cursor-pointer text-muted-foreground mr-4">{evento.horafim.slice(0, 5)}</Label>
                                                                                     <div className="flex gap-2 cursor-pointer">
                                                                                         <PhoneCallIcon className="h-4 w-4 opacity-70" />
                                                                                         <Label className="cursor-pointer text-muted-foreground">{evento.telefone}</Label>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogClose, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { stringParaDate } from "@/core/horas/Horas.tsx";
 import { useLocalContext } from "@/providers/LocalProvider.tsx";
 import { Local } from "@/types/Local.ts";
 import { Row } from "@tanstack/react-table";
@@ -36,8 +37,8 @@ export default function EditarLocal({ local }: EditarLocalProps) {
                 setFormData({
                     ...local.original,
                     diasFuncionamento: local.original.diasFuncionamento.split(","),
-                    horarioAbertura: new Date(local.original.horarioAbertura),
-                    horarioFechamento: new Date(local.original.horarioFechamento),
+                    horarioAbertura: stringParaDate(local.original.horarioAbertura),
+                    horarioFechamento: stringParaDate(local.original.horarioFechamento),
                     images: []
                 })
             }}>

@@ -10,9 +10,9 @@ export type Evento = {
     telefone: string
     valortotal: number
     valorhora: number
-    horainicio: Date
-    horafim: Date
-    diaevento: Date
+    horainicio: string
+    horafim: string
+    dataevento: Date
     local: Local
     cliente?: Cliente
     idtenant: number

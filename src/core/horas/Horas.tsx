@@ -48,3 +48,20 @@ export function calcularHoras(dataAbertura = new Date, dataFechamento = new Date
 
     return resultado;
 }
+
+export function stringParaDate(horaString: string) {
+    const data = new Date();
+
+    const [horas, minutos, segundos] = horaString.split(':').map(Number);
+
+    // Ajusta o tempo da data atual
+    data.setHours(horas);
+    data.setMinutes(minutos);
+    data.setSeconds(segundos || 0);
+
+    return data;
+}
+
+export function dateParaString(data: Date) {
+    return data.toTimeString().slice(0, 5);
+}

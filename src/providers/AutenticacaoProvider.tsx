@@ -1,25 +1,9 @@
 import React, { createContext, useContext } from 'react';
-import { Usuario } from '@/types/Usuario';
 import useAutenticacao from '../hooks/useAutenticacao';
 
-interface AutenticacaoContextData {
-    usuarioLogado: Usuario | null;
-    salvarUsuario: (usuario: Usuario) => void;
-    recuperarUsuario: () => Usuario | null;
-    removerUsuario: () => void;
-    salvarToken: (token: string) => void;
-    recuperarToken: () => string | null;
-    removerToken: () => void;
-    salvarRefreshToken: (refreshToken: string) => void;
-    recuperarRefreshToken: () => string | null;
-    removerRefreshToken: () => void;
-    inserirTokenHeader: () => void;
-    removerTokenHeader: () => void;
-    deslogar: () => void;
-    atualizarToken: () => Promise<void>;
-}
+type AutenticacaoContextType = ReturnType<typeof useAutenticacao>;
 
-const AutenticacaoContext = createContext<AutenticacaoContextData | undefined>(undefined);
+const AutenticacaoContext = createContext<AutenticacaoContextType | undefined>(undefined);
 
 export const AutenticacaoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const autenticacao = useAutenticacao();

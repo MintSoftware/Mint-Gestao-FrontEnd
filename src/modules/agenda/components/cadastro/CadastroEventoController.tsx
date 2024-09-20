@@ -1,4 +1,4 @@
-import { calcularHoras } from "@/core/horas/Horas";
+import { calcularHoras, dateParaString, stringParaDate } from "@/core/horas/Horas";
 import Api from "@/infra/api";
 import { useAgendaContext } from "@/providers/AgendaProvider";
 import { Local } from "@/types/Local";
@@ -19,7 +19,8 @@ export function useCadastroEventoController(onClose: () => void) {
     const {
         buscarEventos,
         localSelecionadoFiltro,
-        handleLocalSelecionadoFiltro
+        handleLocalSelecionadoFiltro,
+        refreshTimeLine
     } = useAgendaContext();
 
 
@@ -69,7 +70,7 @@ export function useCadastroEventoController(onClose: () => void) {
     if (localSelecionado || localSelecionadoFiltro) {
         const localUtilizado = (localSelecionado) ? localSelecionado : localSelecionadoFiltro;
         if (localUtilizado) {
-            horasTimeLine = calcularHoras(localUtilizado.horarioAbertura, localUtilizado.horarioFechamento);
+            horasTimeLine = calcularHoras(stringParaDate(localUtilizado.horarioAbertura), stringParaDate(localUtilizado.horarioFechamento));
         }
     }
 
@@ -154,16 +155,6 @@ export function useCadastroEventoController(onClose: () => void) {
         setValorTotal((localSelecionado?.valorHora || 0) * quantidadeHoras);
     }
 
-    const ajustarDataHoraInicio = () => {
-        const horainicio = form.getValues('horainicio');
-        return new Date(form.getValues('diaEvento').setHours(horainicio.getHours(), horainicio.getMinutes(), horainicio.getSeconds()));
-    }
-
-    const ajustarDataHoraFim = () => {
-        const horafim = form.getValues('horafim');
-        return new Date(form.getValues('diaEvento').setHours(horafim.getHours(), horafim.getMinutes(), horafim.getSeconds()));
-    }
-
     const salvarEvento = (values: z.infer<typeof FormSchema>) => {
         const evento = {
             nome: values.nome,
@@ -172,13 +163,15 @@ export function useCadastroEventoController(onClose: () => void) {
             telefone: values.telefone,
             valortotal: valorTotal,
             valorhora: valorHora,
-            horainicio: ajustarDataHoraInicio(),
-            horafim: ajustarDataHoraFim(),
+            horainicio: dateParaString(values.horainicio),
+            horafim: dateParaString(values.horafim),
+            dataevento: values.diaEvento,
             local: localSelecionado
         }
 
         toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
             toast.success("Evento Salvo com sucesso!");
+            refreshTimeLine(values.diaEvento);
             limparDadosEFechar();
             if (localSelecionadoFiltro && localSelecionado) {
                 buscarEventos(localSelecionadoFiltro.id);
@@ -194,7 +187,7 @@ export function useCadastroEventoController(onClose: () => void) {
     const cancelarEvento = (id: string) => {
         toast.promise(Api.delete(`gestao/evento/${id}`, {}).then(async () => {
             toast.success("Evento cancelado com sucesso!");
-            limparDadosEFechar();
+            refreshTimeLine(form.getValues('diaEvento'));
             if (localSelecionadoFiltro && localSelecionado) {
                 buscarEventos(localSelecionadoFiltro.id);
                 handleLocalSelecionadoFiltro(localSelecionado);
