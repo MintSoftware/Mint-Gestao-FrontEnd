@@ -98,6 +98,8 @@ export function useCadastroEventoController(onClose: () => void) {
         form.setValue('email', '');
         form.setValue('horainicio', new Date(0, 0, 0, 0, 0, 0));
         form.setValue('horafim', new Date(0, 0, 0, 0, 0, 0));
+        setValorTotal(0);
+        setValorHora(0);
         form.reset();
 
         setlocalSelecionado(undefined);
