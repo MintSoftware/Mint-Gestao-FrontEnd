@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { parseISO } from "date-fns";
 
-export const DiaEvento = ({ day, currentDate, eventos, feriados, handleDateClick, loadingEventos } : any) => {
+export const DiaEvento = ({ day, currentDate, eventos, feriados, lotados, handleDateClick, loadingEventos } : any) => {
     const isToday =
       new Date().getDate() === day &&
       new Date().getMonth() === currentDate.getMonth() &&
@@ -16,6 +16,8 @@ export const DiaEvento = ({ day, currentDate, eventos, feriados, handleDateClick
       parseISO(evento.dataevento).getMonth() === currentDate.getMonth() &&
       parseISO(evento.dataevento).getFullYear() === currentDate.getFullYear()
     );
+
+    debugger
   
     return (
       <TooltipProvider>
@@ -35,6 +37,13 @@ export const DiaEvento = ({ day, currentDate, eventos, feriados, handleDateClick
                   {feriados.isHoliday(new Date(currentDate.getFullYear(), currentDate.getMonth(), day)) && (
                     <div className="absolute top-2 right-3 w-3 h-3 rounded-full bg-purple-500" />
                   )}
+                  {lotados.map((lotado : any, index : any) => {
+                    if (new Date(lotado).getDate() === day) {
+                      return (
+                        <div key={index} className="absolute top-2 right-3 w-3 h-3 rounded-full bg-red-500" />
+                      );
+                    }
+                  })}
                 </div>
                 <div className="flex flex-col h-[7rem] justify-end p-1">
                   {!loadingEventos

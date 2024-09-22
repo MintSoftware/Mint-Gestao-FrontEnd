@@ -1,3 +1,4 @@
+import { stringParaDate } from "@/core/horas/Horas"
 import Api from "@/infra/api"
 import { Evento } from "@/types/Evento"
 import { Local } from "@/types/Local"
@@ -22,6 +23,7 @@ export function useAgenda() {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay()
     const [selectedDate, setSelectedDate] = useState(undefined)
     const feriados = new Holidays('BR');
+    const [lotados, setLotados] = useState<Date[]>([]);
     const [eventos, setEventos] = useState<Evento[]>([]);
     const [eventosDia, setEventosDia] = useState<Evento[]>([]);
     const [loadingEventos, setLoadingEventos] = useState(false);
@@ -75,6 +77,7 @@ export function useAgenda() {
             setLoadingEventos(true);
             const { data } = await Api.get(`gestao/evento/buscarporlocal/${id}`);
             setEventos(data);
+            verificaDiasLotados();
             setLoadingEventos(false);
         } catch (error) {
             setLoadingEventos(false);
@@ -94,6 +97,74 @@ export function useAgenda() {
         }
     };
 
+    function gerarHorariosDia(horaAbertura: number, horaFechamento: number) {
+        return Array.from({ length: horaFechamento - horaAbertura }, (_, index) => ({
+            horaInicio: horaAbertura + index,
+            horaFim: horaAbertura + index + 1,
+        }));
+    }
+    
+    function verificarHorariosLotados(horariosDia: { horaInicio: number; horaFim: number }[], eventosDoDia: Evento[]) {
+        for (const horario of horariosDia) {
+            const horarioOcupado = eventosDoDia.some((evento) => {
+                const horaInicioEvento = stringParaDate(evento.horainicio.toString()).getHours();
+                const horaFimEvento = stringParaDate(evento.horafim.toString()).getHours();
+    
+                // Verifica se o evento cobre o horário
+                return horaInicioEvento < horario.horaFim && horaFimEvento > horario.horaInicio;
+            });
+    
+            // Se algum horário não estiver ocupado, retorna false
+            if (!horarioOcupado) {
+                return false;
+            }
+        }
+    
+        // Se todos os horários estão ocupados, retorna true
+        return true;
+    }
+    
+    function verificaDiasLotados() {
+        if (!localSelecionadoFiltro) {
+            return;
+        }
+    
+        const diaAbertura = stringParaDate(localSelecionadoFiltro.horarioAbertura).getHours();
+        const diaFechamento = stringParaDate(localSelecionadoFiltro.horarioFechamento).getHours();
+        const horariosDia = gerarHorariosDia(diaAbertura, diaFechamento);
+        
+        // Filtra todos os eventos do mês
+        const eventosDoMes = eventos.filter((evento) => {
+            const eventoDate = parseISO(evento.dataevento.toString());
+            return (
+                eventoDate.getMonth() === currentDate.getMonth() &&
+                eventoDate.getFullYear() === currentDate.getFullYear()
+            );
+        });
+    
+        const diasLotados = [];
+    
+        for (let i = 1; i <= daysInMonth; i++) {
+            const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+            
+            // Filtra os eventos do dia atual
+            const eventosDoDia = eventosDoMes.filter((evento) => {
+                const eventoDate = parseISO(evento.dataevento.toString());
+                return (
+                    eventoDate.getDate() === i &&
+                    eventoDate.getMonth() === currentDate.getMonth() &&
+                    eventoDate.getFullYear() === currentDate.getFullYear()
+                );
+            });
+    
+            const horariosLotados = verificarHorariosLotados(horariosDia, eventosDoDia);
+            if (horariosLotados) {
+                diasLotados.push(date);
+            }
+        }
+        setLotados(diasLotados);
+    }    
+
     return {
         currentDate,
         setSelectedDate,
@@ -106,6 +177,7 @@ export function useAgenda() {
         selectedDate,
         handleDateClick,
         feriados,
+        lotados,
         eventos,
         eventosDia,
         loadingEventos,

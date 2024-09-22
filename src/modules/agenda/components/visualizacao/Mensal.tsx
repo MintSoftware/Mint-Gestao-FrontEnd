@@ -17,6 +17,7 @@ export default function Mensal() {
       eventos,
       eventosDia,
       loadingEventos,
+      lotados
     } = useAgendaContext();
   
     return (
@@ -32,6 +33,7 @@ export default function Mensal() {
                   currentDate={currentDate}
                   eventos={eventos}
                   feriados={feriados}
+                  lotados={lotados}
                   handleDateClick={handleDateClick}
                   loadingEventos={loadingEventos}
                 />

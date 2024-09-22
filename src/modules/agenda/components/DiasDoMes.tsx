@@ -1,7 +1,7 @@
 import { DiaEvento } from "./DiaEvento";
 import { DiaInativo } from "./DiaInativo";
 
-export const DiasDoMes = ({ firstDayOfMonth, daysInMonth, currentDate, eventos, feriados, handleDateClick, loadingEventos } : any) => (
+export const DiasDoMes = ({ firstDayOfMonth, daysInMonth, currentDate, eventos, feriados, lotados, handleDateClick, loadingEventos } : any) => (
     <div className="grid grid-cols-7 gap-2 bg- p-3">
       {Array.from({ length: firstDayOfMonth }, (_, i) => (
         <DiaInativo
@@ -16,6 +16,7 @@ export const DiasDoMes = ({ firstDayOfMonth, daysInMonth, currentDate, eventos, 
           currentDate={currentDate}
           eventos={eventos}
           feriados={feriados}
+          lotados={lotados}
           handleDateClick={handleDateClick}
           loadingEventos={loadingEventos}
         />
