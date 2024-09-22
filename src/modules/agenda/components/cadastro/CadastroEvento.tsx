@@ -15,7 +15,7 @@ import { stringParaDate } from '@/core/horas/Horas';
 import { InputBase } from '@/core/input/base';
 import { cn } from '@/lib/utils';
 import { Evento } from '@/types/Evento';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { CalendarIcon, CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon, Trash2 } from 'lucide-react';
 import { useCadastroEventoController } from './CadastroEventoController';
@@ -331,7 +331,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
                                                                             form.setValue('local', evento.local.nome);
-                                                                            form.setValue('diaEvento', new Date(evento.dataevento));
+                                                                            form.setValue('diaEvento',  parseISO(evento.dataevento.toString()));
                                                                             form.setValue('nome', evento.nome);
                                                                             form.setValue('sobrenome', evento.sobrenome);
                                                                             form.setValue('telefone', evento.telefone);

@@ -1,6 +1,7 @@
 import Api from "@/infra/api"
 import { Evento } from "@/types/Evento"
 import { Local } from "@/types/Local"
+import { parseISO } from "date-fns"
 import Holidays from "date-holidays"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -33,11 +34,11 @@ export function useAgenda() {
         setSelectedDate(date);
         setEventosDia(eventos.filter(
             (evento) =>
-                new Date(evento.dataevento).getDate() ===
+                parseISO(evento.dataevento.toString()).getDate() ===
                 new Date(date).getDate() &&
-                new Date(evento.dataevento).getMonth() ===
+                parseISO(evento.dataevento.toString()).getMonth() ===
                 new Date(date).getMonth() &&
-                new Date(evento.dataevento).getFullYear() ===
+                parseISO(evento.dataevento.toString()).getFullYear() ===
                 new Date(date).getFullYear()
         ));
     }
@@ -45,11 +46,11 @@ export function useAgenda() {
     const refreshTimeLine = (date: Date) => {
         setEventosDia(eventos.filter(
             (evento) =>
-                new Date(evento.dataevento).getDate() ===
+                 parseISO(evento.dataevento.toString()).getDate() ===
                 date.getDate() &&
-                new Date(evento.dataevento).getMonth() ===
+                 parseISO(evento.dataevento.toString()).getMonth() ===
                 date.getMonth() &&
-                new Date(evento.dataevento).getFullYear() ===
+                 parseISO(evento.dataevento.toString()).getFullYear() ===
                 date.getFullYear()
         ));
     }
