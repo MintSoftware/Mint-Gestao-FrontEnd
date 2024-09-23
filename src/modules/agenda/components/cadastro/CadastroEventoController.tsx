@@ -133,10 +133,6 @@ export function useCadastroEventoController(onClose: () => void) {
         calcularValorHora();
     }, [localSelecionado]);
 
-    useEffect(() => {
-        calcularValorTotal();
-    }, [form.getFieldState('horainicio'), form.getFieldState('horafim')]);
-
     const calcularValorHora = () => {
         const horainicio = form.getValues('horainicio'),
             horafim = form.getValues('horafim');

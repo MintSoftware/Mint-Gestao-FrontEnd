@@ -48,10 +48,19 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         cancelarEvento,
         editarEvento,
         idLocalSelecionado,
-        setIdLocalSelecionado
+        setIdLocalSelecionado,
+        calcularValorTotal
     } = useCadastroEventoController(onClose);
 
     const MetodoSubmit = (idLocalSelecionado) ? editarEvento : salvarEvento;
+    const handleHorainicio = (date: any) => {
+        form.setValue('horainicio', date);
+        calcularValorTotal();
+    }
+    const handleHorafim = (date: any) => {
+        form.setValue('horafim', date);
+        calcularValorTotal();
+    }
 
     return (
         <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[60%] h-[80%]">
@@ -201,7 +210,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem >
                                                             <FormLabel className='pl-5'>Início*</FormLabel>
                                                             <FormControl>
-                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horainicio')} onChange={(date) => form.setValue('horainicio', date)} />
+                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horainicio')} onChange={(date) => handleHorainicio(date)} />
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
@@ -215,8 +224,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                         <FormItem>
                                                             <FormLabel className='pl-5'>Fim*</FormLabel>
                                                             <FormControl>
-                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horafim')} onChange={(date) => form.setValue('horafim', date)} />
-                                                                {/* <TimePicker date={form.getValues('horafim')} setDate={(date) => form.setValue('horafim', date)} listaHoras={listaHora} {...form.register("horafim")} /> */}
+                                                                <InputBase listaHoras={listaHora} type="time" value={form.getValues('horafim')} onChange={(date) => handleHorafim(date)} />
                                                             </FormControl>
                                                             <FormMessage className='pl-5' />
                                                         </FormItem>
