@@ -17,8 +17,6 @@ export const DiaEvento = ({ day, currentDate, eventos, feriados, lotados, handle
       parseISO(evento.dataevento).getFullYear() === currentDate.getFullYear()
     );
 
-    debugger
-  
     return (
       <TooltipProvider>
         <Tooltip>

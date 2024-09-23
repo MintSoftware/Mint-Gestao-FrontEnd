@@ -82,7 +82,8 @@ export function useCadastroEventoController(onClose: () => void) {
         try {
             setLoadingLocais(true);
             const { data } = await Api.get('gestao/local');
-            setLocais(data);
+            const locaisAtivos = data.filter((local: any) => local.status === "Ativo");
+            setLocais(locaisAtivos);
             setLoadingLocais(false);
         } catch (error) {
             setLoadingLocais(false);

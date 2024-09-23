@@ -131,7 +131,8 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                                         {local.nome}
                                                                                     </CommandItem>
                                                                                 </CommandList>
-                                                                            ))}
+                                                                            ))
+                                                                        }
                                                                     </CommandGroup>
                                                                 </Command>
                                                             </PopoverContent>
