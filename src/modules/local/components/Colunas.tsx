@@ -52,8 +52,13 @@ export const colunas = (): ColumnDef<Local>[] => {
             <Cabecalho column={column} title="Status" />
         ),
         cell: ({ row }) => (
-            <Badge className={`flex mx-[20%] left-[50%] justify-center items-center color-${row.original.status.toString() === "Ativo" ? "primary" : ""} `}>
-                {row.original.status.toString()}
+            <Badge
+                className={`flex items-center justify-center w-[4rem] ${row.original.status === "Ativo"
+                    ? "bg-[#03bb85] text-green-900"
+                    : "bg-red-400 text-red-900"
+                    }`}
+            >
+                {row.original.status === "Ativo" ? "Ativo" : "Inativo"}
             </Badge>
         ),
     }, {

@@ -15,6 +15,7 @@ export function useCadastroEventoController(onClose: () => void) {
     const [openFiltroLocal, setOpenFiltroLocal] = useState(false);
     const [valorHora, setValorHora] = useState(0);
     const [valorTotal, setValorTotal] = useState(0);
+    const [idLocalSelecionado, setIdLocalSelecionado] = useState<String>();
 
     const {
         buscarEventos,
@@ -187,6 +188,35 @@ export function useCadastroEventoController(onClose: () => void) {
         });
     }
 
+    const editarEvento = (values: z.infer<typeof FormSchema>) => {
+        const evento = {
+            nome: values.nome,
+            sobrenome: values.sobrenome,
+            email: values.email,
+            telefone: values.telefone,
+            valortotal: valorTotal,
+            valorhora: valorHora,
+            horainicio: dateParaString(values.horainicio),
+            horafim: dateParaString(values.horafim),
+            dataevento: values.diaEvento,
+            local: localSelecionado
+        }
+
+        toast.promise(Api.put(`gestao/evento/${idLocalSelecionado}`, evento, {}).then(async () => {
+            toast.success("Evento editado com sucesso!");
+            refreshTimeLine(values.diaEvento);
+            limparDadosEFechar();
+            if (localSelecionadoFiltro && localSelecionado) {
+                buscarEventos(localSelecionadoFiltro.id);
+                handleLocalSelecionadoFiltro(localSelecionado);
+            }
+        }).catch((error) => {
+            toast.error(error.response.data);
+        }), {
+            loading: "Editando...",
+        });
+    }
+
     const cancelarEvento = (id: string) => {
         toast.promise(Api.delete(`gestao/evento/${id}`, {}).then(async () => {
             toast.success("Evento cancelado com sucesso!");
@@ -246,6 +276,9 @@ export function useCadastroEventoController(onClose: () => void) {
         calcularTamanhoPelaQuantHora,
         setOpenFiltroLocal,
         setlocalSelecionado,
-        cancelarEvento
+        cancelarEvento,
+        editarEvento,
+        idLocalSelecionado,
+        setIdLocalSelecionado
     }
 }

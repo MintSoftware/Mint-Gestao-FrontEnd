@@ -45,13 +45,18 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         horasTimeLine,
         handlelocalSelecionado,
         locais,
-        cancelarEvento
+        cancelarEvento,
+        editarEvento,
+        idLocalSelecionado,
+        setIdLocalSelecionado
     } = useCadastroEventoController(onClose);
+
+    const MetodoSubmit = (idLocalSelecionado) ? editarEvento : salvarEvento;
 
     return (
         <DialogContent onInteractOutside={(evento) => evento.preventDefault()} className="sm:max-w-[60%] h-[80%]">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(salvarEvento)}>
+                <form onSubmit={form.handleSubmit(MetodoSubmit)}>
                     <ResizablePanelGroup direction="horizontal">
                         <ResizablePanel className='p-5 w-max max-w-[75%] min-w-[52%]'>
                             <DialogHeader>
@@ -331,6 +336,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         className="z-20 cursor-pointer bg-gray-300 dark:bg-secondary relative left-0 right-0 rounded-md p-2 text-xs flex flex-col justify-between hover:bg-muted/50 transition-colors duration-200"
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
+                                                                            setIdLocalSelecionado(evento.id);
                                                                             form.setValue('local', evento.local.nome);
                                                                             form.setValue('diaEvento',  parseISO(evento.dataevento.toString()));
                                                                             form.setValue('nome', evento.nome);

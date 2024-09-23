@@ -1,9 +1,7 @@
-import { Status } from "./Status";
-
 export type Local = {
     id: string
     nome: string
-    status: Status
+    status: string
     cep: string
     estado: string
     cidade: string

@@ -13,17 +13,21 @@ import { Table } from "@tanstack/react-table";
 interface PaginacaoProps<TData> {
   table: Table<TData>;
   functionSearch: () => Promise<void>;
+  exportar?: JSX.Element;
 }
 
 export function Paginacao<TData>({
   table,
   functionSearch,
+  exportar,
 }: PaginacaoProps<TData>) {
   return (
     <div className="flex items-center mt-[20px] justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} Linha(s) selecionada(s).
+      <div className="flex text-sm text-muted-foreground items-center">
+        <div className="flex mr-5">
+          {exportar}
+        </div>
+        {table.getFilteredRowModel().rows.length} Registro(s)
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <Button className="w-[8%] h-[20%]" variant={'ghost'} onClick={functionSearch}>
