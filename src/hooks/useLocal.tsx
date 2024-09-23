@@ -184,11 +184,25 @@ export function useLocal() {
     }
 
     const inativar = (local: Local) => async () => {
-        await Api.put(`gestao/local/${local.id}/inativar`)
+        toast.promise(Api.put(`gestao/local/${local.id}/inativar`).then(() => {
+            toast.success("Local inativado com sucesso!");
+            buscarLocais();
+        }).catch(() => {
+            toast.error("Erro ao inativar local.");
+        }), {
+            loading: "Inativando local..."
+        });
     }
 
     const ativar = (local: Local) => async () => {
-        await Api.put(`gestao/local/${local.id}/ativar`)
+        toast.promise(Api.put(`gestao/local/${local.id}/ativar`).then(() => {
+            toast.success("Local ativado com sucesso!");
+            buscarLocais();
+        }).catch(() => {
+            toast.error("Erro ao ativar local.");
+        }), {
+            loading: "Ativando local..."
+        });
     }
 
     const editarLocal = async () => {
