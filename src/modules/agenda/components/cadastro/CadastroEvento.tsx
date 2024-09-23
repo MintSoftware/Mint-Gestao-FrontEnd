@@ -47,12 +47,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         locais,
         cancelarEvento,
         editarEvento,
-        idLocalSelecionado,
         setIdLocalSelecionado,
-        calcularValorTotal
+        calcularValorTotal,
+        isAlterando,
+        setIsAlterando
     } = useCadastroEventoController(onClose);
 
-    const MetodoSubmit = (idLocalSelecionado) ? editarEvento : salvarEvento;
+    const MetodoSubmit = (isAlterando) ? editarEvento : salvarEvento;
     const handleHorainicio = (date: any) => {
         form.setValue('horainicio', date);
         calcularValorTotal();
@@ -344,6 +345,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         className="z-20 cursor-pointer bg-gray-300 dark:bg-secondary relative left-0 right-0 rounded-md p-2 text-xs flex flex-col justify-between hover:bg-muted/50 transition-colors duration-200"
                                                                         style={{ height: `${calcularTamanhoPelaQuantHora(quantidadeHoras)}rem` }}
                                                                         onClick={() => {
+                                                                            setIsAlterando(true);
                                                                             setIdLocalSelecionado(evento.id);
                                                                             form.setValue('local', evento.local.nome);
                                                                             form.setValue('diaEvento',  parseISO(evento.dataevento.toString()));

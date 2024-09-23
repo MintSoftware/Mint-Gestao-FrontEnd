@@ -16,6 +16,7 @@ export function useCadastroEventoController(onClose: () => void) {
     const [valorHora, setValorHora] = useState(0);
     const [valorTotal, setValorTotal] = useState(0);
     const [idLocalSelecionado, setIdLocalSelecionado] = useState<String>();
+    const [isAlterando, setIsAlterando] = useState(false);
 
     const {
         buscarEventos,
@@ -93,6 +94,8 @@ export function useCadastroEventoController(onClose: () => void) {
     };
 
     const limparDados = () => {
+        setIsAlterando(false);
+        setIdLocalSelecionado('');
         form.setValue('local', '');
         form.setValue('nome', '');
         form.setValue('sobrenome', '');
@@ -275,6 +278,8 @@ export function useCadastroEventoController(onClose: () => void) {
         cancelarEvento,
         editarEvento,
         idLocalSelecionado,
-        setIdLocalSelecionado
+        setIdLocalSelecionado,
+        isAlterando,
+        setIsAlterando
     }
 }
