@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { stringParaDate } from '@/core/horas/Horas';
 import { InputBase } from '@/core/input/base';
 import { cn } from '@/lib/utils';
-import { Evento } from '@/types/Evento';
+import { useAgendaContext } from '@/providers/AgendaProvider';
 import { format, parseISO } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { CalendarIcon, CheckIcon, ChevronDownIcon, ClockIcon, FlagIcon, PhoneCallIcon, Trash2 } from 'lucide-react';
@@ -23,10 +23,9 @@ import { useCadastroEventoController } from './CadastroEventoController';
 interface EventoProps {
     data?: Date;
     onClose: () => void;
-    eventos?: Evento[];
 }
 
-export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
+export const CadastroEvento = ({ data, onClose }: EventoProps) => {
 
     const {
         form,
@@ -50,8 +49,13 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
         setIdLocalSelecionado,
         calcularValorTotal,
         isAlterando,
-        setIsAlterando
+        setIsAlterando,
+        loadingTimeLine,
     } = useCadastroEventoController(onClose);
+
+    const {
+        eventosDia
+    } = useAgendaContext();
 
     const MetodoSubmit = (isAlterando) ? editarEvento : salvarEvento;
     const handleHorainicio = (date: any) => {
@@ -326,7 +330,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                             <div className="absolute top-0 bottom-0 left-16 w-px bg-secondary"></div>
                                             {horasTimeLine.map((hour) => {
                                                 const timeString = `${hour.toString().padStart(2, '0')}:00`
-                                                const hourEvents = eventos?.filter(evento =>
+                                                const hourEvents = eventosDia?.filter(evento =>
                                                     stringParaDate(evento.horainicio).getHours() === hour
                                                 )
                                                 return (
@@ -337,7 +341,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                             <span className="text-sm font-medium text-muted-foreground">{timeString}</span>
                                                         </div>
                                                         <div className="flex-grow ml-4 h-14 relative top-7">
-                                                            {hourEvents?.map(evento => {
+                                                            {!loadingTimeLine ? hourEvents?.map(evento => {
                                                                 const quantidadeHoras = stringParaDate(evento.horafim).getHours() - stringParaDate(evento.horainicio).getHours();
                                                                 return (
                                                                     <div
@@ -405,7 +409,7 @@ export const CadastroEvento = ({ data, onClose, eventos }: EventoProps) => {
                                                                         </div>
                                                                     </div>
                                                                 );
-                                                            })}
+                                                            }) : <Skeleton className="h-[1.5rem] w-full" />}
                                                         </div>
                                                     </div>
                                                 )

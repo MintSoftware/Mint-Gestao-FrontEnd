@@ -17,12 +17,13 @@ export function useCadastroEventoController(onClose: () => void) {
     const [valorTotal, setValorTotal] = useState(0);
     const [idLocalSelecionado, setIdLocalSelecionado] = useState<String>();
     const [isAlterando, setIsAlterando] = useState(false);
+    const [loadingTimeLine, setLoadingTimeLine] = useState(false);
 
     const {
         buscarEventos,
         localSelecionadoFiltro,
         handleLocalSelecionadoFiltro,
-        refreshTimeLine
+        refreshTimeLine,
     } = useAgendaContext();
 
 
@@ -174,7 +175,7 @@ export function useCadastroEventoController(onClose: () => void) {
 
         toast.promise(Api.post("gestao/evento", evento, {}).then(async () => {
             toast.success("Evento Salvo com sucesso!");
-            refreshTimeLine(values.diaEvento);
+            atualizarTimeLine();
             limparDadosEFechar();
             if (localSelecionadoFiltro && localSelecionado) {
                 buscarEventos(localSelecionadoFiltro.id);
@@ -203,7 +204,7 @@ export function useCadastroEventoController(onClose: () => void) {
 
         toast.promise(Api.put(`gestao/evento/${idLocalSelecionado}`, evento, {}).then(async () => {
             toast.success("Evento editado com sucesso!");
-            refreshTimeLine(values.diaEvento);
+            atualizarTimeLine();
             limparDadosEFechar();
             if (localSelecionadoFiltro && localSelecionado) {
                 buscarEventos(localSelecionadoFiltro.id);
@@ -216,15 +217,24 @@ export function useCadastroEventoController(onClose: () => void) {
         });
     }
 
+    const atualizarTimeLine = () => {
+        setLoadingTimeLine(true);
+        if (localSelecionadoFiltro) {
+            refreshTimeLine(form.getValues('diaEvento'));
+            setLoadingTimeLine(false);
+        }
+    }
+
     const cancelarEvento = (id: string) => {
         toast.promise(Api.delete(`gestao/evento/${id}`, {}).then(async () => {
             toast.success("Evento cancelado com sucesso!");
-            refreshTimeLine(form.getValues('diaEvento'));
+            atualizarTimeLine();
             if (localSelecionadoFiltro && localSelecionado) {
                 buscarEventos(localSelecionadoFiltro.id);
                 handleLocalSelecionadoFiltro(localSelecionado);
             }
         }).catch((error) => {
+            setLoadingTimeLine(false);
             toast.error(
                 error.response.data
                     .join(';\n\n'),
@@ -280,6 +290,9 @@ export function useCadastroEventoController(onClose: () => void) {
         idLocalSelecionado,
         setIdLocalSelecionado,
         isAlterando,
-        setIsAlterando
+        setIsAlterando,
+        atualizarTimeLine,
+        loadingTimeLine,
+        setLoadingTimeLine
     }
 }

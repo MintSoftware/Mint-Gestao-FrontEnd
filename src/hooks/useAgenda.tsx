@@ -57,7 +57,6 @@ export function useAgenda() {
         ));
     }
 
-
     const handleLocalSelecionadoFiltro = (local: Local) => {
 
         if (localSelecionadoFiltro == local) {
